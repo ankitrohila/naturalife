@@ -18,45 +18,45 @@ interface ProductData {
 
 const PRODUCTS: ProductData[] = [
   // Doormats
-  { name: 'Classic Microfiber Doormat', sku: 'DM-001', category: 'doormats', price: 599, wholesalePrice: 399, stock: 100, description: 'Premium microfiber doormat with anti-skid backing', colors: ['red', 'blue', 'black', 'brown'], sizes: ['16x24', '18x30'], image: 'https://images.unsplash.com/photo-1585399363383-18ae2e87e73d?w=400' },
-  { name: 'Jute Fiber Doormat', sku: 'DM-002', category: 'doormats', price: 499, wholesalePrice: 349, stock: 80, description: 'Eco-friendly jute fiber doormat', colors: ['brown', 'grey', 'ivory'], sizes: ['16x24', '18x30'], image: 'https://images.unsplash.com/photo-1585399363383-18ae2e87e73d?w=400' },
-  { name: 'Reversible Doormat', sku: 'DM-003', category: 'doormats', price: 449, wholesalePrice: 299, stock: 120, description: 'Reversible design doormat with dual patterns', colors: ['multi', 'grey'], sizes: ['16x24'], image: 'https://images.unsplash.com/photo-1585399363383-18ae2e87e73d?w=400' },
-  { name: 'Water-Absorbent Doormat', sku: 'DM-004', category: 'doormats', price: 699, wholesalePrice: 449, stock: 60, description: 'Super absorbent quick-dry doormat', colors: ['black', 'grey', 'blue'], sizes: ['18x30', '24x36'], image: 'https://images.unsplash.com/photo-1585399363383-18ae2e87e73d?w=400' },
-  { name: 'Patterned Doormat', sku: 'DM-005', category: 'doormats', price: 549, wholesalePrice: 369, stock: 90, description: 'Decorative patterned doormat', colors: ['red', 'multi', 'beige'], sizes: ['16x24', '18x30'], image: 'https://images.unsplash.com/photo-1585399363383-18ae2e87e73d?w=400' },
+  { name: 'Classic Microfiber Doormat', sku: 'DM-001', category: 'doormats', price: 599, wholesalePrice: 399, stock: 100, description: 'Premium microfiber doormat with anti-skid backing', colors: ['red', 'blue', 'black', 'brown'], sizes: ['16x24', '18x30'], image: '/images/products/doormats/DM-001.jpg' },
+  { name: 'Jute Fiber Doormat', sku: 'DM-002', category: 'doormats', price: 499, wholesalePrice: 349, stock: 80, description: 'Eco-friendly jute fiber doormat', colors: ['brown', 'grey', 'ivory'], sizes: ['16x24', '18x30'], image: '/images/products/doormats/DM-002.jpg' },
+  { name: 'Reversible Doormat', sku: 'DM-003', category: 'doormats', price: 449, wholesalePrice: 299, stock: 120, description: 'Reversible design doormat with dual patterns', colors: ['multi', 'grey'], sizes: ['16x24'], image: '/images/products/doormats/DM-003.jpg' },
+  { name: 'Water-Absorbent Doormat', sku: 'DM-004', category: 'doormats', price: 699, wholesalePrice: 449, stock: 60, description: 'Super absorbent quick-dry doormat', colors: ['black', 'grey', 'blue'], sizes: ['18x30', '24x36'], image: '/images/products/doormats/DM-004.jpg' },
+  { name: 'Patterned Doormat', sku: 'DM-005', category: 'doormats', price: 549, wholesalePrice: 369, stock: 90, description: 'Decorative patterned doormat', colors: ['red', 'multi', 'beige'], sizes: ['16x24', '18x30'], image: '/images/products/doormats/DM-005.jpg' },
 
   // Rugs
-  { name: 'Handwoven Wool Rug', sku: 'RG-001', category: 'rugs', price: 3999, wholesalePrice: 2499, stock: 25, description: 'Premium handwoven wool rug', colors: ['red', 'blue', 'multi'], sizes: ['3x5ft', '4x6ft', '5x7ft'], image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400' },
-  { name: 'Silk Blend Rug', sku: 'RG-002', category: 'rugs', price: 4999, wholesalePrice: 2999, stock: 15, description: 'Luxurious silk blend rug', colors: ['beige', 'brown', 'grey'], sizes: ['4x6ft', '5x7ft', '6x9ft'], image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400' },
-  { name: 'Cotton Rug', sku: 'RG-003', category: 'rugs', price: 2499, wholesalePrice: 1499, stock: 40, description: 'Durable cotton rug', colors: ['ivory', 'grey', 'black'], sizes: ['3x5ft', '4x6ft'], image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400' },
+  { name: 'Handwoven Wool Rug', sku: 'RG-001', category: 'rugs', price: 3999, wholesalePrice: 2499, stock: 25, description: 'Premium handwoven wool rug', colors: ['red', 'blue', 'multi'], sizes: ['3x5ft', '4x6ft', '5x7ft'], image: '/images/products/rugs/RG-001.jpg' },
+  { name: 'Silk Blend Rug', sku: 'RG-002', category: 'rugs', price: 4999, wholesalePrice: 2999, stock: 15, description: 'Luxurious silk blend rug', colors: ['beige', 'brown', 'grey'], sizes: ['4x6ft', '5x7ft', '6x9ft'], image: '/images/products/rugs/RG-002.jpg' },
+  { name: 'Cotton Rug', sku: 'RG-003', category: 'rugs', price: 2499, wholesalePrice: 1499, stock: 40, description: 'Durable cotton rug', colors: ['ivory', 'grey', 'black'], sizes: ['3x5ft', '4x6ft'], image: '/images/products/rugs/RG-003.jpg' },
 
   // Dhurries
-  { name: 'Traditional Jute Dhurrie', sku: 'DH-001', category: 'dhurries', price: 1999, wholesalePrice: 1199, stock: 50, description: 'Traditional Indian jute dhurrie', colors: ['multi', 'beige', 'brown'], sizes: ['3x5ft', '4x6ft', '5x7ft'], image: 'https://images.unsplash.com/photo-1572797697218-61001ab0dd98?w=400' },
-  { name: 'Cotton Dhurrie', sku: 'DH-002', category: 'dhurries', price: 1499, wholesalePrice: 899, stock: 60, description: 'Lightweight cotton dhurrie', colors: ['grey', 'beige', 'multi'], sizes: ['3x5ft', '4x6ft'], image: 'https://images.unsplash.com/photo-1572797697218-61001ab0dd98?w=400' },
+  { name: 'Traditional Jute Dhurrie', sku: 'DH-001', category: 'dhurries', price: 1999, wholesalePrice: 1199, stock: 50, description: 'Traditional Indian jute dhurrie', colors: ['multi', 'beige', 'brown'], sizes: ['3x5ft', '4x6ft', '5x7ft'], image: '/images/products/dhurries/DH-001.jpg' },
+  { name: 'Cotton Dhurrie', sku: 'DH-002', category: 'dhurries', price: 1499, wholesalePrice: 899, stock: 60, description: 'Lightweight cotton dhurrie', colors: ['grey', 'beige', 'multi'], sizes: ['3x5ft', '4x6ft'], image: '/images/products/dhurries/DH-002.jpg' },
 
   // Carpets
-  { name: 'Persian Carpet', sku: 'CP-001', category: 'carpets', price: 7999, wholesalePrice: 4999, stock: 10, description: 'Authentic Persian design carpet', colors: ['red', 'blue', 'multi'], sizes: ['5x7ft', '6x9ft'], image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400' },
-  { name: 'Shag Carpet', sku: 'CP-002', category: 'carpets', price: 5999, wholesalePrice: 3499, stock: 20, description: 'Plush shag carpet', colors: ['grey', 'brown', 'ivory'], sizes: ['4x6ft', '5x7ft', '6x9ft'], image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400' },
+  { name: 'Persian Carpet', sku: 'CP-001', category: 'carpets', price: 7999, wholesalePrice: 4999, stock: 10, description: 'Authentic Persian design carpet', colors: ['red', 'blue', 'multi'], sizes: ['5x7ft', '6x9ft'], image: '/images/products/carpets/CP-001.jpg' },
+  { name: 'Shag Carpet', sku: 'CP-002', category: 'carpets', price: 5999, wholesalePrice: 3499, stock: 20, description: 'Plush shag carpet', colors: ['grey', 'brown', 'ivory'], sizes: ['4x6ft', '5x7ft', '6x9ft'], image: '/images/products/carpets/CP-002.jpg' },
 
   // Mats
-  { name: 'Kitchen Mat', sku: 'MT-001', category: 'mats', price: 399, wholesalePrice: 249, stock: 150, description: 'Non-slip kitchen mat', colors: ['black', 'grey', 'brown'], sizes: ['16x24'], image: 'https://images.unsplash.com/photo-1569854005416-a8f9f93df37f?w=400' },
-  { name: 'Bathroom Mat', sku: 'MT-002', category: 'mats', price: 349, wholesalePrice: 199, stock: 180, description: 'Water-absorbent bathroom mat', colors: ['black', 'grey', 'blue'], sizes: ['16x24', '18x30'], image: 'https://images.unsplash.com/photo-1569854005416-a8f9f93df37f?w=400' },
-  { name: 'Anti-Fatigue Mat', sku: 'MT-003', category: 'mats', price: 799, wholesalePrice: 499, stock: 75, description: 'Ergonomic anti-fatigue mat', colors: ['black', 'grey'], sizes: ['18x30', '24x36'], image: 'https://images.unsplash.com/photo-1569854005416-a8f9f93df37f?w=400' },
+  { name: 'Kitchen Mat', sku: 'MT-001', category: 'mats', price: 399, wholesalePrice: 249, stock: 150, description: 'Non-slip kitchen mat', colors: ['black', 'grey', 'brown'], sizes: ['16x24'], image: '/images/products/mats/MT-001.jpg' },
+  { name: 'Bathroom Mat', sku: 'MT-002', category: 'mats', price: 349, wholesalePrice: 199, stock: 180, description: 'Water-absorbent bathroom mat', colors: ['black', 'grey', 'blue'], sizes: ['16x24', '18x30'], image: '/images/products/mats/MT-002.jpg' },
+  { name: 'Anti-Fatigue Mat', sku: 'MT-003', category: 'mats', price: 799, wholesalePrice: 499, stock: 75, description: 'Ergonomic anti-fatigue mat', colors: ['black', 'grey'], sizes: ['18x30', '24x36'], image: '/images/products/mats/MT-003.jpg' },
 
   // Cushion Covers
-  { name: 'Silk Cushion Cover', sku: 'CC-001', category: 'cushion-covers', price: 499, wholesalePrice: 299, stock: 200, description: 'Luxury silk cushion cover', colors: ['red', 'blue', 'gold', 'black'], sizes: ['16x16', '18x18', '20x20'], image: 'https://images.unsplash.com/photo-1551278335-c1d71db6d10f?w=400' },
-  { name: 'Cotton Cushion Cover', sku: 'CC-002', category: 'cushion-covers', price: 299, wholesalePrice: 169, stock: 300, description: 'Soft cotton cushion cover', colors: ['grey', 'beige', 'ivory', 'multi'], sizes: ['16x16', '18x18'], image: 'https://images.unsplash.com/photo-1551278335-c1d71db6d10f?w=400' },
-  { name: 'Velvet Cushion Cover', sku: 'CC-003', category: 'cushion-covers', price: 699, wholesalePrice: 399, stock: 150, description: 'Premium velvet cushion cover', colors: ['brown', 'grey', 'black'], sizes: ['18x18', '20x20'], image: 'https://images.unsplash.com/photo-1551278335-c1d71db6d10f?w=400' },
+  { name: 'Silk Cushion Cover', sku: 'CC-001', category: 'cushion-covers', price: 499, wholesalePrice: 299, stock: 200, description: 'Luxury silk cushion cover', colors: ['red', 'blue', 'gold', 'black'], sizes: ['16x16', '18x18', '20x20'], image: '/images/products/cushion-covers/CC-001.jpg' },
+  { name: 'Cotton Cushion Cover', sku: 'CC-002', category: 'cushion-covers', price: 299, wholesalePrice: 169, stock: 300, description: 'Soft cotton cushion cover', colors: ['grey', 'beige', 'ivory', 'multi'], sizes: ['16x16', '18x18'], image: '/images/products/cushion-covers/CC-002.jpg' },
+  { name: 'Velvet Cushion Cover', sku: 'CC-003', category: 'cushion-covers', price: 699, wholesalePrice: 399, stock: 150, description: 'Premium velvet cushion cover', colors: ['brown', 'grey', 'black'], sizes: ['18x18', '20x20'], image: '/images/products/cushion-covers/CC-003.jpg' },
 
   // Table Mats
-  { name: 'Set of 4 Table Mats', sku: 'TM-001', category: 'table-mats', price: 599, wholesalePrice: 359, stock: 100, description: 'Elegant set of 4 table mats', colors: ['grey', 'beige', 'black'], sizes: ['12x18'], image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400' },
-  { name: 'Fabric Placemats', sku: 'TM-002', category: 'table-mats', price: 499, wholesalePrice: 299, stock: 150, description: 'Fabric placemats set', colors: ['multi', 'beige', 'grey'], sizes: ['12x18'], image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400' },
+  { name: 'Set of 4 Table Mats', sku: 'TM-001', category: 'table-mats', price: 599, wholesalePrice: 359, stock: 100, description: 'Elegant set of 4 table mats', colors: ['grey', 'beige', 'black'], sizes: ['12x18'], image: '/images/products/table-mats/TM-001.jpg' },
+  { name: 'Fabric Placemats', sku: 'TM-002', category: 'table-mats', price: 499, wholesalePrice: 299, stock: 150, description: 'Fabric placemats set', colors: ['multi', 'beige', 'grey'], sizes: ['12x18'], image: '/images/products/table-mats/TM-002.jpg' },
 
   // Stools
-  { name: 'Ottoman Stool', sku: 'ST-001', category: 'stools', price: 1499, wholesalePrice: 899, stock: 40, description: 'Padded ottoman stool', colors: ['grey', 'brown', 'black'], sizes: ['square', 'round'], image: 'https://images.unsplash.com/photo-1567538096051-b6643b8e8515?w=400' },
-  { name: 'Wooden Stool', sku: 'ST-002', category: 'stools', price: 999, wholesalePrice: 599, stock: 60, description: 'Solid wooden stool', colors: ['brown'], sizes: ['square', 'round'], image: 'https://images.unsplash.com/photo-1567538096051-b6643b8e8515?w=400' },
+  { name: 'Ottoman Stool', sku: 'ST-001', category: 'stools', price: 1499, wholesalePrice: 899, stock: 40, description: 'Padded ottoman stool', colors: ['grey', 'brown', 'black'], sizes: ['square', 'round'], image: '/images/products/stools/ST-001.jpg' },
+  { name: 'Wooden Stool', sku: 'ST-002', category: 'stools', price: 999, wholesalePrice: 599, stock: 60, description: 'Solid wooden stool', colors: ['brown'], sizes: ['square', 'round'], image: '/images/products/stools/ST-002.jpg' },
 
   // Chef Mats
-  { name: 'Chef Anti-Fatigue Mat', sku: 'CM-001', category: 'chef-mats', price: 1299, wholesalePrice: 799, stock: 50, description: 'Professional chef kitchen mat', colors: ['black', 'grey'], sizes: ['18x30', '24x36'], image: 'https://images.unsplash.com/photo-1567538096051-b6643b8e8515?w=400' },
+  { name: 'Chef Anti-Fatigue Mat', sku: 'CM-001', category: 'chef-mats', price: 1299, wholesalePrice: 799, stock: 50, description: 'Professional chef kitchen mat', colors: ['black', 'grey'], sizes: ['18x30', '24x36'], image: '/images/products/chef-mats/CM-001.jpg' },
 ]
 
 async function main() {

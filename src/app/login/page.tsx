@@ -4,19 +4,8 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Suspense } from 'react'
-
-function NaturalifeLogo() {
-  return (
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="24" cy="24" r="22" fill="#E8832A" opacity="0.1" />
-      <path d="M24 8C15.2 8 8 15.2 8 24s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16z" fill="#E8832A" />
-      <path d="M24 12c6.6 0 12 5.4 12 12s-5.4 12-12 12-12-5.4-12-12 5.4-12 12-12z" fill="white" />
-      <path d="M24 16c4.4 0 8 3.6 8 8s-3.6 8-8 8-8-3.6-8-8 3.6-8 8-8z" fill="#E8832A" />
-      <path d="M20 22l2.5 2.5 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
 
 function LoginForm() {
   const [email, setEmail] = useState('admin@naturalife.in')
@@ -58,7 +47,13 @@ function LoginForm() {
       {/* Left Side - Brand Info */}
       <div className="hidden lg:flex flex-1 flex-col items-center justify-center text-center">
         <div className="mb-8">
-          <NaturalifeLogo />
+          <Image
+            src="/images/logo/naturalife-logo.svg"
+            alt="Naturalife Logo"
+            width={200}
+            height={60}
+            priority
+          />
         </div>
         <h1 className="text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)', color: '#2D3A8C' }}>
           Naturalife
@@ -103,7 +98,13 @@ function LoginForm() {
         {/* Mobile Logo */}
         <div className="lg:hidden text-center mb-8">
           <div className="flex justify-center mb-4">
-            <NaturalifeLogo />
+            <Image
+              src="/images/logo/naturalife-logo.svg"
+              alt="Naturalife Logo"
+              width={150}
+              height={45}
+              priority
+            />
           </div>
           <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#2D3A8C' }}>
             Naturalife
