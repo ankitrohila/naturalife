@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const SLIDES = [
   {
-    bg: 'https://naturalife.co.in/wp-content/uploads/2017/01/1920x760.jpg',
+    bg: '/images/carpet/carpet-alt.jpg',
     badge: 'New Collection 2025',
     title: 'Making Homes a\nLiving One',
     sub: 'Premium microfiber doormats, rugs & dhurries — crafted for modern Indian homes',
@@ -16,7 +16,7 @@ const SLIDES = [
     accent: 'var(--green)',
   },
   {
-    bg: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-26-350x350.jpg',
+    bg: '/images/products/p-sq-26.jpg',
     badge: 'UP TO 70% OFF',
     title: 'Mega Sale On\nAll Doormats',
     sub: 'Water absorbent, anti-skid, machine washable — doormat that lasts for years',
@@ -27,7 +27,7 @@ const SLIDES = [
     accent: 'var(--saffron)',
   },
   {
-    bg: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-73-350x350.jpg',
+    bg: '/images/products/p-brown.jpg',
     badge: 'Wholesale Available',
     title: 'Quality Products\nat Honest Prices',
     sub: 'Serving retail & wholesale customers across 20+ Indian states since 2012',

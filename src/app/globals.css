@@ -117,57 +117,80 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* Naturalife Brand Colors — extracted from naturalife.co.in */
+/* Naturalife — Apple-clean palette: white base, green accents, black/white text */
 :root {
-  --green: #87B66E;
-  --green-dark: #4A7A35;
-  --green-light: #D4EDBB;
-  --saffron: #E8832A;
-  --indigo: #2D3A8C;
-  --ivory: #F6F6F6;
-  --earth: #8B5E3C;
-  --crimson: #9B1D20;
-  --gold: #C9A84C;
-  --charcoal: #333333;
-  --cream: #FFF9F0;
+  --green: #2E7D32;
+  --green-dark: #1B5E20;
+  --green-light: #E8F3E9;
+  --green-mid: #4CAF50;
+  --ink: #0A0A0A;
+  --ink-soft: #4B4B4B;
+  --ivory: #FFFFFF;
+  --surface: #FAFAFA;
+  --surface-2: #F4F4F4;
+  --line: #ECECEC;
   --white: #FFFFFF;
-  --light-green: #F0F8EA;
+  /* Legacy aliases kept so older class names resolve to the new palette */
+  --saffron: var(--green);
+  --indigo: var(--ink);
+  --earth: var(--ink-soft);
+  --crimson: #B3261E;
+  --gold: var(--green-mid);
+  --charcoal: var(--ink);
+  --cream: var(--surface);
+  --light-green: var(--green-light);
+  --font-display: var(--font-inter), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html, body {
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  }
   body {
     @apply bg-background text-foreground;
-    background-color: var(--ivory);
-    color: var(--charcoal);
-    font-family: 'Hind', sans-serif;
+    background-color: var(--white);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
   }
-  h1, h2, h3, h4 {
-    font-family: 'Playfair Display', serif;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer utilities {
-  .bg-saffron { background-color: var(--saffron); }
-  .bg-indigo-brand { background-color: var(--indigo); }
-  .bg-ivory { background-color: var(--ivory); }
-  .bg-earth { background-color: var(--earth); }
-  .bg-cream { background-color: var(--cream); }
+  .bg-saffron { background-color: var(--green); }
+  .bg-indigo-brand { background-color: var(--ink); }
+  .bg-ivory { background-color: var(--white); }
+  .bg-earth { background-color: var(--surface-2); }
+  .bg-cream { background-color: var(--surface); }
   .bg-green-brand { background-color: var(--green); }
   .bg-green-dark { background-color: var(--green-dark); }
-  .bg-light-green { background-color: var(--light-green); }
-  .text-saffron { color: var(--saffron); }
-  .text-indigo-brand { color: var(--indigo); }
-  .text-earth { color: var(--earth); }
+  .bg-light-green { background-color: var(--green-light); }
+  .text-saffron { color: var(--green); }
+  .text-indigo-brand { color: var(--ink); }
+  .text-earth { color: var(--ink-soft); }
   .text-crimson { color: var(--crimson); }
-  .text-gold { color: var(--gold); }
+  .text-gold { color: var(--green); }
   .text-green-brand { color: var(--green); }
   .text-green-dark { color: var(--green-dark); }
-  .border-saffron { border-color: var(--saffron); }
-  .border-earth { border-color: var(--earth); }
+  .border-saffron { border-color: var(--green); }
+  .border-earth { border-color: var(--line); }
   .border-green-brand { border-color: var(--green); }
+  /* Signature green→white gradient for hero / feature sections */
+  .bg-green-gradient {
+    background: linear-gradient(135deg, var(--green-light) 0%, var(--white) 60%);
+  }
+  .bg-green-gradient-strong {
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+  }
 }
 
 /* Hero slider animation */
@@ -226,19 +249,14 @@
   animation: marquee 30s linear infinite;
 }
 
-/* Woven border pattern */
+/* Subtle green divider (replaces the old woven strip) */
 .woven-border {
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--saffron) 0px,
-    var(--saffron) 4px,
-    var(--gold) 4px,
-    var(--gold) 8px,
-    var(--earth) 8px,
-    var(--earth) 12px,
-    transparent 12px,
-    transparent 16px
-  );
-  height: 6px;
+  background: linear-gradient(90deg, transparent, var(--green-light), var(--green), var(--green-light), transparent);
+  height: 2px;
   width: 100%;
+}
+/* Ornamental divider override → clean thin green line */
+.ornamental-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
 }

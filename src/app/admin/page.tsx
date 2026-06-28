@@ -28,10 +28,10 @@ export default async function AdminDashboard() {
   }).catch(() => ({ _sum: { total: 0 } }))
 
   const stats = [
-    { label: "Today's Orders", value: todayOrders, icon: '🛒', color: 'var(--green)', href: '/admin/orders' },
-    { label: "Today's Revenue", value: `₹${Number(todayRevenue._sum.total ?? 0).toLocaleString('en-IN')}`, icon: '💰', color: 'var(--green)', href: '/admin/orders' },
-    { label: 'Active Products', value: productCount, icon: '📦', color: 'var(--green)', href: '/admin/products' },
-    { label: 'Total Customers', value: customerCount, icon: '👥', color: 'var(--green)', href: '/admin/customers' },
+    { label: "Today's Orders", value: todayOrders, href: '/admin/orders' },
+    { label: "Today's Revenue", value: `₹${Number(todayRevenue._sum.total ?? 0).toLocaleString('en-IN')}`, href: '/admin/orders' },
+    { label: 'Active Products', value: productCount, href: '/admin/products' },
+    { label: 'Total Customers', value: customerCount, href: '/admin/customers' },
   ]
 
   const statusColors: Record<string, string> = {
@@ -48,8 +48,8 @@ export default async function AdminDashboard() {
           <p className="text-sm text-gray-500 mt-0.5">Welcome back! Here&apos;s what&apos;s happening today.</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/products/new" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--saffron)' }}>
-            + Add Product
+          <Link href="/admin/products/new" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--green)' }}>
+            Add Product
           </Link>
         </div>
       </div>
@@ -57,13 +57,9 @@ export default async function AdminDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {stats.map((s) => (
-          <Link key={s.label} href={s.href} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-2xl">{s.icon}</span>
-              <span className="text-xs px-2 py-1 rounded-full bg-gray-50 text-gray-500">Today</span>
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{s.value}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
+          <Link key={s.label} href={s.href} className="bg-white rounded-xl p-5 border border-[var(--line)] shadow-sm hover:shadow-md transition-shadow">
+            <p className="text-2xl font-semibold text-[var(--ink)]">{s.value}</p>
+            <p className="text-xs text-[var(--ink-soft)] mt-1">{s.label}</p>
           </Link>
         ))}
       </div>
@@ -100,7 +96,7 @@ export default async function AdminDashboard() {
           {/* Low stock */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100">
-              <h2 className="font-semibold text-gray-800">⚠️ Low Stock</h2>
+              <h2 className="font-semibold text-gray-800">Low Stock</h2>
             </div>
             <div className="divide-y divide-gray-50">
               {lowStockVariants.length === 0 ? (
@@ -117,16 +113,15 @@ export default async function AdminDashboard() {
           {/* Quick actions */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
             <h2 className="font-semibold text-gray-800 mb-4">Quick Actions</h2>
-            <div className="space-y-2">
+            <div className="space-y-1">
               {[
-                { label: 'Add New Product', href: '/admin/products/new', icon: '📦' },
-                { label: 'View All Orders', href: '/admin/orders', icon: '🛒' },
-                { label: 'Manage Coupons', href: '/admin/coupons', icon: '🎟️' },
-                { label: 'Upload Media', href: '/admin/media', icon: '🖼️' },
-                { label: 'Test Notifications', href: '/admin/test-env', icon: '🧪' },
+                { label: 'Add New Product', href: '/admin/products/new' },
+                { label: 'View All Orders', href: '/admin/orders' },
+                { label: 'Manage Coupons', href: '/admin/coupons' },
+                { label: 'Upload Media', href: '/admin/media' },
+                { label: 'Test Notifications', href: '/admin/test-env' },
               ].map((a) => (
-                <Link key={a.href} href={a.href} className="flex items-center gap-3 text-sm text-gray-600 hover:text-gray-900 py-1.5 rounded-lg hover:bg-gray-50 px-2 -mx-2 transition-colors">
-                  <span>{a.icon}</span>
+                <Link key={a.href} href={a.href} className="block text-sm text-[var(--ink-soft)] hover:text-[var(--ink)] py-1.5 rounded-lg hover:bg-[var(--surface)] px-2 -mx-2 transition-colors">
                   {a.label}
                 </Link>
               ))}

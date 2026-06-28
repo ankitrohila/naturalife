@@ -1,37 +1,36 @@
 import Link from 'next/link'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
-import { MarqueeStrip } from '@/components/layout/MarqueeStrip'
 import { HeroSlider } from '@/components/home/HeroSlider'
+import { SiteIntro } from '@/components/intro/SiteIntro'
 import { prisma } from '@/lib/prisma'
 
 const FEATURED_PRODUCTS = [
-  { name: 'NATURALIFE DOORMAT BB-11', slug: 'naturalife-doormat-bb-11', price: 499, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-26-350x350.jpg', tag: 'Best Seller' },
-  { name: 'NATURALIFE MICRO SHAG DOORMAT BB-73', slug: 'naturalife-micro-shag-doormat-bb-73', price: 415, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-73-350x350.jpg', tag: 'New' },
-  { name: 'NATURALIFE DOORMAT BB-10', slug: 'naturalife-doormat-bb-10', price: 499, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/BLK-GRE-1-rotated-350x242.jpg', tag: 'Sale' },
-  { name: 'NATURALIFE REVERSIBLE DOORMAT BB-138', slug: 'naturalife-reversible-doormat-bb-138', price: 320, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/WIN-rotated-350x235.jpg', tag: 'Popular' },
-  { name: 'NATURALIFE REVERSIBLE DOORMAT BB-137', slug: 'naturalife-reversible-doormat-bb-137', price: 320, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/CHA-GRE-1-rotated-595x409.jpg', tag: null },
-  { name: 'NATURALIFE REVERSIBLE DOORMAT BB-136', slug: 'naturalife-reversible-doormat-bb-136', price: 320, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/CHO-BRO-1-rotated-595x408.jpg', tag: 'Sale' },
-  { name: 'NATURALIFE DOORMAT BB-149', slug: 'naturalife-doormat-bb-149', price: 575, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/NAV-GRE-1-rotated-595x411.jpg', tag: 'New' },
-  { name: 'NATURALIFE DOORMAT BB-158', slug: 'naturalife-doormat-bb-158', price: 599, img: 'https://naturalife.co.in/wp-content/uploads/2025/02/OLV-MUD-1-rotated-595x409.jpg', tag: null },
+  { name: 'NATURALIFE DOORMAT BB-11', slug: 'dm-001', price: 499, img: '/images/products/p-sq-26.jpg', tag: 'Best Seller' },
+  { name: 'NATURALIFE MICRO SHAG DOORMAT BB-73', slug: 'dm-002', price: 415, img: '/images/products/p-sq-73.jpg', tag: 'New' },
+  { name: 'NATURALIFE DOORMAT BB-10', slug: 'dm-003', price: 499, img: '/images/products/p-blkgre.jpg', tag: 'Sale' },
+  { name: 'NATURALIFE REVERSIBLE DOORMAT BB-138', slug: 'dm-004', price: 320, img: '/images/products/p-sq-25.jpg', tag: 'Popular' },
+  { name: 'NATURALIFE REVERSIBLE DOORMAT BB-137', slug: 'dm-005', price: 320, img: '/images/products/p-sq-1.jpg', tag: null },
+  { name: 'NATURALIFE DHURRIE', slug: 'dh-001', price: 320, img: '/images/products/p-brown.jpg', tag: 'Sale' },
+  { name: 'NATURALIFE RUG', slug: 'rg-001', price: 575, img: '/images/products/p-sq-2.jpg', tag: 'New' },
+  { name: 'NATURALIFE CUSHION COVER', slug: 'cc-001', price: 599, img: '/images/products/p-sq-3.jpg', tag: null },
 ]
 
 const CATEGORIES = [
-  { name: 'Doormats', slug: 'doormats', img: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-26-350x350.jpg', count: '50+ styles' },
-  { name: 'Rugs & Dhurries', slug: 'rugs-dhurries', img: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-73-350x350.jpg', count: '30+ styles' },
-  { name: 'Bath Mats', slug: 'bath-mat', img: 'https://naturalife.co.in/wp-content/uploads/2025/02/WIN-rotated-350x235.jpg', count: '20+ styles' },
-  { name: 'Cushion Covers', slug: 'cushion-covers', img: 'https://naturalife.co.in/wp-content/uploads/2025/02/CHO-BRO-1-rotated-595x408.jpg', count: '40+ styles' },
+  { name: 'Doormats', slug: 'doormats', img: '/images/products/p-sq-26.jpg', count: '50+ styles' },
+  { name: 'Rugs & Dhurries', slug: 'rugs', img: '/images/products/p-brown.jpg', count: '30+ styles' },
+  { name: 'Bath Mats', slug: 'mats', img: '/images/products/p-sq-73.jpg', count: '20+ styles' },
+  { name: 'Cushion Covers', slug: 'cushion-covers', img: '/images/products/p-blkgre.jpg', count: '40+ styles' },
 ]
 
 export default async function HomePage() {
-  const [dbProducts, testimonials, marqueeOffers] = await Promise.all([
+  const [dbProducts, testimonials] = await Promise.all([
     prisma.product.findMany({
       where: { status: 'ACTIVE', isFeatured: true },
       include: { images: { where: { isPrimary: true }, take: 1 }, variants: { orderBy: { price: 'asc' }, take: 1 } },
       take: 8,
     }).catch(() => []),
     prisma.testimonial.findMany({ where: { isVisible: true }, take: 3 }).catch(() => []),
-    prisma.marqueeOffer.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } }).catch(() => []),
   ])
 
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
@@ -42,11 +41,9 @@ export default async function HomePage() {
     tag: p.isOnSale ? 'Sale' : p.isFeatured ? 'Featured' : null,
   })) : FEATURED_PRODUCTS
 
-  const defaultOffers = [
-    { id: '1', text: '🎉 UP TO 70% OFF — MEGA SALE ON ALL DOORMATS', isActive: true, sortOrder: 1, createdAt: new Date() },
-    { id: '2', text: '🚚 FREE SHIPPING ON ORDERS ABOVE ₹999', isActive: true, sortOrder: 2, createdAt: new Date() },
-    { id: '3', text: '🏭 WHOLESALE ORDERS WELCOME — SPECIAL B2B RATES AVAILABLE', isActive: true, sortOrder: 3, createdAt: new Date() },
-  ]
+  const trending = displayProducts.slice(0, 3).map(p => ({
+    name: p.name, slug: p.slug, price: p.price, img: p.img,
+  }))
 
   const showTestimonials = testimonials.length > 0 ? testimonials.map(t => ({
     name: t.name, city: t.location ?? '', review: t.text
@@ -57,8 +54,8 @@ export default async function HomePage() {
   ]
 
   return (
-    <div style={{ backgroundColor: '#fff', color: '#333' }}>
-      <MarqueeStrip offers={marqueeOffers.length > 0 ? marqueeOffers : defaultOffers} />
+    <div style={{ backgroundColor: '#fff', color: 'var(--ink)' }}>
+      <SiteIntro trending={trending} />
       <Header />
 
       {/* ── Hero Slider ── */}
@@ -145,15 +142,14 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-white text-center">
             {[
-              { icon: '🌿', title: '100% Micro Fiber', desc: 'Premium quality materials' },
-              { icon: '💧', title: 'Water Absorbent', desc: 'Super soft & quick-dry' },
-              { icon: '🛡️', title: 'Anti-Skid Backing', desc: 'Safe for all floors' },
-              { icon: '♻️', title: 'Machine Washable', desc: '40°C easy care' },
+              { title: '100% Micro Fiber', desc: 'Premium quality materials' },
+              { title: 'Water Absorbent', desc: 'Super soft & quick-dry' },
+              { title: 'Anti-Skid Backing', desc: 'Safe for all floors' },
+              { title: 'Machine Washable', desc: '40°C easy care' },
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-2">
-                <div className="text-4xl">{item.icon}</div>
-                <h4 className="font-bold text-sm md:text-base">{item.title}</h4>
-                <p className="text-xs opacity-80">{item.desc}</p>
+              <div key={i} className="flex flex-col items-center gap-1.5 px-2">
+                <h4 className="font-semibold text-base md:text-lg">{item.title}</h4>
+                <p className="text-xs md:text-sm opacity-80">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -163,7 +159,7 @@ export default async function HomePage() {
       {/* ── Sale Banner ── */}
       <section className="relative overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="https://naturalife.co.in/wp-content/uploads/2017/01/1920x760.jpg" alt="Sale" className="w-full h-72 object-cover object-center" />
+        <img src="/images/carpet/carpet-alt.jpg" alt="Sale" className="w-full h-72 object-cover object-center" />
         <div className="absolute inset-0 bg-black/55 flex flex-col items-center justify-center text-white text-center px-4">
           <p className="text-xs font-semibold tracking-widest uppercase mb-2 opacity-80">Limited Time</p>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)' }}>UP TO 70% OFF</h2>
@@ -202,10 +198,10 @@ export default async function HomePage() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             {[
-              'https://naturalife.co.in/wp-content/uploads/2025/02/square-26-350x350.jpg',
-              'https://naturalife.co.in/wp-content/uploads/2025/02/square-73-350x350.jpg',
-              'https://naturalife.co.in/wp-content/uploads/2025/02/CHO-BRO-1-rotated-595x408.jpg',
-              'https://naturalife.co.in/wp-content/uploads/2025/02/NAV-GRE-1-rotated-595x411.jpg',
+              '/images/products/p-sq-26.jpg',
+              '/images/products/p-sq-73.jpg',
+              '/images/products/p-brown.jpg',
+              '/images/products/p-blkgre.jpg',
             ].map((src, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img key={i} src={src} alt="Naturalife product" className="w-full rounded-xl object-cover aspect-square shadow-sm" />

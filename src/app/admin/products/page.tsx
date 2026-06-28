@@ -87,7 +87,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={image} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-lg">🏠</div>
+                        <div className="w-full h-full bg-[var(--surface-2)]" />
                       )}
                     </div>
                   </td>
@@ -109,8 +109,8 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusBg[p.status]}`}>{p.status}</span>
                   </td>
                   <td className="px-4 py-3 text-xs space-x-1">
-                    {p.isFeatured && <span className="bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded">⭐</span>}
-                    {p.isOnSale && <span className="bg-red-50 text-red-600 px-1.5 py-0.5 rounded">SALE</span>}
+                    {p.isFeatured && <span className="bg-[var(--green-light)] text-[var(--green-dark)] px-1.5 py-0.5 rounded font-medium">Featured</span>}
+                    {p.isOnSale && <span className="bg-red-50 text-red-600 px-1.5 py-0.5 rounded font-medium">SALE</span>}
                   </td>
                   <td className="px-4 py-3">
                     <Link href={`/admin/products/${p.id}`} className="text-xs font-medium hover:underline mr-3" style={{ color: 'var(--saffron)' }}>Edit</Link>

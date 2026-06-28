@@ -2,33 +2,39 @@
 
 import Link from 'next/link'
 
+const ICON = 'w-4 h-4 shrink-0'
+
+function Pin() {
+  return <svg className={ICON} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 21s7-5.7 7-11a7 7 0 10-14 0c0 5.3 7 11 7 11z" strokeLinejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg>
+}
+function Phone() {
+  return <svg className={ICON} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z" strokeLinejoin="round"/></svg>
+}
+function Mail() {
+  return <svg className={ICON} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" strokeLinejoin="round"/></svg>
+}
+function Clock() {
+  return <svg className={ICON} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+}
+
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: '#1a2e1a', color: '#ccc' }}>
-      {/* Green top accent */}
-      <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, var(--green-dark), var(--green), var(--saffron), var(--green), var(--green-dark))' }} />
+    <footer className="bg-[var(--surface)] text-[var(--ink-soft)] border-t border-[var(--line)]">
+      <div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg, transparent, var(--green-light), var(--green), var(--green-light), transparent)' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
           {/* Brand */}
-          <div className="lg:col-span-1">
+          <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://naturalife.co.in/wp-content/uploads/2020/07/naturalifelogo.png"
-              alt="Naturalife Homecare"
-              className="h-12 w-auto object-contain mb-4"
-              style={{ filter: 'brightness(0) invert(1)' }}
-            />
-            <p className="text-sm leading-relaxed mb-5 text-gray-400">
+            <img src="/images/logo/naturalife-logo.png" alt="Naturalife Homecare" className="h-11 w-auto object-contain mb-4" />
+            <p className="text-sm leading-relaxed mb-5">
               Making homes a living one since 2012. Quality microfiber doormats, rugs, and home textiles crafted for modern Indian homes.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2.5">
               {['Facebook', 'Instagram', 'YouTube', 'WhatsApp'].map((social) => (
-                <Link key={social} href="#" className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold transition-colors"
-                  style={{ backgroundColor: 'rgba(135,182,110,0.25)' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--green)' }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(135,182,110,0.25)' }}>
+                <Link key={social} href="#" aria-label={social}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--green-dark)] text-xs font-semibold bg-[var(--green-light)] hover:bg-[var(--green)] hover:text-white transition-colors">
                   {social[0]}
                 </Link>
               ))}
@@ -37,21 +43,19 @@ export function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="font-bold text-white mb-4 text-sm tracking-wide uppercase">Shop</h4>
+            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">Shop</h4>
             <ul className="space-y-2.5">
               {[
                 ['Doormats', '/shop?category=doormats'],
-                ['Rugs & Dhurries', '/shop?category=rugs-dhurries'],
-                ['Bath Mats', '/shop?category=bath-mat'],
+                ['Rugs & Dhurries', '/shop?category=rugs'],
+                ['Bath Mats', '/shop?category=mats'],
                 ['Cushion Covers', '/shop?category=cushion-covers'],
-                ['Table Runners', '/shop?category=table-runner'],
+                ['Table Mats', '/shop?category=table-mats'],
                 ['Stools', '/shop?category=stools'],
                 ['On Sale', '/shop?onSale=true'],
               ].map(([label, href]) => (
                 <li key={label}>
-                  <Link href={href} className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1">
-                    <span style={{ color: 'var(--green)' }}>›</span> {label}
-                  </Link>
+                  <Link href={href} className="text-sm hover:text-[var(--green)] transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
@@ -59,7 +63,7 @@ export function Footer() {
 
           {/* Info */}
           <div>
-            <h4 className="font-bold text-white mb-4 text-sm tracking-wide uppercase">Information</h4>
+            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">Information</h4>
             <ul className="space-y-2.5">
               {[
                 ['About Us', '/about'],
@@ -71,40 +75,26 @@ export function Footer() {
                 ['Shipping Policy', '/pages/shipping-policy'],
               ].map(([label, href]) => (
                 <li key={label}>
-                  <Link href={href} className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1">
-                    <span style={{ color: 'var(--green)' }}>›</span> {label}
-                  </Link>
+                  <Link href={href} className="text-sm hover:text-[var(--green)] transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact — the one place icons live */}
           <div>
-            <h4 className="font-bold text-white mb-4 text-sm tracking-wide uppercase">Contact Us</h4>
-            <ul className="space-y-4 text-sm text-gray-400">
-              <li className="flex gap-3">
-                <span style={{ color: 'var(--green)' }}>📍</span>
-                <span>Naturalife Homecare, India</span>
-              </li>
-              <li className="flex gap-3">
-                <span style={{ color: 'var(--green)' }}>📞</span>
-                <a href="tel:+919876543210" className="hover:text-white transition-colors">+91 98765 43210</a>
-              </li>
-              <li className="flex gap-3">
-                <span style={{ color: 'var(--green)' }}>✉️</span>
-                <a href="mailto:info@naturalife.co.in" className="hover:text-white transition-colors">info@naturalife.co.in</a>
-              </li>
-              <li className="flex gap-3">
-                <span style={{ color: 'var(--green)' }}>⏰</span>
-                <span>Mon–Sat: 9am – 6pm</span>
-              </li>
+            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">Contact Us</h4>
+            <ul className="space-y-4 text-sm">
+              <li className="flex gap-3 items-start"><span className="text-[var(--green)] mt-0.5"><Pin /></span><span>Naturalife Homecare, India</span></li>
+              <li className="flex gap-3 items-center"><span className="text-[var(--green)]"><Phone /></span><a href="tel:+919876543210" className="hover:text-[var(--green)] transition-colors">+91 98765 43210</a></li>
+              <li className="flex gap-3 items-center"><span className="text-[var(--green)]"><Mail /></span><a href="mailto:info@naturalife.co.in" className="hover:text-[var(--green)] transition-colors">info@naturalife.co.in</a></li>
+              <li className="flex gap-3 items-center"><span className="text-[var(--green)]"><Clock /></span><span>Mon–Sat: 9am – 6pm</span></li>
             </ul>
             <div className="mt-6">
-              <p className="text-xs text-gray-500 mb-2">Accepted Payments</p>
+              <p className="text-xs text-[var(--ink-soft)] mb-2">Accepted Payments</p>
               <div className="flex gap-2 flex-wrap text-xs">
                 {['UPI', 'GPay', 'Visa', 'MC', 'COD'].map((p) => (
-                  <span key={p} className="px-2 py-0.5 rounded border border-gray-600 text-gray-300">{p}</span>
+                  <span key={p} className="px-2 py-0.5 rounded border border-[var(--line)] text-[var(--ink-soft)]">{p}</span>
                 ))}
               </div>
             </div>
@@ -112,11 +102,10 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-gray-700 py-4 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
+      <div className="border-t border-[var(--line)] py-4 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-[var(--ink-soft)]">
           <p>© 2025 Naturalife Homecare. All rights reserved.</p>
-          <p>Designed with ♥ in India &nbsp;|&nbsp; GST registered business</p>
+          <p>Designed in India &nbsp;|&nbsp; GST registered business</p>
         </div>
       </div>
     </footer>

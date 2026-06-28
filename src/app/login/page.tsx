@@ -48,14 +48,14 @@ function LoginForm() {
       <div className="hidden lg:flex flex-1 flex-col items-center justify-center text-center">
         <div className="mb-8">
           <Image
-            src="/images/logo/naturalife-logo.svg"
+            src="/images/logo/naturalife-logo.png"
             alt="Naturalife Logo"
             width={200}
             height={60}
             priority
           />
         </div>
-        <h1 className="text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)', color: '#2D3A8C' }}>
+        <h1 className="text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>
           Naturalife
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-sm" style={{ fontFamily: 'var(--font-body)' }}>
@@ -64,7 +64,7 @@ function LoginForm() {
         <p className="text-sm text-gray-500 mb-8">🌿 Quality • Craftsmanship • Tradition</p>
         <div className="space-y-6 text-left">
           <div className="flex gap-4 items-start">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#E8832A' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--green)' }}>
               <span className="text-white text-lg">✓</span>
             </div>
             <div>
@@ -73,7 +73,7 @@ function LoginForm() {
             </div>
           </div>
           <div className="flex gap-4 items-start">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#E8832A' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--green)' }}>
               <span className="text-white text-lg">✓</span>
             </div>
             <div>
@@ -82,7 +82,7 @@ function LoginForm() {
             </div>
           </div>
           <div className="flex gap-4 items-start">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#E8832A' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--green)' }}>
               <span className="text-white text-lg">✓</span>
             </div>
             <div>
@@ -99,21 +99,21 @@ function LoginForm() {
         <div className="lg:hidden text-center mb-8">
           <div className="flex justify-center mb-4">
             <Image
-              src="/images/logo/naturalife-logo.svg"
+              src="/images/logo/naturalife-logo.png"
               alt="Naturalife Logo"
               width={150}
               height={45}
               priority
             />
           </div>
-          <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#2D3A8C' }}>
+          <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>
             Naturalife
           </h1>
         </div>
 
         <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold mb-2" style={{ color: '#2D3A8C', fontFamily: 'var(--font-display)' }}>
+            <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)', fontFamily: 'var(--font-display)' }}>
               Welcome Back
             </h2>
             <p className="text-sm text-gray-600">Sign in to your account</p>
@@ -198,7 +198,7 @@ function LoginForm() {
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-xl text-white font-bold text-base disabled:opacity-60 transition-all hover:shadow-lg transform hover:scale-105"
-              style={{ backgroundColor: '#E8832A' }}
+              style={{ backgroundColor: 'var(--green)' }}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -219,7 +219,7 @@ function LoginForm() {
               <>
                 <p>
                   Don&apos;t have an account?{' '}
-                  <Link href="/register" className="font-semibold hover:underline" style={{ color: '#E8832A' }}>
+                  <Link href="/register" className="font-semibold hover:underline" style={{ color: 'var(--green)' }}>
                     Create one
                   </Link>
                 </p>

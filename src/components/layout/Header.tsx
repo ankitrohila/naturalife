@@ -24,23 +24,18 @@ export function Header() {
   const { data: session } = useSession()
 
   return (
-    <header className="sticky top-0 z-50 w-full shadow-sm">
-      {/* Top bar */}
-      <div className="text-white text-xs py-1.5 text-center font-medium" style={{ backgroundColor: 'var(--green)' }}>
-        🚚 Free shipping above ₹999 &nbsp;|&nbsp; 📞 +91 98765 43210 &nbsp;|&nbsp; 🏭 Wholesale enquiries welcome
-      </div>
-
+    <header className="sticky top-0 z-50 w-full border-b border-[var(--line)] bg-white/80 backdrop-blur-md">
       {/* Main header */}
-      <div className="border-b border-gray-100" style={{ backgroundColor: '#F6F6F6' }}>
+      <div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://naturalife.co.in/wp-content/uploads/2020/07/naturalifelogo.png"
+                src="/images/logo/naturalife-logo.png"
                 alt="Naturalife Homecare"
-                className="h-10 w-auto object-contain"
+                className="h-9 w-auto object-contain"
               />
             </Link>
 

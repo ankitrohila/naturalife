@@ -1,18 +1,13 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, Hind } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { AuthSessionProvider } from '@/components/providers/SessionProvider'
 import './globals.css'
 
-const playfair = Playfair_Display({
-  variable: '--font-display',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-})
-
-const hind = Hind({
-  variable: '--font-body',
-  subsets: ['latin', 'devanagari'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -32,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hi" className={`${playfair.variable} ${hind.variable} h-full`}>
+    <html lang="en" className={`${inter.variable} h-full`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
