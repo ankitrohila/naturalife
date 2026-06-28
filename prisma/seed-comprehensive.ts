@@ -1,4 +1,6 @@
 import 'dotenv/config'
+import fs from 'node:fs'
+import path from 'node:path'
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { hash } from 'bcryptjs'
@@ -124,7 +126,7 @@ async function main() {
   for (let i = 0; i < colors.length; i++) {
     await prisma.attributeValue.upsert({
       where: { id: `color-${colors[i].id}` },
-      update: {},
+      update: { hexColor: colors[i].hex, label: colors[i].label },
       create: {
         id: `color-${colors[i].id}`,
         attributeId: colorAttr.id,
@@ -137,7 +139,39 @@ async function main() {
   }
   console.log(`✓ ${colors.length} color attributes created`)
 
+  // SIZE attribute + values (collect every unique size across products)
+  const sizeSlug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  const allSizes = Array.from(new Set(PRODUCTS.flatMap((p) => p.sizes)))
+  const sizeAttr = await prisma.attribute.upsert({
+    where: { id: 'SIZE' },
+    update: {},
+    create: { id: 'SIZE', name: 'SIZE', displayName: 'Size' },
+  })
+  for (let i = 0; i < allSizes.length; i++) {
+    await prisma.attributeValue.upsert({
+      where: { id: `size-${sizeSlug(allSizes[i])}` },
+      update: { label: allSizes[i].toUpperCase() },
+      create: {
+        id: `size-${sizeSlug(allSizes[i])}`,
+        attributeId: sizeAttr.id,
+        value: sizeSlug(allSizes[i]),
+        label: allSizes[i].toUpperCase(),
+        sortOrder: i,
+      },
+    })
+  }
+  console.log(`✓ ${allSizes.length} size attributes created`)
+
+  // Local product images to assign per colour
+  const imgDir = path.join(process.cwd(), 'public', 'images', 'products')
+  const localImages = fs
+    .readdirSync(imgDir)
+    .filter((f) => /\.(jpg|jpeg|png|webp)$/i.test(f))
+    .sort()
+    .map((f) => `/images/products/${f}`)
+
   // Create products
+  let pIdx = 0
   for (const productData of PRODUCTS) {
     const product = await prisma.product.upsert({
       where: { sku: productData.sku },
@@ -152,74 +186,91 @@ async function main() {
         status: 'ACTIVE',
         taxRate: 18,
         hsnCode: '6301',
-        isFeatured: Math.random() > 0.5,
-        isOnSale: Math.random() > 0.7,
+        isFeatured: pIdx % 2 === 0,
+        isOnSale: pIdx % 3 === 0,
       },
     })
 
-    // Add product image
-    await prisma.productImage.upsert({
-      where: { id: `img-${productData.sku}` },
-      update: {},
-      create: {
-        id: `img-${productData.sku}`,
-        productId: product.id,
-        url: productData.image,
-        altText: productData.name,
-        isPrimary: true,
-        sortOrder: 0,
-      },
-    })
-
-    // Add variants for each color/size combination
+    // Link this product's colour + size attribute values (for the radio selectors)
     for (const color of productData.colors) {
+      await prisma.productAttributeValue.upsert({
+        where: { productId_attributeId_valueId: { productId: product.id, attributeId: colorAttr.id, valueId: `color-${color}` } },
+        update: {},
+        create: { productId: product.id, attributeId: colorAttr.id, valueId: `color-${color}` },
+      })
+    }
+    for (const size of productData.sizes) {
+      await prisma.productAttributeValue.upsert({
+        where: { productId_attributeId_valueId: { productId: product.id, attributeId: sizeAttr.id, valueId: `size-${sizeSlug(size)}` } },
+        update: {},
+        create: { productId: product.id, attributeId: sizeAttr.id, valueId: `size-${sizeSlug(size)}` },
+      })
+    }
+
+    // Per-colour images (selecting a colour swaps the main image). Reset first.
+    await prisma.productImage.deleteMany({ where: { productId: product.id } })
+    let cIdx = 0
+    for (const color of productData.colors) {
+      const url = localImages[(pIdx * 3 + cIdx) % localImages.length]
+      await prisma.productImage.create({
+        data: {
+          productId: product.id,
+          url,
+          altText: `${productData.name} - ${color}`,
+          isPrimary: cIdx === 0,
+          colorHex: colors.find((c) => c.id === color)?.hex ?? null,
+          attributeValue: `color-${color}`,
+          sortOrder: cIdx,
+        },
+      })
+      cIdx++
+    }
+
+    // Variants for each colour/size combination, with per-size pricing
+    for (const color of productData.colors) {
+      let sIdx = 0
       for (const size of productData.sizes) {
         const variantSku = `${productData.sku}-${color}-${size}`.toUpperCase()
+        const mult = 1 + sIdx * 0.7 // bigger size → higher price
+        const price = Math.round(productData.price * mult)
+        const wholesale = Math.round(productData.wholesalePrice * mult)
+        sIdx++
+
+        const attributeValues = [
+          { attributeId: colorAttr.id, valueId: `color-${color}` },
+          { attributeId: sizeAttr.id, valueId: `size-${sizeSlug(size)}` },
+        ]
 
         const variant = await prisma.productVariant.upsert({
           where: { sku: variantSku },
-          update: {},
+          update: { price, wholesalePrice: wholesale, minWholesaleQty: 5, attributeValues },
           create: {
             productId: product.id,
             sku: variantSku,
-            price: productData.price,
-            wholesalePrice: productData.wholesalePrice,
+            price,
+            wholesalePrice: wholesale,
             minWholesaleQty: 5,
             stock: productData.stock,
             weight: 0.5,
+            attributeValues,
           },
         })
 
-        // Create bulk pricing rules for wholesale
         await prisma.bulkPricingRule.upsert({
           where: { id: `bulk-${variantSku}-20` },
-          update: {},
-          create: {
-            id: `bulk-${variantSku}-20`,
-            productVariantId: variant.id,
-            minQty: 20,
-            maxQty: 50,
-            pricePerUnit: productData.wholesalePrice * 0.85,
-            label: 'Pack of 20-50',
-          },
+          update: { pricePerUnit: Math.round(wholesale * 0.85) },
+          create: { id: `bulk-${variantSku}-20`, productVariantId: variant.id, minQty: 20, maxQty: 50, pricePerUnit: Math.round(wholesale * 0.85), label: 'Pack of 20-50' },
         })
-
         await prisma.bulkPricingRule.upsert({
           where: { id: `bulk-${variantSku}-51` },
-          update: {},
-          create: {
-            id: `bulk-${variantSku}-51`,
-            productVariantId: variant.id,
-            minQty: 51,
-            maxQty: null,
-            pricePerUnit: productData.wholesalePrice * 0.70,
-            label: 'Pack of 51+',
-          },
+          update: { pricePerUnit: Math.round(wholesale * 0.70) },
+          create: { id: `bulk-${variantSku}-51`, productVariantId: variant.id, minQty: 51, maxQty: null, pricePerUnit: Math.round(wholesale * 0.70), label: 'Pack of 51+' },
         })
       }
     }
+    pIdx++
   }
-  console.log(`✓ ${PRODUCTS.length} products with variants created`)
+  console.log(`✓ ${PRODUCTS.length} products with variants, attributes & per-colour images created`)
 
   console.log('\n✅ Database seeded successfully!')
   console.log('👤 Admin login: admin@naturalife.in / admin123')

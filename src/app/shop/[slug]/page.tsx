@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WovenBorderDivider } from '@/components/shared/WovenBorderDivider'
 import { ProductDetailClient } from '@/components/product/ProductDetailClient'
+import { RelatedProducts } from '@/components/product/RelatedProducts'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -37,8 +38,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const relatedProducts = await prisma.product.findMany({
     where: { categoryId: product.categoryId, status: 'ACTIVE', id: { not: product.id } },
-    include: { images: { where: { isPrimary: true }, take: 1 }, variants: { orderBy: { price: 'asc' }, take: 1 } },
-    take: 4,
+    include: {
+      category: true,
+      images: { orderBy: { sortOrder: 'asc' } },
+      variants: { include: { bulkPricingRules: { orderBy: { minQty: 'asc' } } }, orderBy: { price: 'asc' } },
+      attributeValues: { include: { attribute: true, value: true } },
+    },
+    take: 5,
   })
 
   return (
@@ -63,31 +69,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           {relatedProducts.length > 0 && (
             <div className="mt-16">
               <WovenBorderDivider />
-              <h2 className="text-2xl font-bold my-8" style={{ fontFamily: 'var(--font-display)', color: 'var(--indigo)' }}>
-                You May Also Like
+              <h2 className="text-2xl font-semibold my-8 text-center" style={{ color: 'var(--ink)' }}>
+                Related Products
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {relatedProducts.map((p) => {
-                  const image = p.images?.[0]?.url
-                  const variant = p.variants?.[0]
-                  return (
-                    <a key={p.id} href={`/shop/${p.slug}`} className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                      <div className="aspect-square bg-gray-50">
-                        {image ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                        ) : (
-                          <div className="w-full h-full bg-[var(--surface-2)]" />
-                        )}
-                      </div>
-                      <div className="p-3">
-                        <h3 className="text-sm font-semibold line-clamp-2 mb-1">{p.name}</h3>
-                        {variant && <p className="text-sm font-bold" style={{ color: 'var(--saffron)' }}>₹{Number(variant.price).toLocaleString('en-IN')}</p>}
-                      </div>
-                    </a>
-                  )
-                })}
-              </div>
+              <RelatedProducts items={JSON.parse(JSON.stringify(relatedProducts))} />
             </div>
           )}
         </div>
