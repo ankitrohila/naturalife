@@ -179,7 +179,6 @@ export default function CheckoutPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--ivory)' }}>
           <div className="text-center">
-            <div className="text-6xl mb-4">🛒</div>
             <h2 className="text-xl font-semibold text-gray-600 mb-4">Your cart is empty</h2>
             <Link href="/shop" className="px-6 py-3 text-white rounded-xl font-semibold inline-block" style={{ backgroundColor: 'var(--saffron)' }}>
               Shop Now
@@ -302,14 +301,14 @@ export default function CheckoutPage() {
                     onClick={() => setPaymentMethod('ONLINE')}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${paymentMethod === 'ONLINE' ? 'border-orange-400 bg-orange-50' : 'border-gray-200 hover:border-gray-300'}`}
                   >
-                    <div className="font-medium text-sm mb-1">💳 Online Payment</div>
+                    <div className="font-medium text-sm mb-1">Online Payment</div>
                     <div className="text-xs text-gray-500">GPay, UPI, Cards, Net Banking</div>
                   </button>
                   <button
                     onClick={() => setPaymentMethod('COD')}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${paymentMethod === 'COD' ? 'border-orange-400 bg-orange-50' : 'border-gray-200 hover:border-gray-300'}`}
                   >
-                    <div className="font-medium text-sm mb-1">💵 Cash on Delivery</div>
+                    <div className="font-medium text-sm mb-1">Cash on Delivery</div>
                     <div className="text-xs text-gray-500">Pay when order arrives</div>
                   </button>
                 </div>
@@ -376,7 +375,7 @@ export default function CheckoutPage() {
               >
                 {loading ? 'Processing...' : paymentMethod === 'COD' ? 'Place Order (COD)' : 'Pay Now'}
               </button>
-              <p className="text-xs text-gray-400 text-center mt-3">🔒 Secure checkout powered by Razorpay</p>
+              <p className="text-xs text-gray-400 text-center mt-3">Secure checkout powered by Razorpay</p>
             </div>
           </div>
         </div>

@@ -54,18 +54,29 @@ export default function ContactPage() {
 
             {/* Contact info */}
             <div className="space-y-6">
-              <div className="rounded-2xl p-6 border border-amber-100" style={{ backgroundColor: 'var(--cream)' }}>
-                <h3 className="font-semibold mb-4" style={{ color: 'var(--indigo)' }}>Get in Touch</h3>
-                <div className="space-y-3 text-sm text-gray-600">
-                  <p>📍 Plot No. 123, Industrial Area<br />Jaipur, Rajasthan - 302001</p>
-                  <p>📞 <a href="tel:+919876543210" className="hover:underline">+91 98765 43210</a></p>
-                  <p>✉️ <a href="mailto:info@naturalife.in" className="hover:underline">info@naturalife.in</a></p>
-                  <p>💬 WhatsApp: +91 98765 43210</p>
-                  <p>🕐 Mon–Sat: 9:00 AM – 6:00 PM IST</p>
-                </div>
+              <div className="rounded-2xl p-6 border border-[var(--line)]" style={{ backgroundColor: 'var(--surface)' }}>
+                <h3 className="font-semibold mb-4" style={{ color: 'var(--ink)' }}>Get in Touch</h3>
+                <ul className="space-y-4 text-sm text-gray-600">
+                  <li className="flex gap-3 items-start">
+                    <svg className="w-4 h-4 shrink-0 mt-0.5 text-[var(--green)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 21s7-5.7 7-11a7 7 0 10-14 0c0 5.3 7 11 7 11z" strokeLinejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg>
+                    <span>Plot No. 123, Industrial Area<br />Jaipur, Rajasthan - 302001</span>
+                  </li>
+                  <li className="flex gap-3 items-center">
+                    <svg className="w-4 h-4 shrink-0 text-[var(--green)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z" strokeLinejoin="round"/></svg>
+                    <a href="tel:+919876543210" className="hover:text-[var(--green)]">+91 98765 43210</a>
+                  </li>
+                  <li className="flex gap-3 items-center">
+                    <svg className="w-4 h-4 shrink-0 text-[var(--green)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" strokeLinejoin="round"/></svg>
+                    <a href="mailto:info@naturalife.in" className="hover:text-[var(--green)]">info@naturalife.in</a>
+                  </li>
+                  <li className="flex gap-3 items-center">
+                    <svg className="w-4 h-4 shrink-0 text-[var(--green)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <span>Mon–Sat: 9:00 AM – 6:00 PM IST</span>
+                  </li>
+                </ul>
               </div>
-              <div className="rounded-2xl p-6 border border-amber-100" style={{ backgroundColor: 'var(--cream)' }}>
-                <h3 className="font-semibold mb-3" style={{ color: 'var(--indigo)' }}>Wholesale Enquiries</h3>
+              <div className="rounded-2xl p-6 border border-[var(--line)]" style={{ backgroundColor: 'var(--surface)' }}>
+                <h3 className="font-semibold mb-3" style={{ color: 'var(--ink)' }}>Wholesale Enquiries</h3>
                 <p className="text-sm text-gray-600 mb-3">Interested in bulk orders or becoming a distributor? We serve 20+ Indian states.</p>
                 <a href="mailto:wholesale@naturalife.in" className="text-sm font-semibold hover:underline" style={{ color: 'var(--saffron)' }}>wholesale@naturalife.in →</a>
               </div>

@@ -70,7 +70,6 @@ export default async function AccountPage() {
                 </div>
                 {user.orders.length === 0 ? (
                   <div className="py-10 text-center">
-                    <div className="text-4xl mb-2">🛒</div>
                     <p className="text-sm text-gray-500">No orders yet</p>
                     <Link href="/shop" className="mt-3 inline-block text-sm font-medium hover:underline" style={{ color: 'var(--saffron)' }}>Start Shopping</Link>
                   </div>
@@ -102,7 +101,7 @@ export default async function AccountPage() {
               {user.coinLedger.length > 0 && (
                 <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
                   <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <h2 className="font-semibold text-gray-800">🪙 Coin History</h2>
+                    <h2 className="font-semibold text-gray-800">Coin History</h2>
                     <span className="font-bold text-sm" style={{ color: 'var(--gold)' }}>{totalCoins} coins</span>
                   </div>
                   <div className="divide-y divide-gray-50">
@@ -176,7 +175,7 @@ export default async function AccountPage() {
               <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                 <h3 className="font-semibold text-gray-800 mb-3">Quick Links</h3>
                 <div className="space-y-2">
-                  {[['🛍️ Continue Shopping', '/shop'], ['📞 Contact Support', '/contact'], ['↩️ Return Policy', '/pages/return-refund-policy']].map(([label, href]) => (
+                  {[['Continue Shopping', '/shop'], ['Contact Support', '/contact'], ['Return Policy', '/pages/return-refund-policy']].map(([label, href]) => (
                     <Link key={href as string} href={href as string} className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 py-1">
                       {label}
                     </Link>

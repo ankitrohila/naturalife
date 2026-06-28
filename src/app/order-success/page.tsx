@@ -10,7 +10,9 @@ export default async function OrderSuccessPage({ searchParams }: { searchParams:
       <Header />
       <main className="min-h-screen flex items-center justify-center py-20 px-4" style={{ backgroundColor: 'var(--ivory)' }}>
         <div className="max-w-md w-full bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
-          <div className="text-6xl mb-4">🎉</div>
+          <div className="mx-auto mb-5 w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--green-light)' }}>
+            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </div>
           <h1 className="text-2xl font-bold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--indigo)' }}>
             Order Placed!
           </h1>

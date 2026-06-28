@@ -86,7 +86,7 @@ export default async function AdminCustomersPage({ searchParams }: { searchParam
                       <td className="px-4 py-3">
                         <span className="font-semibold" style={{ color: 'var(--green)' }}>{c._count.orders}</span>
                       </td>
-                      <td className="px-4 py-3 text-yellow-600 font-medium">🪙 {coins}</td>
+                      <td className="px-4 py-3 text-[var(--ink-soft)] font-medium">{coins} coins</td>
                       <td className="px-4 py-3 text-gray-400">{new Date(c.createdAt).toLocaleDateString('en-IN')}</td>
                       <td className="px-4 py-3">
                         <Link href={`/admin/orders?userId=${c.id}`} className="text-xs px-2 py-1 rounded text-white" style={{ backgroundColor: 'var(--green)' }}>

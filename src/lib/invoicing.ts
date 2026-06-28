@@ -94,12 +94,12 @@ function generateInvoiceTemplate(data: InvoiceData): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 3px solid #E8832A;
+      border-bottom: 3px solid #2E7D32;
       padding-bottom: 20px;
       margin-bottom: 30px;
     }
     .company-info h1 {
-      color: #2D3A8C;
+      color: #0A0A0A;
       margin: 0;
       font-size: 32px;
     }
@@ -113,7 +113,7 @@ function generateInvoiceTemplate(data: InvoiceData): string {
       font-size: 13px;
     }
     .invoice-details h2 {
-      color: #E8832A;
+      color: #2E7D32;
       margin: 0;
       font-size: 18px;
     }
@@ -127,7 +127,7 @@ function generateInvoiceTemplate(data: InvoiceData): string {
     .section-title {
       font-size: 14px;
       font-weight: bold;
-      color: #2D3A8C;
+      color: #0A0A0A;
       border-bottom: 2px solid #FAF7F0;
       padding-bottom: 5px;
       margin-bottom: 10px;
@@ -146,7 +146,7 @@ function generateInvoiceTemplate(data: InvoiceData): string {
       color: #2C2C2C;
       padding: 10px;
       text-align: left;
-      border-bottom: 2px solid #2D3A8C;
+      border-bottom: 2px solid #0A0A0A;
       font-weight: bold;
       font-size: 13px;
     }
@@ -176,12 +176,12 @@ function generateInvoiceTemplate(data: InvoiceData): string {
       padding-right: 10px;
     }
     .total-row.grand-total {
-      border-top: 2px solid #2D3A8C;
-      border-bottom: 2px solid #2D3A8C;
+      border-top: 2px solid #0A0A0A;
+      border-bottom: 2px solid #0A0A0A;
       padding: 10px 0;
       font-weight: bold;
       font-size: 16px;
-      color: #E8832A;
+      color: #2E7D32;
     }
     .footer {
       margin-top: 40px;
@@ -204,7 +204,7 @@ function generateInvoiceTemplate(data: InvoiceData): string {
     <!-- Header -->
     <div class="header">
       <div class="company-info">
-        <h1 style="color: #E8832A;">🌿 NATURALIFE</h1>
+        <h1 style="color: #2E7D32;">NATURALIFE</h1>
         <p><strong>GST No:</strong> ${data.companyGST}</p>
         <p><strong>Address:</strong> ${data.companyAddress}</p>
         <p><strong>Phone:</strong> ${data.companyPhone}</p>

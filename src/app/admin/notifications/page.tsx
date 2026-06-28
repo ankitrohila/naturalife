@@ -8,14 +8,14 @@ export default async function AdminNotificationsPage() {
   ])
 
   const eventLabels: Record<string, string> = {
-    ORDER_PLACED: '🛒 Order Placed',
-    ORDER_CONFIRMED: '✅ Order Confirmed',
-    ORDER_DISPATCHED: '📦 Order Dispatched',
-    ORDER_DELIVERED: '🎉 Order Delivered',
-    RETURN_INITIATED: '↩️ Return Initiated',
-    REFUND_PROCESSED: '💰 Refund Processed',
-    WELCOME: '👋 Welcome',
-    OTP: '🔢 OTP',
+    ORDER_PLACED: 'Order Placed',
+    ORDER_CONFIRMED: 'Order Confirmed',
+    ORDER_DISPATCHED: 'Order Dispatched',
+    ORDER_DELIVERED: 'Order Delivered',
+    RETURN_INITIATED: 'Return Initiated',
+    REFUND_PROCESSED: 'Refund Processed',
+    WELCOME: 'Welcome',
+    OTP: 'OTP',
   }
 
   const channelColors: Record<string, string> = { EMAIL: '#2D3A8C', WHATSAPP: '#25D366', SMS: '#E8832A' }

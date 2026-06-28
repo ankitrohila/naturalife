@@ -160,7 +160,6 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
 
               {products.length === 0 ? (
                 <div className="text-center py-20">
-                  <div className="text-6xl mb-4">🏠</div>
                   <h3 className="text-lg font-semibold text-gray-600 mb-2">No products found</h3>
                   <p className="text-gray-500 text-sm">Try adjusting your filters</p>
                   <Link href="/shop" className="mt-4 inline-block text-sm font-medium hover:underline" style={{ color: 'var(--saffron)' }}>
@@ -182,13 +181,13 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
                               // eslint-disable-next-line @next/next/no-img-element
                               <img src={image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-4xl">🏠</div>
+                              <div className="w-full h-full bg-[var(--surface-2)]" />
                             )}
                             {p.isOnSale && (
                               <span className="absolute top-2 left-2 text-white text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: 'var(--crimson)' }}>SALE</span>
                             )}
                             {p.isFeatured && (
-                              <span className="absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: 'var(--gold)' }}>⭐</span>
+                              <span className="absolute top-2 right-2 text-white text-xs font-semibold px-2 py-1 rounded" style={{ backgroundColor: 'var(--green)' }}>Featured</span>
                             )}
                           </div>
                           <div className="p-3">

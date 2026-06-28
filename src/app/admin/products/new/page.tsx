@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 const NATURALIFE_IMAGES = [
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-26-350x350.jpg', label: 'BB-11 Main' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/square-73-350x350.jpg', label: 'BB-73 Main' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/BLK-GRE-1-rotated-350x242.jpg', label: 'BLK-GRE' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/WIN-rotated-350x235.jpg', label: 'WIN' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/CHA-GRE-1-rotated-595x409.jpg', label: 'CHA-GRE' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/CHO-BRO-1-rotated-595x408.jpg', label: 'CHO-BRO' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/MAR-BRO-1-rotated-595x408.jpg', label: 'MAR-BRO' },
-  { url: 'https://naturalife.co.in/wp-content/uploads/2025/02/NAV-GRE-1-rotated-595x411.jpg', label: 'NAV-GRE' },
+  { url: '/images/products/p-sq-1.jpg', label: 'Doormat 1' },
+  { url: '/images/products/p-sq-2.jpg', label: 'Doormat 2' },
+  { url: '/images/products/p-sq-3.jpg', label: 'Doormat 3' },
+  { url: '/images/products/p-sq-25.jpg', label: 'Doormat 25' },
+  { url: '/images/products/p-sq-26.jpg', label: 'Doormat 26' },
+  { url: '/images/products/p-sq-73.jpg', label: 'Shag 73' },
+  { url: '/images/products/p-brown.jpg', label: 'Brown Carpet' },
+  { url: '/images/products/p-blkgre.jpg', label: 'Black-Green' },
 ]
 
 interface Category { id: string; name: string }
@@ -236,7 +236,7 @@ export default function AdminProductNewPage() {
             {/* Save */}
             <button onClick={handleSave} disabled={saving} className="w-full py-3 text-white rounded-xl font-semibold text-sm disabled:opacity-60 transition-opacity"
               style={{ backgroundColor: 'var(--green)' }}>
-              {saving ? 'Creating...' : '✓ Create Product'}
+              {saving ? 'Creating...' : 'Create Product'}
             </button>
           </div>
         </div>

@@ -220,7 +220,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {showTestimonials.map((t, i) => (
               <div key={i} className="bg-gray-50 rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div className="flex gap-1 mb-3">{[...Array(5)].map((_, j) => <span key={j} className="text-yellow-400 text-sm">★</span>)}</div>
+                <div className="flex gap-1 mb-3">{[...Array(5)].map((_, j) => <span key={j} className="text-[var(--green)] text-sm">★</span>)}</div>
                 <p className="text-gray-600 text-sm mb-4 italic leading-relaxed">&ldquo;{t.review}&rdquo;</p>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: 'var(--green)' }}>{t.name[0]}</div>

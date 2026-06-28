@@ -43,14 +43,14 @@ function buildOrderPlacedHTML(order: any, items: any[]): string {
       <style>
         body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif; background: #f5f5f5; padding: 20px; }
         .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .header { background: #2D3A8C; color: white; padding: 20px; text-align: center; }
+        .header { background: #0A0A0A; color: white; padding: 20px; text-align: center; }
         .content { padding: 20px; }
         .section { margin: 20px 0; padding: 15px; background: #FAF7F0; border-radius: 8px; }
         .items-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         .price-table { width: 100%; margin: 15px 0; }
         .price-row { display: flex; justify-content: space-between; padding: 8px 0; }
-        .price-total { display: flex; justify-content: space-between; padding: 12px 0; font-weight: bold; border-top: 2px solid #8B5E3C; color: #E8832A; font-size: 18px; }
-        .button { background: #E8832A; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 15px 0; }
+        .price-total { display: flex; justify-content: space-between; padding: 12px 0; font-weight: bold; border-top: 2px solid #2E7D32; color: #2E7D32; font-size: 18px; }
+        .button { background: #2E7D32; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 15px 0; }
         .footer { background: #f5f5f5; padding: 20px; text-align: center; font-size: 12px; color: #666; }
       </style>
     </head>
@@ -64,7 +64,7 @@ function buildOrderPlacedHTML(order: any, items: any[]): string {
           <p>Thank you for your order! We're delighted to confirm that your order has been placed successfully.</p>
 
           <div class="section">
-            <h3 style="margin: 0 0 10px 0; color: #2D3A8C;">Order Details</h3>
+            <h3 style="margin: 0 0 10px 0; color: #0A0A0A;">Order Details</h3>
             <strong>Order Number:</strong> ${order.orderNumber}<br/>
             <strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleDateString('en-IN')}<br/>
           </div>
@@ -93,7 +93,7 @@ function buildOrderPlacedHTML(order: any, items: any[]): string {
           </div>
 
           <div class="section">
-            <h3 style="margin: 0 0 10px 0; color: #2D3A8C;">What's Next?</h3>
+            <h3 style="margin: 0 0 10px 0; color: #0A0A0A;">What's Next?</h3>
             <p>Your order has been received and is being processed. You'll receive an email notification when your order is dispatched with tracking information.</p>
             <a href="https://naturalife.in/orders/${order.orderNumber}" class="button">Track Your Order</a>
           </div>

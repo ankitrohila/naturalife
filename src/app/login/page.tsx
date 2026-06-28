@@ -61,7 +61,7 @@ function LoginForm() {
         <p className="text-xl text-gray-600 mb-8 max-w-sm" style={{ fontFamily: 'var(--font-body)' }}>
           Premium Handcrafted Indian Home Textiles
         </p>
-        <p className="text-sm text-gray-500 mb-8">🌿 Quality • Craftsmanship • Tradition</p>
+        <p className="text-sm text-gray-500 mb-8">Quality • Craftsmanship • Tradition</p>
         <div className="space-y-6 text-left">
           <div className="flex gap-4 items-start">
             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--green)' }}>
@@ -202,7 +202,7 @@ function LoginForm() {
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="animate-spin">⚡</span> Signing in...
+                  Signing in...
                 </span>
               ) : (
                 'Sign In'
@@ -236,7 +236,7 @@ function LoginForm() {
 
         {/* Footer */}
         <div className="text-center mt-6 text-xs text-gray-500">
-          <p>🔒 Your data is secure and encrypted</p>
+          <p>Your data is secure and encrypted</p>
         </div>
       </div>
     </div>

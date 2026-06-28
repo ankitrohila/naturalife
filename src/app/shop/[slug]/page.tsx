@@ -77,7 +77,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-4xl">🏠</div>
+                          <div className="w-full h-full bg-[var(--surface-2)]" />
                         )}
                       </div>
                       <div className="p-3">

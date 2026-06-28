@@ -10,5 +10,5 @@ export async function GET() {
     },
     orderBy: { sortOrder: 'asc' },
   })
-  return NextResponse.json(categories)
+  return NextResponse.json({ categories })
 }

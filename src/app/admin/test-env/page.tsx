@@ -35,16 +35,16 @@ export default async function TestEnvPage() {
         {/* Order Cycle Simulator */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-800">🛒 Order Cycle Simulator</h2>
+            <h2 className="font-semibold text-gray-800">Order Cycle Simulator</h2>
             <p className="text-xs text-gray-500 mt-1">Create test orders and step through all statuses</p>
           </div>
           <div className="px-5 py-5 space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <a href="/api/test/create-retail-order" className="flex items-center justify-center gap-2 py-3 text-sm font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                🛍️ Create Retail Order
+                Create Retail Order
               </a>
               <a href="/api/test/create-wholesale-order" className="flex items-center justify-center gap-2 py-3 text-sm font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                📦 Create Wholesale Order
+                Create Wholesale Order
               </a>
             </div>
             <div>
@@ -61,7 +61,7 @@ export default async function TestEnvPage() {
         {/* Notification Test */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-800">📧 Test Notifications</h2>
+            <h2 className="font-semibold text-gray-800">Test Notifications</h2>
             <p className="text-xs text-gray-500 mt-1">Send test notifications to configured test contacts</p>
           </div>
           <div className="px-5 py-5 space-y-3">
@@ -69,8 +69,8 @@ export default async function TestEnvPage() {
               <div key={event} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                 <span className="text-sm text-gray-700">{event.replace(/_/g, ' ')}</span>
                 <div className="flex gap-2">
-                  <button className="text-xs px-3 py-1 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">📧 Email</button>
-                  <button className="text-xs px-3 py-1 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors">💬 WA</button>
+                  <button className="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">Email</button>
+                  <button className="text-xs px-3 py-1 bg-[var(--green-light)] text-[var(--green-dark)] rounded-lg hover:opacity-80 transition-opacity">WhatsApp</button>
                 </div>
               </div>
             ))}
@@ -80,7 +80,7 @@ export default async function TestEnvPage() {
         {/* Payment Test */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-800">💳 Payment Test</h2>
+            <h2 className="font-semibold text-gray-800">Payment Test</h2>
           </div>
           <div className="px-5 py-5 space-y-3">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
@@ -97,7 +97,7 @@ export default async function TestEnvPage() {
         {/* Mode Toggle */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-800">⚙️ Mode Control</h2>
+            <h2 className="font-semibold text-gray-800">Mode Control</h2>
           </div>
           <div className="px-5 py-5">
             <p className="text-sm text-gray-600 mb-4">
@@ -109,13 +109,13 @@ export default async function TestEnvPage() {
               <form action="/api/admin/notification-mode" method="post">
                 <input type="hidden" name="mode" value="TEST" />
                 <button type="submit" className={`px-4 py-2 text-sm rounded-lg font-medium ${!isLive ? 'text-white' : 'border border-gray-300 text-gray-600'}`} style={!isLive ? { backgroundColor: '#f97316' } : {}}>
-                  🧪 Set TEST Mode
+                  Set TEST Mode
                 </button>
               </form>
               <form action="/api/admin/notification-mode" method="post">
                 <input type="hidden" name="mode" value="LIVE" />
                 <button type="submit" className={`px-4 py-2 text-sm rounded-lg font-medium ${isLive ? 'text-white' : 'border border-gray-300 text-gray-600'}`} style={isLive ? { backgroundColor: '#16a34a' } : {}}>
-                  🟢 Set LIVE Mode
+                  Set LIVE Mode
                 </button>
               </form>
             </div>
@@ -126,7 +126,7 @@ export default async function TestEnvPage() {
       {/* Notification Log */}
       <div className="mt-6 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-800">📋 Notification Log</h2>
+          <h2 className="font-semibold text-gray-800">Notification Log</h2>
         </div>
         {notifLogs.length === 0 ? (
           <p className="px-5 py-8 text-center text-sm text-gray-400">No notifications sent yet</p>

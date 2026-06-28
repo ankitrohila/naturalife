@@ -68,8 +68,8 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>
-              {['', 'Product', 'SKU', 'Category', 'Price', 'Stock', 'Status', 'Flags', ''].map((h) => (
-                <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+              {['img', 'Product', 'SKU', 'Category', 'Price', 'Stock', 'Status', 'Flags', 'actions'].map((h, i) => (
+                <th key={i} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">{h === 'img' || h === 'actions' ? '' : h}</th>
               ))}
             </tr>
           </thead>

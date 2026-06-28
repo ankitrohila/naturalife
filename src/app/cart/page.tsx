@@ -25,7 +25,6 @@ export default function CartPage() {
 
           {items.length === 0 ? (
             <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
-              <div className="text-7xl mb-4">🛒</div>
               <h2 className="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h2>
               <p className="text-gray-400 mb-6 text-sm">Add some beautiful handcrafted products!</p>
               <Link href="/shop" className="inline-block px-6 py-3 text-white rounded-xl font-semibold" style={{ backgroundColor: 'var(--saffron)' }}>
@@ -45,7 +44,7 @@ export default function CartPage() {
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-2xl">🏠</div>
+                          <div className="w-full h-full bg-[var(--surface-2)]" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">

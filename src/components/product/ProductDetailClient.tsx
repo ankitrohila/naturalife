@@ -140,7 +140,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
             // eslint-disable-next-line @next/next/no-img-element
             <img src={mainImage} alt={product.name} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-8xl">🏠</div>
+            <div className="w-full h-full bg-[var(--surface-2)]" />
           )}
         </div>
       </div>

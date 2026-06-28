@@ -15,7 +15,7 @@ export default async function AdminSettingsPage() {
 
       <div className="space-y-6">
         {/* General */}
-        <SettingsSection title="General" icon="🏢">
+        <SettingsSection title="General">
           <form action="/api/admin/settings" method="post" className="grid grid-cols-2 gap-4">
             <input type="hidden" name="group" value="general" />
             {[
@@ -41,7 +41,7 @@ export default async function AdminSettingsPage() {
         </SettingsSection>
 
         {/* Shipping */}
-        <SettingsSection title="Shipping & Delivery" icon="🚚">
+        <SettingsSection title="Shipping & Delivery">
           <form action="/api/admin/settings" method="post" className="grid grid-cols-3 gap-4">
             <input type="hidden" name="group" value="shipping" />
             {[
@@ -65,7 +65,7 @@ export default async function AdminSettingsPage() {
         </SettingsSection>
 
         {/* Coins */}
-        <SettingsSection title="Loyalty Coins" icon="🪙">
+        <SettingsSection title="Loyalty Coins">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Earn Rate (coins per ₹100 spent)</label>
@@ -79,7 +79,7 @@ export default async function AdminSettingsPage() {
         </SettingsSection>
 
         {/* Notification mode */}
-        <SettingsSection title="Notification Mode" icon="📧">
+        <SettingsSection title="Notification Mode">
           <div className="flex items-center gap-4">
             <div className="flex rounded-lg overflow-hidden border border-gray-300">
               {['TEST', 'LIVE'].map((mode) => {
@@ -88,7 +88,7 @@ export default async function AdminSettingsPage() {
                 return (
                   <button key={mode} className={`px-6 py-2 text-sm font-medium transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}
                     style={isActive ? { backgroundColor: mode === 'TEST' ? '#f97316' : '#16a34a' } : { backgroundColor: '#f9fafb' }}>
-                    {mode === 'TEST' ? '🧪 TEST MODE' : '🟢 LIVE MODE'}
+                    {mode === 'TEST' ? 'TEST MODE' : 'LIVE MODE'}
                   </button>
                 )
               })}
@@ -98,7 +98,7 @@ export default async function AdminSettingsPage() {
         </SettingsSection>
 
         {/* Env vars reminder */}
-        <SettingsSection title="API Keys & Credentials" icon="🔐">
+        <SettingsSection title="API Keys & Credentials">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
             <p className="font-medium mb-1">Configure in .env.local file:</p>
             <code className="text-xs block space-y-0.5 font-mono">
@@ -113,11 +113,10 @@ export default async function AdminSettingsPage() {
   )
 }
 
-function SettingsSection({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
+function SettingsSection({ title, children }: { title: string; icon?: string; children: React.ReactNode }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
-        <span>{icon}</span>
+      <div className="px-6 py-4 border-b border-gray-100">
         <h2 className="font-semibold text-gray-800">{title}</h2>
       </div>
       <div className="px-6 py-5">{children}</div>

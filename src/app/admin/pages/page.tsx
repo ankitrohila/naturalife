@@ -67,7 +67,7 @@ export default async function AdminPagesPage() {
           </div>
 
           <div className="mt-6 bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
-            💡 <strong>Tip:</strong> Run <code className="bg-blue-100 px-1 rounded">npm run db:seed</code> to auto-create all standard pages (Privacy Policy, Terms, Return Policy, Shipping Policy).
+            <strong>Tip:</strong> Run <code className="bg-blue-100 px-1 rounded">npm run db:seed</code> to auto-create all standard pages (Privacy Policy, Terms, Return Policy, Shipping Policy).
           </div>
         </div>
       </main>

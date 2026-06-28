@@ -20,7 +20,10 @@ export default function AboutPage() {
 
         <section className="py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="aspect-square rounded-2xl flex items-center justify-center text-9xl" style={{ backgroundColor: 'var(--cream)' }}>🏺</div>
+            <div className="aspect-square rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--surface)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/products/p-brown.jpg" alt="Naturalife craftsmanship" className="w-full h-full object-cover" />
+            </div>
             <div>
               <h2 className="text-3xl font-bold mb-5" style={{ fontFamily: 'var(--font-display)', color: 'var(--indigo)' }}>Born from Tradition</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
@@ -57,13 +60,13 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold text-center mb-12" style={{ fontFamily: 'var(--font-display)', color: 'var(--indigo)' }}>Our Values</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: '🤝', title: 'Fair Trade', desc: 'Every artisan receives fair wages and works in safe, dignified conditions. We believe prosperity should flow through the entire supply chain.' },
-              { icon: '🌱', title: 'Sustainability', desc: 'Natural materials, eco-friendly dyes, and minimal waste. We are committed to leaving a lighter footprint on our planet.' },
-              { icon: '🎨', title: 'Authenticity', desc: 'Traditional techniques, authentic patterns, real craftsmanship. We never cut corners on quality or cultural integrity.' },
+              { title: 'Fair Trade', desc: 'Every artisan receives fair wages and works in safe, dignified conditions. We believe prosperity should flow through the entire supply chain.' },
+              { title: 'Sustainability', desc: 'Natural materials, eco-friendly dyes, and minimal waste. We are committed to leaving a lighter footprint on our planet.' },
+              { title: 'Authenticity', desc: 'Traditional techniques, authentic patterns, real craftsmanship. We never cut corners on quality or cultural integrity.' },
             ].map((v) => (
-              <div key={v.title} className="rounded-2xl p-6 border border-amber-100" style={{ backgroundColor: 'var(--cream)' }}>
-                <div className="text-4xl mb-3">{v.icon}</div>
-                <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--indigo)' }}>{v.title}</h3>
+              <div key={v.title} className="rounded-2xl p-6 border border-[var(--line)]" style={{ backgroundColor: 'var(--surface)' }}>
+                <div className="w-10 h-0.5 mb-4" style={{ backgroundColor: 'var(--green)' }} />
+                <h3 className="font-semibold text-lg mb-2" style={{ color: 'var(--ink)' }}>{v.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{v.desc}</p>
               </div>
             ))}

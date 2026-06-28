@@ -36,8 +36,8 @@ export default async function AdminMarketingPage() {
           {/* Marquee Offers */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-gray-800">📣 Marquee Offers (Top Bar)</h2>
-              <span className="text-xs text-gray-400">Scroll across the top of every page</span>
+              <h2 className="font-semibold text-gray-800">Promotional Offers</h2>
+              <span className="text-xs text-gray-400">Used across promotions &amp; campaigns</span>
             </div>
             {marqueeOffers.length === 0 ? (
               <p className="text-sm text-gray-400 py-4 text-center">No marquee offers. Run db:seed to create defaults.</p>
@@ -59,7 +59,7 @@ export default async function AdminMarketingPage() {
             <div className="mt-4">
               <p className="text-xs text-gray-400 mb-2">Live Preview:</p>
               <div className="text-white text-xs py-2 px-4 text-center rounded" style={{ backgroundColor: 'var(--green)' }}>
-                {marqueeOffers.filter(o => o.isActive).map(o => o.text).join('  ·  ') || '🎉 UP TO 70% OFF  ·  🚚 FREE SHIPPING ABOVE ₹999'}
+                {marqueeOffers.filter(o => o.isActive).map(o => o.text).join('  ·  ') || 'UP TO 70% OFF  ·  FREE SHIPPING ABOVE ₹999'}
               </div>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default async function AdminMarketingPage() {
           {/* Testimonials */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-gray-800">⭐ Customer Testimonials</h2>
+              <h2 className="font-semibold text-gray-800">Customer Testimonials</h2>
               <div className="text-xs text-gray-400">{testimonials.filter(t => t.isVisible).length} visible / {testimonials.length} total</div>
             </div>
             {testimonials.length === 0 ? (
@@ -80,7 +80,7 @@ export default async function AdminMarketingPage() {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-semibold text-sm text-gray-800">{t.name}</span>
                         {t.location && <span className="text-xs text-gray-400">{t.location}</span>}
-                        <span className="text-yellow-400 text-xs">{'★'.repeat(t.rating ?? 5)}</span>
+                        <span className="text-[var(--green)] text-xs">{'★'.repeat(t.rating ?? 5)}</span>
                       </div>
                       <p className="text-sm text-gray-600 line-clamp-2 italic">&ldquo;{t.text}&rdquo;</p>
                     </div>

@@ -40,12 +40,11 @@ export default async function AdminMediaPage() {
 
           {assets.length === 0 && (
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-5 py-3 mb-6 text-sm text-yellow-700">
-              📸 Showing sample images from naturalife.co.in. Connect Cloudinary and seed the database to manage your media library.
+              Showing sample images. Connect Cloudinary and seed the database to manage your media library.
             </div>
           )}
 
           <div className="bg-white rounded-xl border-2 border-dashed border-gray-200 p-8 text-center mb-6 hover:border-green-400 transition-colors cursor-pointer">
-            <div className="text-4xl mb-3">📷</div>
             <p className="font-medium text-gray-600 mb-1">Drag & drop images here</p>
             <p className="text-sm text-gray-400 mb-4">PNG, JPG, WEBP up to 10MB</p>
             <button className="px-5 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>Browse Files</button>

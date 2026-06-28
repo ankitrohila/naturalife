@@ -149,7 +149,7 @@ const header = {
 const headerText = {
   fontSize: '28px',
   fontWeight: 'bold',
-  color: '#2D3A8C',
+  color: '#0A0A0A',
   marginTop: '10px',
   marginBottom: '0',
 }
@@ -181,7 +181,7 @@ const orderSection = {
 const sectionTitle = {
   fontSize: '16px',
   fontWeight: 'bold',
-  color: '#2D3A8C',
+  color: '#0A0A0A',
   marginBottom: '12px',
 }
 
@@ -258,7 +258,7 @@ const totalLine = {
   display: 'flex',
   justifyContent: 'space-between',
   marginTop: '12px',
-  paddingTopColor: '#8B5E3C',
+  paddingTopColor: '#2E7D32',
   paddingTopWidth: '1px',
   paddingTop: '12px',
 }
@@ -272,7 +272,7 @@ const totalLabel = {
 const totalValue = {
   fontSize: '18px',
   fontWeight: 'bold',
-  color: '#E8832A',
+  color: '#2E7D32',
 }
 
 const nextSteps = {
@@ -282,7 +282,7 @@ const nextSteps = {
 }
 
 const button = {
-  backgroundColor: '#E8832A',
+  backgroundColor: '#2E7D32',
   color: '#ffffff',
   padding: '12px 30px',
   borderRadius: '6px',
@@ -309,6 +309,6 @@ const footerText = {
 }
 
 const link = {
-  color: '#E8832A',
+  color: '#2E7D32',
   textDecoration: 'underline',
 }
