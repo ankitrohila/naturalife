@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { HeroSlider } from '@/components/home/HeroSlider'
 import { SiteIntro } from '@/components/intro/SiteIntro'
+import { HomeProducts } from '@/components/home/HomeProducts'
 import { prisma } from '@/lib/prisma'
 
 const FEATURED_PRODUCTS = [
@@ -26,18 +27,30 @@ const CATEGORIES = [
 export default async function HomePage() {
   const [dbProducts, testimonials] = await Promise.all([
     prisma.product.findMany({
-      where: { status: 'ACTIVE', isFeatured: true },
-      include: { images: { where: { isPrimary: true }, take: 1 }, variants: { orderBy: { price: 'asc' }, take: 1 } },
-      take: 8,
+      where: { status: 'ACTIVE' },
+      include: {
+        category: true,
+        images: { orderBy: { sortOrder: 'asc' } },
+        variants: { include: { bulkPricingRules: { orderBy: { minQty: 'asc' } } }, orderBy: { price: 'asc' } },
+        attributeValues: { include: { attribute: true, value: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 12,
     }).catch(() => []),
     prisma.testimonial.findMany({ where: { isVisible: true }, take: 3 }).catch(() => []),
   ])
+
+  // Full product objects for the interactive homepage grid (filters + quick view)
+  const homeProducts = JSON.parse(JSON.stringify(dbProducts.map(p => ({
+    ...p,
+    createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : String(p.createdAt),
+  }))))
 
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
     name: p.name,
     slug: p.slug,
     price: p.variants[0] ? Number(p.variants[0].price) : 0,
-    img: p.images[0]?.url ?? FEATURED_PRODUCTS[0].img,
+    img: p.images.find(i => i.isPrimary)?.url ?? p.images[0]?.url ?? FEATURED_PRODUCTS[0].img,
     tag: p.isOnSale ? 'Sale' : p.isFeatured ? 'Featured' : null,
   })) : FEATURED_PRODUCTS
 
@@ -96,39 +109,7 @@ export default async function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ fontFamily: 'var(--font-display)', color: '#222' }}>Best Sellers</h2>
             <div className="ornamental-divider w-48 mx-auto mt-4" />
           </div>
-          <div className="flex gap-2 justify-center mb-8 flex-wrap">
-            {[['All', '/shop'], ['Best Seller', '/shop?featured=true'], ['On Sale', '/shop?onSale=true'], ['New Arrivals', '/shop?sort=newest']].map(([tab, href]) => (
-              <Link key={tab} href={href} className="px-4 py-1.5 text-sm font-medium rounded-full border transition-all" style={{ borderColor: 'var(--green)', color: 'var(--green)' }}>
-                {tab}
-              </Link>
-            ))}
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {displayProducts.map((p, i) => (
-              <Link key={i} href={`/shop/${p.slug}`} className="product-card group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm">
-                <div className="relative overflow-hidden aspect-square bg-gray-50">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400" />
-                  {p.tag && (
-                    <span className="absolute top-2 left-2 text-white text-xs font-bold px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: p.tag === 'Sale' ? 'var(--crimson)' : p.tag === 'New' ? 'var(--green)' : 'var(--gold)' }}>
-                      {p.tag}
-                    </span>
-                  )}
-                  <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="m-2 py-2 text-center text-xs font-semibold text-white rounded-lg" style={{ backgroundColor: 'var(--green)' }}>Quick View</div>
-                  </div>
-                </div>
-                <div className="p-3">
-                  <h3 className="text-xs font-semibold text-gray-800 line-clamp-2 mb-1.5 leading-snug">{p.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold" style={{ color: 'var(--green)' }}>₹{p.price.toLocaleString('en-IN')}</span>
-                    <span className="text-xs text-gray-400 line-through">₹{Math.round(p.price * 1.3).toLocaleString('en-IN')}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <HomeProducts products={homeProducts} />
           <div className="text-center mt-10">
             <Link href="/shop" className="inline-block px-8 py-3 text-white font-semibold rounded-full text-sm shadow-md" style={{ backgroundColor: 'var(--green)' }}>
               View All Products →

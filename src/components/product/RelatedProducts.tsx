@@ -12,7 +12,7 @@ interface Variant {
   attributeValues: Array<{ attributeId: string; valueId: string }>
   bulkPricingRules: Array<{ minQty: number; maxQty: number | null; pricePerUnit: number; label: string | null }>
 }
-interface Item {
+export interface Item {
   id: string; name: string; slug: string; sku: string; taxRate: number; shortDesc: string | null; description: string | null
   category: { name: string; slug: string }
   images: Array<{ id: string; url: string; altText: string | null; isPrimary: boolean; attributeValue: string | null }>
@@ -117,7 +117,7 @@ export function RelatedProducts({ items }: { items: Item[] }) {
   )
 }
 
-function QuickView({ item, onClose }: { item: Item; onClose: () => void }) {
+export function QuickView({ item, onClose }: { item: Item; onClose: () => void }) {
   const addItem = useCartStore((s) => s.addItem)
   const groups = groupAttrs(item)
   const [sel, setSel] = useState<Record<string, string>>({})

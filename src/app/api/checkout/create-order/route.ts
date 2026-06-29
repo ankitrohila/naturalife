@@ -176,7 +176,15 @@ export async function POST(req: NextRequest) {
     console.error('ORDER_PLACED notification failed:', notifErr)
   }
 
-  return NextResponse.json({ orderId: order.id, orderNumber, razorpayOrderId, total, testMode })
+  // UPI pay-by-QR string (used when online payment runs without a live gateway)
+  let upiString: string | undefined
+  const upiVpa = process.env.UPI_VPA
+  if (testMode && upiVpa) {
+    const pn = encodeURIComponent(process.env.UPI_PAYEE_NAME || 'Naturalife')
+    upiString = `upi://pay?pa=${encodeURIComponent(upiVpa)}&pn=${pn}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(orderNumber)}`
+  }
+
+  return NextResponse.json({ orderId: order.id, orderNumber, razorpayOrderId, total, testMode, upiString })
   } catch (err: any) {
     console.error('create-order failed:', err)
     return NextResponse.json({ error: err?.message ?? 'Order creation failed' }, { status: 500 })

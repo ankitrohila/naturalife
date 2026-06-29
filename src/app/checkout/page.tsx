@@ -5,6 +5,7 @@ import { useCartStore } from '@/store/cart'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import Link from 'next/link'
+import QRCode from 'qrcode'
 
 declare global {
   interface Window {
@@ -64,6 +65,8 @@ export default function CheckoutPage() {
   const [pincodeData, setPincodeData] = useState<PincodeData | null>(null)
   const [couponInput, setCouponInput] = useState('')
   const [availableCoins, setAvailableCoins] = useState(0)
+  const [upiData, setUpiData] = useState<{ orderId: string; upiString: string } | null>(null)
+  const [qrUrl, setQrUrl] = useState('')
 
   const subtotal = getSubtotal()
   const taxTotal = getTaxTotal()
@@ -135,14 +138,28 @@ export default function CheckoutPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Order creation failed')
 
-      // COD, or test mode (no real Razorpay keys) → straight to success
-      if (paymentMethod === 'COD' || data.testMode || !data.razorpayOrderId) {
+      // COD → straight to success
+      if (paymentMethod === 'COD') {
         clearCart()
         window.location.href = `/order-success?id=${data.orderId}`
         return
       }
 
-      // Load Razorpay
+      // Test/UPI mode (no live gateway): show a scannable UPI QR to pay
+      if (data.testMode) {
+        if (data.upiString) {
+          const url = await QRCode.toDataURL(data.upiString, { width: 280, margin: 1 })
+          setQrUrl(url)
+          setUpiData({ orderId: data.orderId, upiString: data.upiString })
+          setLoading(false)
+          return
+        }
+        clearCart()
+        window.location.href = `/order-success?id=${data.orderId}`
+        return
+      }
+
+      // Load Razorpay (live gateway)
       const script = document.createElement('script')
       script.src = 'https://checkout.razorpay.com/v1/checkout.js'
       document.body.appendChild(script)
@@ -382,6 +399,34 @@ export default function CheckoutPage() {
         </div>
       </main>
       <Footer />
+
+      {/* UPI Scan & Pay modal */}
+      {upiData && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center">
+            <h3 className="text-lg font-semibold text-[var(--ink)] mb-1">Scan &amp; Pay via UPI</h3>
+            <p className="text-sm text-gray-500 mb-4">Pay <span className="font-semibold text-[var(--green)]">₹{total.toFixed(2)}</span> with any UPI app (GPay, PhonePe, Paytm)</p>
+            {qrUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={qrUrl} alt="UPI QR code" className="w-56 h-56 mx-auto rounded-lg border border-[var(--line)]" />
+            )}
+            <a href={upiData.upiString} className="mt-4 block w-full py-2.5 rounded-lg border border-[var(--green)] text-[var(--green)] text-sm font-semibold">
+              Open in UPI app (mobile)
+            </a>
+            <button
+              onClick={() => { clearCart(); window.location.href = `/order-success?id=${upiData.orderId}` }}
+              className="mt-2 w-full py-2.5 rounded-lg text-white text-sm font-semibold"
+              style={{ backgroundColor: 'var(--green)' }}
+            >
+              I&apos;ve Completed Payment
+            </button>
+            <button onClick={() => { setUpiData(null); setQrUrl('') }} className="mt-2 w-full py-2 text-xs text-gray-400 hover:text-gray-600">
+              Cancel
+            </button>
+            <p className="text-[11px] text-gray-400 mt-3">Order is placed; payment will be verified against your UPI reference.</p>
+          </div>
+        </div>
+      )}
     </>
   )
 }
