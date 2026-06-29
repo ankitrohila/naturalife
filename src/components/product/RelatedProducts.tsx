@@ -174,9 +174,12 @@ function QuickView({ item, onClose }: { item: Item; onClose: () => void }) {
                 {values.map((v) => {
                   const on = sel[attr.id] === v.id
                   return attr.name === 'COLOR' ? (
-                    <button key={v.id} title={v.label} onClick={() => pick(attr.id, v)}
-                      className={`w-7 h-7 rounded-full border transition-all ${on ? 'ring-2 ring-offset-2 ring-[var(--green)]' : 'border-gray-300 hover:scale-110'}`}
-                      style={v.imageUrl ? { backgroundImage: `url(${v.imageUrl})`, backgroundSize: 'cover' } : { backgroundColor: v.hexColor ?? '#ddd' }} />
+                    <span key={v.id} className="relative group/sw">
+                      <button onClick={() => pick(attr.id, v)}
+                        className={`w-7 h-7 rounded-full border transition-all ${on ? 'ring-2 ring-offset-2 ring-[var(--green)]' : 'border-gray-300 hover:scale-110'}`}
+                        style={v.imageUrl ? { backgroundImage: `url(${v.imageUrl})`, backgroundSize: 'cover' } : { backgroundColor: v.hexColor ?? '#ddd' }} aria-label={v.label} />
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[var(--ink)] px-2 py-1 text-[11px] text-white opacity-0 group-hover/sw:opacity-100 transition-opacity z-10">{v.label}</span>
+                    </span>
                   ) : (
                     <button key={v.id} onClick={() => pick(attr.id, v)}
                       className={`px-2.5 py-1 rounded-lg border text-sm ${on ? 'border-[var(--green)] text-[var(--green)] bg-[var(--green-light)]' : 'border-gray-200 text-gray-600'}`}>{v.label}</button>

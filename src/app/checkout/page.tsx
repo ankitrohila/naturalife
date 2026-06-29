@@ -135,7 +135,8 @@ export default function CheckoutPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Order creation failed')
 
-      if (paymentMethod === 'COD') {
+      // COD, or test mode (no real Razorpay keys) → straight to success
+      if (paymentMethod === 'COD' || data.testMode || !data.razorpayOrderId) {
         clearCart()
         window.location.href = `/order-success?id=${data.orderId}`
         return

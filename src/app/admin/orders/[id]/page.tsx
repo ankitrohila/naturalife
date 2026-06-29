@@ -1,9 +1,8 @@
 import { prisma } from '@/lib/prisma'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-const STATUS_STEPS = ['PLACED', 'CONFIRMED', 'PROCESSING', 'DISPATCHED', 'DELIVERED']
+const STATUS_STEPS = ['PLACED', 'CONFIRMED', 'PACKED', 'DISPATCHED', 'DELIVERED']
 
 export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -22,15 +21,12 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
   const currentStep = STATUS_STEPS.indexOf(order.status)
 
   const statusColors: Record<string, string> = {
-    PLACED: '#E8832A', CONFIRMED: '#2D3A8C', PROCESSING: '#C9A84C',
-    DISPATCHED: '#87B66E', DELIVERED: '#4A7A35', CANCELLED: '#9B1D20', RETURNED: '#8B5E3C',
+    PLACED: '#C9A227', CONFIRMED: '#4CAF50', PACKED: '#2E7D32',
+    DISPATCHED: '#1B5E20', DELIVERED: '#1B5E20', CANCELLED: '#B3261E', RETURNED: '#777',
   }
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#F6F6F6' }}>
-      <AdminSidebar />
-      <main className="flex-1 p-6 lg:p-8">
-        <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="flex items-center gap-3">
@@ -104,7 +100,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <h2 className="font-semibold text-gray-800 mb-4">Update Order Status</h2>
                 <form action={`/api/admin/orders/${id}/status`} method="post" className="flex gap-3">
                   <select name="status" defaultValue={order.status} className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                    {['PLACED', 'CONFIRMED', 'PROCESSING', 'DISPATCHED', 'DELIVERED', 'CANCELLED', 'RETURNED'].map(s => (
+                    {['PLACED', 'CONFIRMED', 'PACKED', 'DISPATCHED', 'DELIVERED', 'CANCELLED', 'RETURNED'].map(s => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>
@@ -179,8 +175,6 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               </div>
             </div>
           </div>
-        </div>
-      </main>
     </div>
   )
 }

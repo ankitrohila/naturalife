@@ -174,7 +174,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               <img
                 src={mainImage}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-150"
+                className="w-full h-full object-contain transition-transform duration-150"
                 style={{ transform: zoom ? 'scale(2)' : 'scale(1)', transformOrigin: origin }}
               />
             ) : (
@@ -229,18 +229,21 @@ export function ProductDetailClient({ product }: { product: Product }) {
                   const isSelected = selectedAttrs[attr.id] === v.id
                   if (attr.name === 'COLOR') {
                     return (
-                      <button
-                        key={v.id}
-                        title={v.label}
-                        onClick={() => handleAttrSelect(attr.id, v.id, v.imageUrl)}
-                        className={`w-8 h-8 rounded-full border transition-all ${isSelected ? 'ring-2 ring-offset-2 ring-[var(--green)] border-transparent' : 'border-gray-300 hover:scale-110'}`}
-                        style={
-                          v.imageUrl
-                            ? { backgroundImage: `url(${v.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-                            : { backgroundColor: v.hexColor ?? '#ddd' }
-                        }
-                        aria-label={v.label}
-                      />
+                      <span key={v.id} className="relative group/swatch">
+                        <button
+                          onClick={() => handleAttrSelect(attr.id, v.id, v.imageUrl)}
+                          className={`w-8 h-8 rounded-full border transition-all ${isSelected ? 'ring-2 ring-offset-2 ring-[var(--green)] border-transparent' : 'border-gray-300 hover:scale-110'}`}
+                          style={
+                            v.imageUrl
+                              ? { backgroundImage: `url(${v.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                              : { backgroundColor: v.hexColor ?? '#ddd' }
+                          }
+                          aria-label={v.label}
+                        />
+                        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[var(--ink)] px-2 py-1 text-[11px] text-white opacity-0 group-hover/swatch:opacity-100 transition-opacity z-10">
+                          {v.label}
+                        </span>
+                      </span>
                     )
                   }
                   return (

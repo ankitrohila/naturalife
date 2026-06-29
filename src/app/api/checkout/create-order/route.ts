@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
+import { sendNotification } from '@/lib/notifications'
 import Razorpay from 'razorpay'
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-})
+// Razorpay is only usable with real keys. With missing/dummy keys we run in
+// "test mode": the order is created and the customer is sent straight to success.
+const RZP_KEY = process.env.RAZORPAY_KEY_ID ?? ''
+const rzpConfigured = RZP_KEY.startsWith('rzp_') && !RZP_KEY.includes('dummy') && !!process.env.RAZORPAY_KEY_SECRET
+const razorpay = rzpConfigured
+  ? new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID!, key_secret: process.env.RAZORPAY_KEY_SECRET! })
+  : null
 
 function generateOrderNumber(): string {
   const ts = Date.now().toString(36).toUpperCase()
@@ -15,6 +19,7 @@ function generateOrderNumber(): string {
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const session = await auth()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -114,9 +119,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Create Razorpay order
+  // Create Razorpay order (only when real keys are configured)
   let razorpayOrderId: string | undefined
-  if (paymentMethod !== 'COD') {
+  const testMode = paymentMethod !== 'COD' && !razorpay
+  if (paymentMethod !== 'COD' && razorpay) {
     const rzpOrder = await razorpay.orders.create({
       amount: Math.round(total * 100),
       currency: 'INR',
@@ -158,5 +164,21 @@ export async function POST(req: NextRequest) {
     },
   })
 
-  return NextResponse.json({ orderId: order.id, orderNumber, razorpayOrderId, total })
+  // Decrement stock
+  for (const oi of orderItems) {
+    await prisma.productVariant.update({ where: { id: oi.productVariantId }, data: { stock: { decrement: oi.quantity } } }).catch(() => {})
+  }
+
+  // Send order-placed confirmation (invoice) — non-blocking
+  try {
+    await sendNotification({ event: 'ORDER_PLACED', orderId: order.id })
+  } catch (notifErr) {
+    console.error('ORDER_PLACED notification failed:', notifErr)
+  }
+
+  return NextResponse.json({ orderId: order.id, orderNumber, razorpayOrderId, total, testMode })
+  } catch (err: any) {
+    console.error('create-order failed:', err)
+    return NextResponse.json({ error: err?.message ?? 'Order creation failed' }, { status: 500 })
+  }
 }
