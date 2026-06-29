@@ -1,95 +1,112 @@
-import { prisma } from '@/lib/prisma'
+'use client'
 
-export default async function AdminMarketingPage() {
-  const [marqueeOffers, testimonials, emailSubs] = await Promise.all([
-    prisma.marqueeOffer.findMany({ orderBy: { sortOrder: 'asc' } }).catch(() => []),
-    prisma.testimonial.findMany({ orderBy: { createdAt: 'desc' }, take: 20 }).catch(() => []),
-    prisma.emailSubscription.count().catch(() => 0),
-  ])
+import { useEffect, useState } from 'react'
+
+interface Offer { id: string; text: string; isActive: boolean; sortOrder: number }
+interface Testimonial { id: string; name: string; location: string | null; rating: number; text: string; isVisible: boolean }
+
+const field = 'w-full border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
+
+export default function AdminMarketingPage() {
+  const [offers, setOffers] = useState<Offer[]>([])
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+  const [subs, setSubs] = useState(0)
+  const [offerText, setOfferText] = useState('')
+  const [tName, setTName] = useState(''); const [tLoc, setTLoc] = useState(''); const [tRating, setTRating] = useState('5'); const [tText, setTText] = useState('')
+
+  const load = () => {
+    fetch('/api/admin/marketing/offers').then(r => r.json()).then(d => setOffers(d.offers ?? [])).catch(() => {})
+    fetch('/api/admin/marketing/testimonials').then(r => r.json()).then(d => setTestimonials(d.testimonials ?? [])).catch(() => {})
+  }
+  useEffect(load, [])
+
+  const addOffer = async (e: React.FormEvent) => {
+    e.preventDefault(); if (!offerText.trim()) return
+    await fetch('/api/admin/marketing/offers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: offerText }) })
+    setOfferText(''); load()
+  }
+  const toggleOffer = async (o: Offer) => { await fetch(`/api/admin/marketing/offers/${o.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ isActive: !o.isActive }) }); load() }
+  const delOffer = async (id: string) => { if (!confirm('Delete this offer?')) return; await fetch(`/api/admin/marketing/offers/${id}`, { method: 'DELETE' }); load() }
+
+  const addTestimonial = async (e: React.FormEvent) => {
+    e.preventDefault(); if (!tName.trim() || !tText.trim()) return
+    await fetch('/api/admin/marketing/testimonials', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: tName, location: tLoc, rating: tRating, text: tText }) })
+    setTName(''); setTLoc(''); setTRating('5'); setTText(''); load()
+  }
+  const toggleT = async (t: Testimonial) => { await fetch(`/api/admin/marketing/testimonials/${t.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ isVisible: !t.isVisible }) }); load() }
+  const delT = async (id: string) => { if (!confirm('Delete this testimonial?')) return; await fetch(`/api/admin/marketing/testimonials/${id}`, { method: 'DELETE' }); load() }
 
   return (
-    <>
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Marketing & Promotions</h1>
-            <p className="text-sm text-gray-500 mt-1">Manage marquee banners, testimonials, and subscriber list</p>
-          </div>
+    <div className="max-w-5xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-[var(--ink)]">Marketing &amp; Promotions</h1>
+        <p className="text-sm text-[var(--ink-soft)] mt-1">Offers feed the promo line &amp; popup · testimonials show on the homepage</p>
+      </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--green)' }}>{marqueeOffers.length}</p>
-              <p className="text-xs text-gray-500 mt-1">Marquee Offers</p>
-            </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--green)' }}>{testimonials.length}</p>
-              <p className="text-xs text-gray-500 mt-1">Testimonials</p>
-            </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--green)' }}>{emailSubs}</p>
-              <p className="text-xs text-gray-500 mt-1">Email Subscribers</p>
-            </div>
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        {[['Offers', offers.length], ['Testimonials', testimonials.length], ['Subscribers', subs]].map(([l, v]) => (
+          <div key={l as string} className="bg-white rounded-xl p-4 border border-[var(--line)] text-center">
+            <p className="text-3xl font-semibold" style={{ color: 'var(--green)' }}>{v as number}</p>
+            <p className="text-xs text-[var(--ink-soft)] mt-1">{l as string}</p>
           </div>
+        ))}
+      </div>
 
-          {/* Marquee Offers */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-gray-800">Promotional Offers</h2>
-              <span className="text-xs text-gray-400">Used across promotions &amp; campaigns</span>
-            </div>
-            {marqueeOffers.length === 0 ? (
-              <p className="text-sm text-gray-400 py-4 text-center">No marquee offers. Run db:seed to create defaults.</p>
-            ) : (
-              <div className="space-y-2">
-                {marqueeOffers.map((offer) => (
-                  <div key={offer.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50">
-                    <div className="flex items-center gap-3">
-                      <span className="text-gray-400 font-mono text-xs">#{offer.sortOrder}</span>
-                      <span className="text-sm text-gray-700">{offer.text}</span>
-                    </div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${offer.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-                      {offer.isActive ? 'Active' : 'Inactive'}
-                    </span>
+      {/* Offers */}
+      <div className="bg-white rounded-xl border border-[var(--line)] p-6 mb-6">
+        <h2 className="font-semibold text-[var(--ink)] mb-4">Promotional Offers</h2>
+        <form onSubmit={addOffer} className="flex gap-2 mb-4">
+          <input value={offerText} onChange={(e) => setOfferText(e.target.value)} placeholder="e.g. FLAT 15% OFF on rugs this week" className={field} />
+          <button className="px-4 py-2 rounded-lg text-white text-sm font-semibold shrink-0" style={{ backgroundColor: 'var(--green)' }}>Add</button>
+        </form>
+        {offers.length === 0 ? <p className="text-sm text-[var(--ink-soft)] text-center py-3">No offers yet.</p> : (
+          <div className="space-y-2">
+            {offers.map((o) => (
+              <div key={o.id} className="flex items-center justify-between p-3 rounded-lg border border-[var(--line)]">
+                <span className="text-sm text-gray-700">{o.text}</span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <button onClick={() => toggleOffer(o)} className={`text-xs px-2 py-0.5 rounded-full ${o.isActive ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-gray-100 text-gray-500'}`}>{o.isActive ? 'Active' : 'Inactive'}</button>
+                  <button onClick={() => delOffer(o.id)} className="text-xs text-red-500 hover:underline">Delete</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Testimonials */}
+      <div className="bg-white rounded-xl border border-[var(--line)] p-6">
+        <h2 className="font-semibold text-[var(--ink)] mb-4">Customer Testimonials</h2>
+        <form onSubmit={addTestimonial} className="grid md:grid-cols-2 gap-2 mb-4">
+          <input value={tName} onChange={(e) => setTName(e.target.value)} placeholder="Customer name" className={field} />
+          <input value={tLoc} onChange={(e) => setTLoc(e.target.value)} placeholder="City (optional)" className={field} />
+          <select value={tRating} onChange={(e) => setTRating(e.target.value)} className={field}>
+            {[5, 4, 3, 2, 1].map(r => <option key={r} value={r}>{r} stars</option>)}
+          </select>
+          <textarea value={tText} onChange={(e) => setTText(e.target.value)} placeholder="Review text" className={`${field} md:col-span-2 resize-none`} rows={2} />
+          <button className="px-4 py-2 rounded-lg text-white text-sm font-semibold w-fit" style={{ backgroundColor: 'var(--green)' }}>Add Testimonial</button>
+        </form>
+        {testimonials.length === 0 ? <p className="text-sm text-[var(--ink-soft)] text-center py-3">No testimonials yet.</p> : (
+          <div className="space-y-3">
+            {testimonials.map((t) => (
+              <div key={t.id} className="flex items-start justify-between p-4 rounded-lg border border-[var(--line)]">
+                <div className="flex-1 min-w-0 pr-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-sm text-gray-800">{t.name}</span>
+                    {t.location && <span className="text-xs text-gray-400">{t.location}</span>}
+                    <span className="text-[var(--green)] text-xs">{'★'.repeat(t.rating ?? 5)}</span>
                   </div>
-                ))}
+                  <p className="text-sm text-gray-600 line-clamp-2 italic">&ldquo;{t.text}&rdquo;</p>
+                </div>
+                <div className="flex items-center gap-3 shrink-0">
+                  <button onClick={() => toggleT(t)} className={`text-xs px-2 py-1 rounded-full ${t.isVisible ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-yellow-50 text-yellow-700'}`}>{t.isVisible ? 'Visible' : 'Hidden'}</button>
+                  <button onClick={() => delT(t.id)} className="text-xs text-red-500 hover:underline">Delete</button>
+                </div>
               </div>
-            )}
-            <div className="mt-4">
-              <p className="text-xs text-gray-400 mb-2">Live Preview:</p>
-              <div className="text-white text-xs py-2 px-4 text-center rounded" style={{ backgroundColor: 'var(--green)' }}>
-                {marqueeOffers.filter(o => o.isActive).map(o => o.text).join('  ·  ') || 'UP TO 70% OFF  ·  FREE SHIPPING ABOVE ₹999'}
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Testimonials */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-gray-800">Customer Testimonials</h2>
-              <div className="text-xs text-gray-400">{testimonials.filter(t => t.isVisible).length} visible / {testimonials.length} total</div>
-            </div>
-            {testimonials.length === 0 ? (
-              <p className="text-sm text-gray-400 py-4 text-center">No testimonials yet.</p>
-            ) : (
-              <div className="space-y-3">
-                {testimonials.map((t) => (
-                  <div key={t.id} className="flex items-start justify-between p-4 rounded-lg border border-gray-100 hover:bg-gray-50">
-                    <div className="flex-1 min-w-0 pr-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-sm text-gray-800">{t.name}</span>
-                        {t.location && <span className="text-xs text-gray-400">{t.location}</span>}
-                        <span className="text-[var(--green)] text-xs">{'★'.repeat(t.rating ?? 5)}</span>
-                      </div>
-                      <p className="text-sm text-gray-600 line-clamp-2 italic">&ldquo;{t.text}&rdquo;</p>
-                    </div>
-                    <span className={`shrink-0 text-xs px-2 py-1 rounded-full ${t.isVisible ? 'bg-green-100 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
-                      {t.isVisible ? 'Visible' : 'Hidden'}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-    </>
+        )}
+      </div>
+    </div>
   )
 }

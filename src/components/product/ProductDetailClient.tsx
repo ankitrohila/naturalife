@@ -28,6 +28,8 @@ interface AttributeVal {
   value: { id: string; value: string; label: string; hexColor: string | null; imageUrl: string | null }
 }
 
+interface Review { id: string; name: string; rating: number; text: string; createdAt: string }
+
 interface Product {
   id: string
   name: string
@@ -40,6 +42,7 @@ interface Product {
   variants: Variant[]
   attributeValues: AttributeVal[]
   category: { name: string; slug: string }
+  reviews?: Review[]
 }
 
 const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`
@@ -392,7 +395,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               </tbody>
             </table>
           ) : (
-            <ReviewsTab productName={product.name} />
+            <ReviewsTab productId={product.id} productName={product.name} reviews={product.reviews ?? []} />
           )}
         </div>
       </div>
@@ -400,43 +403,81 @@ export function ProductDetailClient({ product }: { product: Product }) {
   )
 }
 
-function ReviewsTab({ productName }: { productName: string }) {
+function ReviewsTab({ productId, productName, reviews }: { productId: string; productName: string; reviews: Review[] }) {
   const [rating, setRating] = useState(0)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [text, setText] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+
+  const count = reviews.length
+  const avg = count ? reviews.reduce((s, r) => s + r.rating, 0) / count : 0
+  const dist = [5, 4, 3, 2, 1].map((s) => ({ s, pct: count ? Math.round((reviews.filter(r => r.rating === s).length / count) * 100) : 0 }))
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    const res = await fetch('/api/reviews', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId, name, email, rating: rating || 5, text }),
+    })
+    if (res.ok) setSubmitted(true)
+    else { const d = await res.json(); setError(d.error ?? 'Failed to submit') }
+  }
+
   return (
-    <div className="grid md:grid-cols-2 gap-10">
-      <div>
-        <p className="text-sm text-gray-500 mb-1">Based on 0 reviews</p>
-        <p className="text-4xl font-semibold mb-4" style={{ color: 'var(--green)' }}>0.00 <span className="text-base text-gray-400 font-normal">Overall</span></p>
-        {[5, 4, 3, 2, 1].map((s) => (
-          <div key={s} className="flex items-center gap-2 mb-1">
-            <span className="text-[var(--green)] text-xs w-16">{'★'.repeat(s)}</span>
-            <div className="flex-1 h-1.5 bg-[var(--surface-2)] rounded" />
-            <span className="text-xs text-gray-400 w-8 text-right">0%</span>
-          </div>
-        ))}
-      </div>
-      <div>
-        <h4 className="font-semibold text-[var(--ink)] mb-3">Be the first to review “{productName}”</h4>
-        {submitted ? (
-          <p className="text-sm text-[var(--green)]">Thank you! Your review has been submitted for moderation.</p>
-        ) : (
-          <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true) }} className="space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Your rating:</span>
-              {[1, 2, 3, 4, 5].map((s) => (
-                <button type="button" key={s} onClick={() => setRating(s)} className={`text-lg ${s <= rating ? 'text-[var(--green)]' : 'text-gray-300'}`}>★</button>
-              ))}
+    <div>
+      <div className="grid md:grid-cols-2 gap-10">
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Based on {count} review{count === 1 ? '' : 's'}</p>
+          <p className="text-4xl font-semibold mb-4" style={{ color: 'var(--green)' }}>{avg.toFixed(2)} <span className="text-base text-gray-400 font-normal">Overall</span></p>
+          {dist.map(({ s, pct }) => (
+            <div key={s} className="flex items-center gap-2 mb-1">
+              <span className="text-[var(--green)] text-xs w-16">{'★'.repeat(s)}</span>
+              <div className="flex-1 h-1.5 bg-[var(--surface-2)] rounded overflow-hidden"><div className="h-full bg-[var(--green)]" style={{ width: `${pct}%` }} /></div>
+              <span className="text-xs text-gray-400 w-8 text-right">{pct}%</span>
             </div>
-            <textarea required placeholder="Your review" rows={4} className="w-full border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
-            <div className="grid grid-cols-2 gap-3">
-              <input required placeholder="Name" className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
-              <input required type="email" placeholder="Email" className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
-            </div>
-            <button type="submit" className="px-6 py-2.5 rounded-lg text-white text-sm font-semibold" style={{ backgroundColor: 'var(--green)' }}>Submit</button>
-          </form>
-        )}
+          ))}
+        </div>
+        <div>
+          <h4 className="font-semibold text-[var(--ink)] mb-3">{count ? 'Write a review' : `Be the first to review “${productName}”`}</h4>
+          {submitted ? (
+            <p className="text-sm text-[var(--green)]">Thank you! Your review has been submitted and will appear once approved.</p>
+          ) : (
+            <form onSubmit={submit} className="space-y-3">
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Your rating:</span>
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <button type="button" key={s} onClick={() => setRating(s)} className={`text-lg ${s <= rating ? 'text-[var(--green)]' : 'text-gray-300'}`}>★</button>
+                ))}
+              </div>
+              <textarea required value={text} onChange={(e) => setText(e.target.value)} placeholder="Your review" rows={4} className="w-full border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+              <div className="grid grid-cols-2 gap-3">
+                <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email (optional)" className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+              </div>
+              <button type="submit" className="px-6 py-2.5 rounded-lg text-white text-sm font-semibold" style={{ backgroundColor: 'var(--green)' }}>Submit Review</button>
+            </form>
+          )}
+        </div>
       </div>
+
+      {count > 0 && (
+        <div className="mt-10 space-y-5 max-w-2xl">
+          {reviews.map((r) => (
+            <div key={r.id} className="border-b border-[var(--line)] pb-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-semibold text-sm text-[var(--ink)]">{r.name}</span>
+                <span className="text-[var(--green)] text-xs">{'★'.repeat(r.rating)}</span>
+                <span className="text-xs text-gray-400">{new Date(r.createdAt).toLocaleDateString('en-IN')}</span>
+              </div>
+              <p className="text-sm text-gray-600">{r.text}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -22,7 +22,12 @@ export default async function OrderSuccessPage({ searchParams }: { searchParams:
             {id && <><br />Order ID: <span className="font-mono font-medium">{id}</span></>}
           </p>
           <div className="flex flex-col gap-3">
-            <Link href="/account" className="py-3 text-white rounded-xl font-semibold" style={{ backgroundColor: 'var(--saffron)' }}>
+            {id && (
+              <a href={`/api/invoices/${id}?print=1`} target="_blank" rel="noopener noreferrer" className="py-3 text-white rounded-xl font-semibold" style={{ backgroundColor: 'var(--green)' }}>
+                Download Invoice
+              </a>
+            )}
+            <Link href="/account" className="py-3 rounded-xl font-semibold border border-[var(--green)]" style={{ color: 'var(--green)' }}>
               View My Orders
             </Link>
             <Link href="/shop" className="py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50">

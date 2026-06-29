@@ -1,35 +1,37 @@
 import twilio from 'twilio'
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
+// Only construct the Twilio client with real credentials (SID must start with AC),
+// otherwise twilio() throws at import time and breaks any route that imports this.
+const twilioConfigured = (process.env.TWILIO_ACCOUNT_SID ?? '').startsWith('AC') && !!process.env.TWILIO_AUTH_TOKEN
+const client = twilioConfigured ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN) : null
 
 interface WhatsAppMessage {
   to: string
   message: string
-  event: 'ORDER_PLACED' | 'ORDER_DISPATCHED' | 'ORDER_DELIVERED' | 'REFUND_DONE'
+  event: 'ORDER_PLACED' | 'ORDER_DISPATCHED' | 'ORDER_DELIVERED' | 'REFUND_DONE' | 'INVOICE'
 }
 
 export async function sendWhatsAppMessage(payload: WhatsAppMessage): Promise<boolean> {
   try {
-    // Format phone number to E.164 format
     const phoneNumber = payload.to.startsWith('+') ? payload.to : `+91${payload.to}`
-
-    const notificationMode = process.env.NOTIFICATION_MODE || 'LIVE'
+    const notificationMode = process.env.NOTIFICATION_MODE || 'TEST'
     const testNumber = process.env.NOTIFICATION_TEST_WHATSAPP || '+919999900000'
-
-    // In test mode, send to test number
     const finalNumber = notificationMode === 'TEST' ? testNumber : phoneNumber
+
+    if (!client) {
+      console.log(`[WhatsApp test mode] would send to ${finalNumber}:\n${payload.message}`)
+      return false
+    }
 
     await client.messages.create({
       from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
       to: `whatsapp:${finalNumber}`,
       body: payload.message,
     })
-
     console.log(`✓ WhatsApp message sent to ${finalNumber}`)
     return true
   } catch (error) {
     console.error('WhatsApp send failed:', error)
-    // Don't throw - notifications shouldn't break order flow
     return false
   }
 }

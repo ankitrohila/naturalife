@@ -11,6 +11,8 @@ const NAV = [
   { label: 'Add Product', href: '/admin/products/new' },
   { label: 'Categories', href: '/admin/categories' },
   { label: 'Customers', href: '/admin/customers' },
+  { label: 'Users & Roles', href: '/admin/users' },
+  { label: 'Reviews', href: '/admin/reviews' },
   { label: 'Distributors', href: '/admin/distributors' },
   { label: 'Coupons', href: '/admin/coupons' },
   { label: 'Marketing', href: '/admin/marketing' },

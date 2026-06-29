@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { OrderInvoiceActions } from '@/components/admin/OrderInvoiceActions'
 
 const STATUS_STEPS = ['PLACED', 'CONFIRMED', 'PACKED', 'DISPATCHED', 'DELIVERED']
 
@@ -173,6 +174,8 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                   </div>
                 </div>
               </div>
+
+              <OrderInvoiceActions orderId={order.id} />
             </div>
           </div>
     </div>

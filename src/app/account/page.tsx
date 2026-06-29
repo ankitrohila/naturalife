@@ -89,6 +89,9 @@ export default async function AccountPage() {
                             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[o.status] ?? 'bg-gray-50 text-gray-600'}`}>
                               {o.status}
                             </span>
+                            <a href={`/api/invoices/${o.id}?print=1`} target="_blank" rel="noopener noreferrer" className="block mt-1 text-xs font-medium hover:underline" style={{ color: 'var(--green)' }}>
+                              Download Invoice
+                            </a>
                           </div>
                         </div>
                       )

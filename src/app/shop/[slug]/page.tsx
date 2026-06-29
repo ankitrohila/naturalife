@@ -31,6 +31,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       attributeValues: {
         include: { attribute: true, value: true },
       },
+      reviews: { where: { isApproved: true }, orderBy: { createdAt: 'desc' } },
     },
   })
 

@@ -38,7 +38,16 @@ export async function GET(
     }
 
     // Generate HTML invoice
-    const htmlContent = await generateInvoiceHTML(order)
+    let htmlContent = await generateInvoiceHTML(order)
+
+    // ?print=1 → auto-open the browser print dialog so the user can Save as PDF
+    const url = new URL(req.url)
+    if (url.searchParams.get('print') === '1') {
+      htmlContent = htmlContent.replace(
+        '</body>',
+        '<script>window.addEventListener("load",function(){setTimeout(function(){window.print()},400)})</script></body>'
+      )
+    }
 
     return new NextResponse(htmlContent, {
       headers: {
