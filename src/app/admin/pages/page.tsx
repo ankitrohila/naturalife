@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import Link from 'next/link'
 
 export default async function AdminPagesPage() {
@@ -16,9 +15,7 @@ export default async function AdminPagesPage() {
   const displayPages = pages.length > 0 ? pages : defaultPages
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#F6F6F6' }}>
-      <AdminSidebar />
-      <main className="flex-1 p-6 lg:p-8">
+    <>
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -70,7 +67,6 @@ export default async function AdminPagesPage() {
             <strong>Tip:</strong> Run <code className="bg-blue-100 px-1 rounded">npm run db:seed</code> to auto-create all standard pages (Privacy Policy, Terms, Return Policy, Shipping Policy).
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }

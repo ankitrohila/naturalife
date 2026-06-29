@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export default async function AdminMarketingPage() {
   const [marqueeOffers, testimonials, emailSubs] = await Promise.all([
@@ -9,9 +8,7 @@ export default async function AdminMarketingPage() {
   ])
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#F6F6F6' }}>
-      <AdminSidebar />
-      <main className="flex-1 p-6 lg:p-8">
+    <>
         <div className="max-w-5xl mx-auto">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Marketing & Promotions</h1>
@@ -93,7 +90,6 @@ export default async function AdminMarketingPage() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }

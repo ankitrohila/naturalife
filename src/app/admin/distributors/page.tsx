@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import Link from 'next/link'
 
 export default async function AdminDistributorsPage() {
@@ -13,9 +12,7 @@ export default async function AdminDistributorsPage() {
   }).catch(() => [])
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#F6F6F6' }}>
-      <AdminSidebar />
-      <main className="flex-1 p-6 lg:p-8">
+    <>
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -96,7 +93,6 @@ export default async function AdminDistributorsPage() {
             </table>
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }

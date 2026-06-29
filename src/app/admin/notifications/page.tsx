@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export default async function AdminNotificationsPage() {
   const [templates, logs] = await Promise.all([
@@ -21,9 +20,7 @@ export default async function AdminNotificationsPage() {
   const channelColors: Record<string, string> = { EMAIL: '#2D3A8C', WHATSAPP: '#25D366', SMS: '#E8832A' }
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#F6F6F6' }}>
-      <AdminSidebar />
-      <main className="flex-1 p-6 lg:p-8">
+    <>
         <div className="max-w-6xl mx-auto">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Notification Templates</h1>
@@ -104,7 +101,6 @@ export default async function AdminNotificationsPage() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }
