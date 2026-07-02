@@ -40,6 +40,8 @@ export default async function HomePage() {
     prisma.testimonial.findMany({ where: { isVisible: true }, take: 3 }).catch(() => []),
   ])
 
+  const activeOffers = (await prisma.marqueeOffer.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } }).catch(() => [])).map(o => o.text)
+
   // Full product objects for the interactive homepage grid (filters + quick view)
   const homeProducts = JSON.parse(JSON.stringify(dbProducts.map(p => ({
     ...p,
@@ -68,7 +70,12 @@ export default async function HomePage() {
 
   return (
     <div style={{ backgroundColor: '#fff', color: 'var(--ink)' }}>
-      <SiteIntro trending={trending} />
+      <SiteIntro trending={trending} offers={activeOffers} />
+      {activeOffers.length > 0 && (
+        <div className="text-white text-xs sm:text-sm py-2 px-4 text-center font-medium" style={{ background: 'linear-gradient(90deg, var(--green-dark), var(--green))' }}>
+          {activeOffers.slice(0, 3).join('　•　')}
+        </div>
+      )}
       <Header />
 
       {/* ── Hero Slider ── */}

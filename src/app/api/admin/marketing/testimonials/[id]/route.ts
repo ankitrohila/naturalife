@@ -11,8 +11,17 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (!(await requireAdmin())) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   try {
     const { id } = await params
-    const { isVisible } = await req.json()
-    const testimonial = await prisma.testimonial.update({ where: { id }, data: { ...(isVisible !== undefined && { isVisible }) } })
+    const { isVisible, name, location, rating, text } = await req.json()
+    const testimonial = await prisma.testimonial.update({
+      where: { id },
+      data: {
+        ...(isVisible !== undefined && { isVisible }),
+        ...(name !== undefined && { name }),
+        ...(location !== undefined && { location: location || null }),
+        ...(rating !== undefined && { rating: parseInt(rating) }),
+        ...(text !== undefined && { text }),
+      },
+    })
     return NextResponse.json({ testimonial })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })

@@ -7,10 +7,12 @@ export type TrendingItem = { name: string; slug: string; price: number; img: str
 export function ExitIntentPopup({
   items,
   code = 'NATURALIFE10',
+  offers = [],
   onClose,
 }: {
   items: TrendingItem[]
   code?: string
+  offers?: string[]
   onClose: () => void
 }) {
   return (
@@ -50,9 +52,16 @@ export function ExitIntentPopup({
             <div className="inline-block bg-white text-[var(--ink)] font-semibold tracking-[0.2em] px-6 py-3 rounded-md mb-5">
               {code}
             </div>
-            <p className="text-sm text-white/80 mb-7 max-w-xs">
+            <p className="text-sm text-white/80 mb-4 max-w-xs">
               Use the above code to get 10% off on your first order at checkout.
             </p>
+            {offers.length > 0 && (
+              <ul className="mb-6 space-y-1 max-w-xs">
+                {offers.slice(0, 3).map((o, i) => (
+                  <li key={i} className="text-xs text-white/90 flex gap-2"><span className="text-white">•</span>{o}</li>
+                ))}
+              </ul>
+            )}
             <Link
               href="/shop"
               onClick={onClose}

@@ -16,12 +16,23 @@ export default function AdminUsersPage() {
   const [q, setQ] = useState('')
   const [loading, setLoading] = useState(true)
   const [msg, setMsg] = useState('')
+  const [showAdd, setShowAdd] = useState(false)
+  const [nu, setNu] = useState({ name: '', email: '', phone: '', password: '', role: 'ADMIN' })
+  const [addErr, setAddErr] = useState('')
 
   const load = (query = '') => {
     setLoading(true)
     fetch(`/api/admin/users${query ? `?q=${encodeURIComponent(query)}` : ''}`).then(r => r.json()).then(d => setUsers(d.users ?? [])).catch(() => {}).finally(() => setLoading(false))
   }
   useEffect(() => load(), [])
+
+  const createUser = async (e: React.FormEvent) => {
+    e.preventDefault(); setAddErr('')
+    const res = await fetch('/api/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(nu) })
+    const data = await res.json()
+    if (res.ok) { setShowAdd(false); setNu({ name: '', email: '', phone: '', password: '', role: 'ADMIN' }); setMsg(`Created ${data.user.name} (${data.user.role})`); load(q) }
+    else setAddErr(data.error ?? 'Failed to create user')
+  }
 
   const changeRole = async (u: User, role: string) => {
     setMsg('')
@@ -33,10 +44,30 @@ export default function AdminUsersPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[var(--ink)]">Users &amp; Roles</h1>
-        <p className="text-sm text-[var(--ink-soft)] mt-1">Manage who has admin, distributor or customer access</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-[var(--ink)]">Users &amp; Roles</h1>
+          <p className="text-sm text-[var(--ink-soft)] mt-1">Manage who has admin, distributor or customer access</p>
+        </div>
+        <button onClick={() => setShowAdd(v => !v)} className="px-4 py-2 rounded-lg text-white text-sm font-semibold" style={{ backgroundColor: 'var(--green)' }}>
+          {showAdd ? 'Close' : '+ Create User'}
+        </button>
       </div>
+
+      {showAdd && (
+        <form onSubmit={createUser} className="bg-white rounded-xl border border-[var(--line)] p-5 mb-5 grid md:grid-cols-2 gap-3">
+          <h2 className="md:col-span-2 font-semibold text-[var(--ink)]">Create a new user / admin</h2>
+          {addErr && <p className="md:col-span-2 text-sm text-red-600">{addErr}</p>}
+          <input required placeholder="Full name" value={nu.name} onChange={e => setNu({ ...nu, name: e.target.value })} className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+          <input required type="email" placeholder="Email" value={nu.email} onChange={e => setNu({ ...nu, email: e.target.value })} className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+          <input required placeholder="Phone (e.g. +9198…)" value={nu.phone} onChange={e => setNu({ ...nu, phone: e.target.value })} className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+          <input required type="password" placeholder="Temp password" value={nu.password} onChange={e => setNu({ ...nu, password: e.target.value })} className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />
+          <select value={nu.role} onChange={e => setNu({ ...nu, role: e.target.value })} className="border border-[var(--line)] rounded-lg px-3 py-2 text-sm">
+            {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+          <button className="px-4 py-2 rounded-lg text-white text-sm font-semibold" style={{ backgroundColor: 'var(--green)' }}>Create User</button>
+        </form>
+      )}
 
       <form onSubmit={(e) => { e.preventDefault(); load(q) }} className="flex gap-2 mb-4">
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, email or phone…" className="flex-1 border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]" />

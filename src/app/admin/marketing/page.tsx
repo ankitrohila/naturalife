@@ -13,6 +13,8 @@ export default function AdminMarketingPage() {
   const [subs, setSubs] = useState(0)
   const [offerText, setOfferText] = useState('')
   const [tName, setTName] = useState(''); const [tLoc, setTLoc] = useState(''); const [tRating, setTRating] = useState('5'); const [tText, setTText] = useState('')
+  const [editOffer, setEditOffer] = useState<{ id: string; text: string } | null>(null)
+  const [editT, setEditT] = useState<{ id: string; text: string } | null>(null)
 
   const load = () => {
     fetch('/api/admin/marketing/offers').then(r => r.json()).then(d => setOffers(d.offers ?? [])).catch(() => {})
@@ -26,6 +28,8 @@ export default function AdminMarketingPage() {
     setOfferText(''); load()
   }
   const toggleOffer = async (o: Offer) => { await fetch(`/api/admin/marketing/offers/${o.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ isActive: !o.isActive }) }); load() }
+  const saveOffer = async () => { if (!editOffer) return; await fetch(`/api/admin/marketing/offers/${editOffer.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: editOffer.text }) }); setEditOffer(null); load() }
+  const saveT = async () => { if (!editT) return; await fetch(`/api/admin/marketing/testimonials/${editT.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: editT.text }) }); setEditT(null); load() }
   const delOffer = async (id: string) => { if (!confirm('Delete this offer?')) return; await fetch(`/api/admin/marketing/offers/${id}`, { method: 'DELETE' }); load() }
 
   const addTestimonial = async (e: React.FormEvent) => {
@@ -62,9 +66,21 @@ export default function AdminMarketingPage() {
         {offers.length === 0 ? <p className="text-sm text-[var(--ink-soft)] text-center py-3">No offers yet.</p> : (
           <div className="space-y-2">
             {offers.map((o) => (
-              <div key={o.id} className="flex items-center justify-between p-3 rounded-lg border border-[var(--line)]">
-                <span className="text-sm text-gray-700">{o.text}</span>
+              <div key={o.id} className="flex items-center justify-between p-3 rounded-lg border border-[var(--line)] gap-3">
+                {editOffer?.id === o.id ? (
+                  <input value={editOffer.text} onChange={(e) => setEditOffer({ id: o.id, text: e.target.value })} className={`${field} flex-1`} autoFocus />
+                ) : (
+                  <span className="text-sm text-gray-700 flex-1">{o.text}</span>
+                )}
                 <div className="flex items-center gap-3 shrink-0">
+                  {editOffer?.id === o.id ? (
+                    <>
+                      <button onClick={saveOffer} className="text-xs font-medium text-[var(--green)] hover:underline">Save</button>
+                      <button onClick={() => setEditOffer(null)} className="text-xs text-gray-400 hover:underline">Cancel</button>
+                    </>
+                  ) : (
+                    <button onClick={() => setEditOffer({ id: o.id, text: o.text })} className="text-xs text-[var(--ink-soft)] hover:underline">Edit</button>
+                  )}
                   <button onClick={() => toggleOffer(o)} className={`text-xs px-2 py-0.5 rounded-full ${o.isActive ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-gray-100 text-gray-500'}`}>{o.isActive ? 'Active' : 'Inactive'}</button>
                   <button onClick={() => delOffer(o.id)} className="text-xs text-red-500 hover:underline">Delete</button>
                 </div>
@@ -96,9 +112,21 @@ export default function AdminMarketingPage() {
                     {t.location && <span className="text-xs text-gray-400">{t.location}</span>}
                     <span className="text-[var(--green)] text-xs">{'★'.repeat(t.rating ?? 5)}</span>
                   </div>
-                  <p className="text-sm text-gray-600 line-clamp-2 italic">&ldquo;{t.text}&rdquo;</p>
+                  {editT?.id === t.id ? (
+                    <textarea value={editT.text} onChange={(e) => setEditT({ id: t.id, text: e.target.value })} rows={2} className={`${field} resize-none`} autoFocus />
+                  ) : (
+                    <p className="text-sm text-gray-600 line-clamp-2 italic">&ldquo;{t.text}&rdquo;</p>
+                  )}
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
+                  {editT?.id === t.id ? (
+                    <>
+                      <button onClick={saveT} className="text-xs font-medium text-[var(--green)] hover:underline">Save</button>
+                      <button onClick={() => setEditT(null)} className="text-xs text-gray-400 hover:underline">Cancel</button>
+                    </>
+                  ) : (
+                    <button onClick={() => setEditT({ id: t.id, text: t.text })} className="text-xs text-[var(--ink-soft)] hover:underline">Edit</button>
+                  )}
                   <button onClick={() => toggleT(t)} className={`text-xs px-2 py-1 rounded-full ${t.isVisible ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-yellow-50 text-yellow-700'}`}>{t.isVisible ? 'Visible' : 'Hidden'}</button>
                   <button onClick={() => delT(t.id)} className="text-xs text-red-500 hover:underline">Delete</button>
                 </div>

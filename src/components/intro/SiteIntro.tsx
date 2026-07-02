@@ -10,7 +10,7 @@ import { ExitIntentPopup, type TrendingItem } from './ExitIntentPopup'
  *     then reveals the homepage and opens the offer popup.
  *  2. Return visit → skip the preloader; show the popup on exit-intent.
  */
-export function SiteIntro({ trending }: { trending: TrendingItem[] }) {
+export function SiteIntro({ trending, offers = [] }: { trending: TrendingItem[]; offers?: string[] }) {
   const [showPreloader, setShowPreloader] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -57,7 +57,7 @@ export function SiteIntro({ trending }: { trending: TrendingItem[] }) {
     <>
       {showPreloader && <CarpetPreloader onDone={onPreloaderDone} />}
       {showPopup && trending.length > 0 && (
-        <ExitIntentPopup items={trending} onClose={() => setShowPopup(false)} />
+        <ExitIntentPopup items={trending} offers={offers} onClose={() => setShowPopup(false)} />
       )}
     </>
   )
