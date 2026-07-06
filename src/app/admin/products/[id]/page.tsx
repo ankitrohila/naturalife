@@ -93,7 +93,7 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
     </div>
   )
 
-  const field = 'w-full border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
+  const field = 'w-full border border-[var(--line)] rounded-none px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
 
   return (
     <div>
@@ -102,14 +102,14 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
           <h1 className="text-2xl font-semibold text-[var(--ink)]">Edit Product</h1>
           <p className="text-sm text-[var(--ink-soft)] mt-1">Update details, pricing and image</p>
         </div>
-        <Link href="/admin/products" className="px-4 py-2 border border-[var(--line)] rounded-lg text-sm text-[var(--ink-soft)] hover:bg-[var(--surface)]">← Back</Link>
+        <Link href="/admin/products" className="px-4 py-2 border border-[var(--line)] rounded-none text-sm text-[var(--ink-soft)] hover:bg-[var(--surface)]">← Back</Link>
       </div>
 
-      {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">{error}</div>}
+      {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-none text-sm text-red-600">{error}</div>}
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-5">
-          <div className="bg-white rounded-xl border border-[var(--line)] p-6">
+          <div className="bg-white rounded-none border border-[var(--line)] p-6">
             <h2 className="font-semibold text-[var(--ink)] mb-4">Basic Information</h2>
             <div className="space-y-4">
               <div>
@@ -131,12 +131,12 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border border-[var(--line)] p-6">
+          <div className="bg-white rounded-none border border-[var(--line)] p-6">
             <h2 className="font-semibold text-[var(--ink)] mb-4">Variants & Pricing</h2>
             <div className="space-y-3">
               {variants.length === 0 && <p className="text-sm text-[var(--ink-soft)]">No variants.</p>}
               {variants.map((v, i) => (
-                <div key={v.id} className="p-4 border border-[var(--line)] rounded-lg bg-[var(--surface)]">
+                <div key={v.id} className="p-4 border border-[var(--line)] rounded-none bg-[var(--surface)]">
                   <p className="text-xs font-mono text-[var(--ink-soft)] mb-3">{v.sku}</p>
                   <div className="grid grid-cols-3 gap-3">
                     {([['Retail ₹', 'price'], ['Wholesale ₹', 'wholesalePrice'], ['Stock', 'stock']] as const).map(([label, key]) => (
@@ -153,7 +153,7 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
         </div>
 
         <div className="space-y-5">
-          <div className="bg-white rounded-xl border border-[var(--line)] p-5">
+          <div className="bg-white rounded-none border border-[var(--line)] p-5">
             <h2 className="font-semibold text-[var(--ink)] mb-4">Settings</h2>
             <div className="space-y-3">
               <div>
@@ -190,9 +190,9 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border border-[var(--line)] p-5">
+          <div className="bg-white rounded-none border border-[var(--line)] p-5">
             <h2 className="font-semibold text-[var(--ink)] mb-3">Product Image</h2>
-            <div className="mb-3 rounded-lg overflow-hidden bg-[var(--surface)] aspect-square">
+            <div className="mb-3 rounded-none overflow-hidden bg-[var(--surface)] aspect-square">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={customImg || image} alt="Preview" className="w-full h-full object-cover" />
             </div>
@@ -208,10 +208,10 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
             <input type="url" value={customImg} onChange={(e) => setCustomImg(e.target.value)} placeholder="Or paste image URL" className="w-full border border-[var(--line)] rounded px-2 py-1.5 text-xs focus:outline-none" />
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full py-3 text-white rounded-xl font-semibold text-sm disabled:opacity-60" style={{ backgroundColor: 'var(--green)' }}>
+          <button onClick={handleSave} disabled={saving} className="w-full py-3 text-white rounded-none font-semibold text-sm disabled:opacity-60" style={{ backgroundColor: 'var(--green)' }}>
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
-          <button onClick={handleDelete} disabled={saving} className="w-full py-2.5 rounded-xl font-medium text-sm border border-red-200 text-red-600 hover:bg-red-50">
+          <button onClick={handleDelete} disabled={saving} className="w-full py-2.5 rounded-none font-medium text-sm border border-red-200 text-red-600 hover:bg-red-50">
             Delete Product
           </button>
         </div>

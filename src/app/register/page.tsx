@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ backgroundColor: 'var(--ivory)' }}>
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+      <div className="w-full max-w-md bg-white rounded-none shadow-lg p-8 border border-gray-100">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
             <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: 'var(--saffron)' }}>N</div>
@@ -51,13 +51,13 @@ export default function RegisterPage() {
                 value={form[key as keyof typeof form]}
                 onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+                className="w-full border border-gray-300 rounded-none px-4 py-3 text-sm focus:outline-none"
                 placeholder={placeholder}
               />
             </div>
           ))}
           {error && <p className="text-sm font-medium" style={{ color: 'var(--crimson)' }}>{error}</p>}
-          <button type="submit" disabled={loading} className="w-full py-3 rounded-xl text-white font-semibold text-sm disabled:opacity-60" style={{ backgroundColor: 'var(--saffron)' }}>
+          <button type="submit" disabled={loading} className="w-full py-3 rounded-none text-white font-semibold text-sm disabled:opacity-60" style={{ backgroundColor: 'var(--saffron)' }}>
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>

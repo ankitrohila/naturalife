@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useCartStore } from '@/store/cart'
 import { ShoppingCart, Eye, X, Minus, Plus } from 'lucide-react'
+import { WishlistButton } from '@/components/shop/WishlistButton'
+import { CompareButton } from '@/components/shop/CompareButton'
 
 interface Value { id: string; value: string; label: string; hexColor: string | null; imageUrl: string | null }
 interface AttributeVal { attribute: { id: string; name: string; displayName: string }; value: Value }
@@ -59,7 +61,7 @@ export function RelatedProducts({ items }: { items: Item[] }) {
           const colors = groupAttrs(p).find((g) => g.attr.name === 'COLOR')?.values ?? []
           const sizes = groupAttrs(p).find((g) => g.attr.name === 'SIZE')?.values ?? []
           return (
-            <div key={p.id} className="group bg-white rounded-xl overflow-hidden border border-[var(--line)] hover:shadow-md transition-all flex flex-col">
+            <div key={p.id} className="group bg-white rounded-none overflow-hidden border border-[var(--line)] hover:shadow-md transition-all flex flex-col">
               <div className="relative aspect-square bg-[var(--surface)] overflow-hidden">
                 <Link href={`/shop/${p.slug}`}>
                   {image ? (
@@ -67,14 +69,18 @@ export function RelatedProducts({ items }: { items: Item[] }) {
                     <img src={image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   ) : <div className="w-full h-full bg-[var(--surface-2)]" />}
                 </Link>
-                {/* Quick view (appears on hover) */}
-                <button
-                  onClick={() => setQuickView(p)}
-                  className="absolute top-2 right-2 w-9 h-9 rounded-full bg-white shadow flex items-center justify-center text-[var(--ink)] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[var(--green)] hover:text-white"
-                  aria-label="Quick view"
-                >
-                  <Eye size={16} />
-                </button>
+                {/* Wishlist + Quick view (appear on hover) */}
+                <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <WishlistButton productId={p.id} className="w-9 h-9 bg-white shadow flex items-center justify-center hover:bg-[var(--green)] hover:text-white transition-colors" />
+                  <button
+                    onClick={() => setQuickView(p)}
+                    className="w-9 h-9 bg-white shadow flex items-center justify-center text-[var(--ink)] hover:bg-[var(--green)] hover:text-white transition-colors"
+                    aria-label="Quick view"
+                  >
+                    <Eye size={16} />
+                  </button>
+                  <CompareButton productId={p.id} className="w-9 h-9 bg-white shadow flex items-center justify-center hover:bg-[var(--green)] hover:text-white transition-colors" />
+                </div>
               </div>
               <div className="p-3 flex flex-col flex-1">
                 <Link href={`/shop/${p.slug}`}>
@@ -101,7 +107,7 @@ export function RelatedProducts({ items }: { items: Item[] }) {
                 {/* Add to cart on hover */}
                 <button
                   onClick={() => quickAdd(p)}
-                  className="mt-auto w-full py-2 rounded-lg text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="mt-auto w-full py-2 rounded-none text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{ backgroundColor: 'var(--green)' }}
                 >
                   Add to Cart
@@ -152,8 +158,8 @@ export function QuickView({ item, onClose }: { item: Item; onClose: () => void }
 
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm" onClick={onClose}>
-      <div className="relative w-full max-w-3xl bg-white rounded-2xl overflow-hidden shadow-2xl grid md:grid-cols-2 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center" aria-label="Close"><X size={16} /></button>
+      <div className="relative w-full max-w-3xl bg-white rounded-none overflow-hidden shadow-2xl grid md:grid-cols-2 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-3 right-3 z-10 w-9 h-9 bg-white/90 shadow flex items-center justify-center" aria-label="Close"><X size={16} /></button>
         <div className="aspect-square bg-[var(--surface)]">
           {img ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -182,7 +188,7 @@ export function QuickView({ item, onClose }: { item: Item; onClose: () => void }
                     </span>
                   ) : (
                     <button key={v.id} onClick={() => pick(attr.id, v)}
-                      className={`px-2.5 py-1 rounded-lg border text-sm ${on ? 'border-[var(--green)] text-[var(--green)] bg-[var(--green-light)]' : 'border-gray-200 text-gray-600'}`}>{v.label}</button>
+                      className={`px-2.5 py-1 rounded-none border text-sm ${on ? 'border-[var(--green)] text-[var(--green)] bg-[var(--green-light)]' : 'border-gray-200 text-gray-600'}`}>{v.label}</button>
                   )
                 })}
               </div>
@@ -190,16 +196,16 @@ export function QuickView({ item, onClose }: { item: Item; onClose: () => void }
           ))}
 
           <div className="flex items-center gap-3 mb-4">
-            <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-8 h-8 rounded-lg border border-gray-300 flex items-center justify-center"><Minus size={13} /></button>
-            <input type="number" min={1} value={qty} onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))} className="w-16 text-center border border-gray-300 rounded-lg py-1.5 text-sm" />
-            <button onClick={() => setQty(qty + 1)} className="w-8 h-8 rounded-lg border border-gray-300 flex items-center justify-center"><Plus size={13} /></button>
+            <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-8 h-8 rounded-none border border-gray-300 flex items-center justify-center"><Minus size={13} /></button>
+            <input type="number" min={1} value={qty} onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))} className="w-16 text-center border border-gray-300 rounded-none py-1.5 text-sm" />
+            <button onClick={() => setQty(qty + 1)} className="w-8 h-8 rounded-none border border-gray-300 flex items-center justify-center"><Plus size={13} /></button>
           </div>
 
           <div className="flex gap-2">
-            <button onClick={add} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-white text-sm font-semibold" style={{ backgroundColor: 'var(--green)' }}>
+            <button onClick={add} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-none text-white text-sm font-semibold" style={{ backgroundColor: 'var(--green)' }}>
               <ShoppingCart size={16} /> {added ? 'Added!' : 'Add to Cart'}
             </button>
-            <Link href={`/shop/${item.slug}`} className="px-4 py-2.5 rounded-xl border border-[var(--line)] text-sm font-medium text-[var(--ink)] flex items-center" onClick={onClose}>Details</Link>
+            <Link href={`/shop/${item.slug}`} className="px-4 py-2.5 rounded-none border border-[var(--line)] text-sm font-medium text-[var(--ink)] flex items-center" onClick={onClose}>Details</Link>
           </div>
           <p className="text-xs text-gray-400 mt-4">SKU: {item.sku} · {item.category.name}</p>
         </div>

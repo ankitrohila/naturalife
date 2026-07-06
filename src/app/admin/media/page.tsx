@@ -30,26 +30,26 @@ export default async function AdminMediaPage() {
               <h1 className="text-2xl font-bold text-gray-900">Media Library</h1>
               <p className="text-sm text-gray-500 mt-1">{displayAssets.length} assets</p>
             </div>
-            <button className="px-4 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
+            <button className="px-4 py-2 text-white rounded-none text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
               + Upload Image
             </button>
           </div>
 
           {assets.length === 0 && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-5 py-3 mb-6 text-sm text-yellow-700">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-none px-5 py-3 mb-6 text-sm text-yellow-700">
               Showing sample images. Connect Cloudinary and seed the database to manage your media library.
             </div>
           )}
 
-          <div className="bg-white rounded-xl border-2 border-dashed border-gray-200 p-8 text-center mb-6 hover:border-green-400 transition-colors cursor-pointer">
+          <div className="bg-white rounded-none border-2 border-dashed border-gray-200 p-8 text-center mb-6 hover:border-green-400 transition-colors cursor-pointer">
             <p className="font-medium text-gray-600 mb-1">Drag & drop images here</p>
             <p className="text-sm text-gray-400 mb-4">PNG, JPG, WEBP up to 10MB</p>
-            <button className="px-5 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>Browse Files</button>
+            <button className="px-5 py-2 text-white rounded-none text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>Browse Files</button>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {displayAssets.map((asset, i) => (
-              <div key={i} className="group relative bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div key={i} className="group relative bg-white rounded-none overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all cursor-pointer">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={asset.url} alt={asset.name} className="w-full aspect-square object-cover" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">

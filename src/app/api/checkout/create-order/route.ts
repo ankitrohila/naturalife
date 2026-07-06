@@ -169,6 +169,12 @@ export async function POST(req: NextRequest) {
     await prisma.productVariant.update({ where: { id: oi.productVariantId }, data: { stock: { decrement: oi.quantity } } }).catch(() => {})
   }
 
+  // Mark any active abandoned cart as recovered
+  await prisma.abandonedCart.updateMany({
+    where: { userId: session.user.id!, isRecovered: false },
+    data: { isRecovered: true, recoveredAt: new Date() },
+  }).catch(() => {})
+
   // Send order-placed confirmation (invoice) — non-blocking
   try {
     await sendNotification({ event: 'ORDER_PLACED', orderId: order.id })

@@ -70,18 +70,18 @@ export default function AdminCouponsPage() {
               <p className="text-sm text-gray-500 mt-1">{coupons.length} coupons</p>
             </div>
             <div className="flex gap-2">
-              <Link href="/admin" className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">← Back</Link>
-              <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
+              <Link href="/admin" className="px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-600 hover:bg-gray-50">← Back</Link>
+              <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 text-white rounded-none text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
                 + New Coupon
               </button>
             </div>
           </div>
 
-          {msg && <p className="mb-4 text-sm text-green-700 bg-green-50 px-4 py-2 rounded-lg">{msg}</p>}
+          {msg && <p className="mb-4 text-sm text-green-700 bg-green-50 px-4 py-2 rounded-none">{msg}</p>}
 
           {/* Create form */}
           {showForm && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-6 mb-6">
               <h2 className="font-semibold text-gray-800 mb-4">Create New Coupon</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {[
@@ -95,29 +95,29 @@ export default function AdminCouponsPage() {
                     <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
                     <input type={type} placeholder={placeholder} value={form[key as keyof typeof form]}
                       onChange={(e) => setForm(f => ({ ...f, [key]: e.target.value }))}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" />
+                      className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm focus:outline-none" />
                   </div>
                 ))}
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Discount Type</label>
                   <select value={form.discountType} onChange={(e) => setForm(f => ({ ...f, discountType: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm">
                     <option value="PERCENTAGE">Percentage (%)</option>
                     <option value="FLAT">Flat Amount (₹)</option>
                   </select>
                 </div>
               </div>
               <div className="flex gap-3 mt-4">
-                <button onClick={handleSave} disabled={saving} className="px-5 py-2 text-white rounded-lg text-sm font-semibold disabled:opacity-60" style={{ backgroundColor: 'var(--green)' }}>
+                <button onClick={handleSave} disabled={saving} className="px-5 py-2 text-white rounded-none text-sm font-semibold disabled:opacity-60" style={{ backgroundColor: 'var(--green)' }}>
                   {saving ? 'Saving...' : 'Create Coupon'}
                 </button>
-                <button onClick={() => setShowForm(false)} className="px-5 py-2 border border-gray-300 rounded-lg text-sm text-gray-600">Cancel</button>
+                <button onClick={() => setShowForm(false)} className="px-5 py-2 border border-gray-300 rounded-none text-sm text-gray-600">Cancel</button>
               </div>
             </div>
           )}
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
             <table className="w-full text-sm">
               <thead style={{ backgroundColor: '#F6F6F6' }}>
                 <tr>
@@ -147,7 +147,7 @@ export default function AdminCouponsPage() {
                     <td className="px-4 py-3 text-gray-600">{c.usedCount}{c.usageLimit ? ` / ${c.usageLimit}` : ''}</td>
                     <td className="px-4 py-3 text-gray-400">{c.validUntil ? new Date(c.validUntil).toLocaleDateString('en-IN') : 'Never'}</td>
                     <td className="px-4 py-3">
-                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                      <span className={`text-xs px-2 py-1  font-medium ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                         {c.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>

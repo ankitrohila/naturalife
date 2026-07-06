@@ -21,7 +21,7 @@ export function ExitIntentPopup({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl grid md:grid-cols-2"
+        className="relative w-full max-w-4xl bg-white rounded-none overflow-hidden shadow-2xl grid md:grid-cols-2"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
@@ -49,7 +49,7 @@ export function ExitIntentPopup({
           <div className="relative">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">Wait! before you leave…</h2>
             <p className="text-white/85 mb-5">Get 10% off for your first order</p>
-            <div className="inline-block bg-white text-[var(--ink)] font-semibold tracking-[0.2em] px-6 py-3 rounded-md mb-5">
+            <div className="inline-block bg-white text-[var(--ink)] font-semibold tracking-[0.2em] px-6 py-3 rounded-none mb-5">
               {code}
             </div>
             <p className="text-sm text-white/80 mb-4 max-w-xs">
@@ -65,7 +65,7 @@ export function ExitIntentPopup({
             <Link
               href="/shop"
               onClick={onClose}
-              className="inline-flex items-center gap-2 bg-white text-[var(--ink)] font-semibold px-7 py-3 rounded-full hover:bg-[var(--green-light)] transition-colors w-fit"
+              className="inline-flex items-center gap-2 bg-white text-[var(--ink)] font-semibold px-7 py-3 hover:bg-[var(--green-light)] transition-colors w-fit"
             >
               Shop Now
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -91,7 +91,7 @@ export function ExitIntentPopup({
                 <img
                   src={it.img}
                   alt={it.name}
-                  className="w-20 h-20 rounded-xl object-cover bg-[var(--surface-2)] shrink-0"
+                  className="w-20 h-20 rounded-none object-cover bg-[var(--surface-2)] shrink-0"
                 />
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-[var(--green)] group-hover:underline line-clamp-2 uppercase">
@@ -107,7 +107,7 @@ export function ExitIntentPopup({
           <Link
             href="/shop"
             onClick={onClose}
-            className="mt-7 block text-center text-sm font-semibold text-[var(--ink)] border border-[var(--line)] rounded-full py-2.5 hover:bg-[var(--surface)] transition-colors"
+            className="mt-7 block text-center text-sm font-semibold text-[var(--ink)] border border-[var(--line)] py-2.5 hover:bg-[var(--surface)] transition-colors"
           >
             View all products
           </Link>

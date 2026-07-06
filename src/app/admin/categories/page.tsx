@@ -35,7 +35,7 @@ export default function AdminCategoriesPage() {
     if (res.ok) load(); else alert(data.error ?? 'Failed to delete')
   }
 
-  const field = 'w-full border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
+  const field = 'w-full border border-[var(--line)] rounded-none px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -46,7 +46,7 @@ export default function AdminCategoriesPage() {
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Add form */}
-        <div className="bg-white rounded-xl border border-[var(--line)] p-5 h-fit">
+        <div className="bg-white rounded-none border border-[var(--line)] p-5 h-fit">
           <h2 className="font-semibold text-[var(--ink)] mb-4">Add Category</h2>
           {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
           <form onSubmit={add} className="space-y-3">
@@ -58,14 +58,14 @@ export default function AdminCategoriesPage() {
               <label className="block text-xs font-medium text-[var(--ink-soft)] mb-1">Description</label>
               <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} className={`${field} resize-none`} />
             </div>
-            <button disabled={saving} className="w-full py-2.5 rounded-lg text-white text-sm font-semibold disabled:opacity-60" style={{ backgroundColor: 'var(--green)' }}>
+            <button disabled={saving} className="w-full py-2.5 rounded-none text-white text-sm font-semibold disabled:opacity-60" style={{ backgroundColor: 'var(--green)' }}>
               {saving ? 'Adding…' : 'Add Category'}
             </button>
           </form>
         </div>
 
         {/* List */}
-        <div className="md:col-span-2 bg-white rounded-xl border border-[var(--line)] overflow-hidden">
+        <div className="md:col-span-2 bg-white rounded-none border border-[var(--line)] overflow-hidden">
           <div className="px-5 py-3 border-b border-[var(--line)] text-sm text-[var(--ink-soft)]">{categories.length} categories</div>
           {loading ? (
             <p className="p-8 text-center text-sm text-[var(--ink-soft)]">Loading…</p>

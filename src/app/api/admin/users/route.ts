@@ -7,7 +7,7 @@ const ROLES = ['ADMIN', 'DISTRIBUTOR', 'CUSTOMER']
 
 export async function POST(req: Request) {
   const session = await auth()
-  if (!session?.user || (session.user as any).role !== 'ADMIN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  if (!session?.user || !['ADMIN', 'MASTER_ADMIN'].includes((session.user as any).role)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   try {
     const { name, email, phone, password, role } = await req.json()
     if (!name || !email || !phone || !password) return NextResponse.json({ error: 'Name, email, phone and password are required' }, { status: 400 })
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   const session = await auth()
-  if (!session?.user || (session.user as any).role !== 'ADMIN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  if (!session?.user || !['ADMIN', 'MASTER_ADMIN'].includes((session.user as any).role)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   const url = new URL(req.url)
   const q = url.searchParams.get('q')?.trim()
   const where = q ? { OR: [{ name: { contains: q, mode: 'insensitive' as const } }, { primaryEmail: { contains: q, mode: 'insensitive' as const } }, { primaryPhone: { contains: q } }] } : {}

@@ -27,15 +27,15 @@ export default async function AdminSettingsPage() {
             ].map(({ label, name, value }) => (
               <div key={name}>
                 <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
-                <input name={name} defaultValue={value} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" />
+                <input name={name} defaultValue={value} className="w-full border border-gray-200 rounded-none px-3 py-2 text-sm" />
               </div>
             ))}
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-600 mb-1">Address</label>
-              <textarea name="company_address_text" defaultValue={get('company_address', 'text')} rows={2} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" />
+              <textarea name="company_address_text" defaultValue={get('company_address', 'text')} rows={2} className="w-full border border-gray-200 rounded-none px-3 py-2 text-sm" />
             </div>
             <div className="col-span-2">
-              <button type="submit" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--saffron)' }}>Save General</button>
+              <button type="submit" className="px-4 py-2 text-sm text-white rounded-none font-medium" style={{ backgroundColor: 'var(--saffron)' }}>Save General</button>
             </div>
           </form>
         </SettingsSection>
@@ -51,7 +51,7 @@ export default async function AdminSettingsPage() {
             ].map(({ label, name, value }) => (
               <div key={name}>
                 <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
-                <input type="number" name={name} defaultValue={value} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" />
+                <input type="number" name={name} defaultValue={value} className="w-full border border-gray-200 rounded-none px-3 py-2 text-sm" />
               </div>
             ))}
             <div className="col-span-3 flex items-center gap-3">
@@ -59,7 +59,7 @@ export default async function AdminSettingsPage() {
               <label htmlFor="cod" className="text-sm text-gray-600">Cash on Delivery available</label>
             </div>
             <div className="col-span-3">
-              <button type="submit" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--saffron)' }}>Save Shipping</button>
+              <button type="submit" className="px-4 py-2 text-sm text-white rounded-none font-medium" style={{ backgroundColor: 'var(--saffron)' }}>Save Shipping</button>
             </div>
           </form>
         </SettingsSection>
@@ -69,11 +69,11 @@ export default async function AdminSettingsPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Earn Rate (coins per ₹100 spent)</label>
-              <input type="number" defaultValue={get('coin_earn_rate', 'coinsPerHundred', '10')} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" />
+              <input type="number" defaultValue={get('coin_earn_rate', 'coinsPerHundred', '10')} className="w-full border border-gray-200 rounded-none px-3 py-2 text-sm" />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Redemption Rate (coins per ₹1 discount)</label>
-              <input type="number" defaultValue={get('coin_redemption_rate', 'coinsPerRupee', '10')} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" />
+              <input type="number" defaultValue={get('coin_redemption_rate', 'coinsPerRupee', '10')} className="w-full border border-gray-200 rounded-none px-3 py-2 text-sm" />
             </div>
           </div>
         </SettingsSection>
@@ -81,7 +81,7 @@ export default async function AdminSettingsPage() {
         {/* Notification mode */}
         <SettingsSection title="Notification Mode">
           <div className="flex items-center gap-4">
-            <div className="flex rounded-lg overflow-hidden border border-gray-300">
+            <div className="flex rounded-none overflow-hidden border border-gray-300">
               {['TEST', 'LIVE'].map((mode) => {
                 const current = get('notification_mode', 'mode', 'TEST')
                 const isActive = current === mode
@@ -99,7 +99,7 @@ export default async function AdminSettingsPage() {
 
         {/* Env vars reminder */}
         <SettingsSection title="API Keys & Credentials">
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
+          <div className="bg-amber-50 border border-amber-200 rounded-none p-4 text-sm text-amber-800">
             <p className="font-medium mb-1">Configure in .env.local file:</p>
             <code className="text-xs block space-y-0.5 font-mono">
               {['RAZORPAY_KEY_ID', 'CLOUDINARY_CLOUD_NAME', 'SMTP_HOST / SMTP_USER / SMTP_PASS', 'TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN', 'GOOGLE_PLACES_API_KEY'].map((k) => (
@@ -115,7 +115,7 @@ export default async function AdminSettingsPage() {
 
 function SettingsSection({ title, children }: { title: string; icon?: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-none border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-100">
         <h2 className="font-semibold text-gray-800">{title}</h2>
       </div>

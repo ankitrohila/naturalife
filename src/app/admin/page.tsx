@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata = { title: 'Admin Dashboard' }
 
 export default async function AdminDashboard() {
-  const [orderCount, productCount, customerCount, recentOrders, lowStockVariants] = await Promise.all([
+  const [orderCount, productCount, customerCount, recentOrders, lowStockVariants, abandonedCartStats, pendingWhatsAppOrders] = await Promise.all([
     prisma.order.count().catch(() => 0),
     prisma.product.count({ where: { status: 'ACTIVE' } }).catch(() => 0),
     prisma.user.count({ where: { role: 'CUSTOMER' } }).catch(() => 0),
@@ -18,6 +18,12 @@ export default async function AdminDashboard() {
       include: { product: { select: { name: true } } },
       take: 5,
     }).catch(() => []),
+    prisma.abandonedCart.aggregate({
+      where: { isRecovered: false },
+      _sum: { totalValue: true },
+      _count: true,
+    }).catch(() => ({ _sum: { totalValue: 0 }, _count: 0 })),
+    prisma.whatsAppOrder.count({ where: { status: 'PENDING' } }).catch(() => 0),
   ])
 
   const todayStart = new Date(); todayStart.setHours(0,0,0,0)
@@ -32,6 +38,8 @@ export default async function AdminDashboard() {
     { label: "Today's Revenue", value: `₹${Number(todayRevenue._sum.total ?? 0).toLocaleString('en-IN')}`, href: '/admin/orders' },
     { label: 'Active Products', value: productCount, href: '/admin/products' },
     { label: 'Total Customers', value: customerCount, href: '/admin/customers' },
+    { label: 'Abandoned Carts', value: `${abandonedCartStats._count} (₹${Number(abandonedCartStats._sum.totalValue ?? 0).toLocaleString('en-IN')})`, href: '/admin/abandoned-carts' },
+    { label: 'Pending WhatsApp Orders', value: pendingWhatsAppOrders, href: '/admin/whatsapp-orders' },
   ]
 
   const statusColors: Record<string, string> = {
@@ -48,16 +56,16 @@ export default async function AdminDashboard() {
           <p className="text-sm text-gray-500 mt-0.5">Welcome back! Here&apos;s what&apos;s happening today.</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/products/new" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--green)' }}>
+          <Link href="/admin/products/new" className="px-4 py-2 text-sm text-white rounded-none font-medium" style={{ backgroundColor: 'var(--green)' }}>
             Add Product
           </Link>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {stats.map((s) => (
-          <Link key={s.label} href={s.href} className="bg-white rounded-xl p-5 border border-[var(--line)] shadow-sm hover:shadow-md transition-shadow">
+          <Link key={s.label} href={s.href} className="bg-white rounded-none p-5 border border-[var(--line)] shadow-sm hover:shadow-md transition-shadow">
             <p className="text-2xl font-semibold text-[var(--ink)]">{s.value}</p>
             <p className="text-xs text-[var(--ink-soft)] mt-1">{s.label}</p>
           </Link>
@@ -66,7 +74,7 @@ export default async function AdminDashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Recent orders */}
-        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-none border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-800">Recent Orders</h2>
             <Link href="/admin/orders" className="text-xs font-medium" style={{ color: 'var(--green)' }}>View all →</Link>
@@ -82,7 +90,7 @@ export default async function AdminDashboard() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-sm font-semibold text-gray-900">₹{Number(o.total).toLocaleString('en-IN')}</p>
-                  <span className="text-xs px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: statusColors[o.status] ?? '#9ca3af' }}>
+                  <span className="text-xs px-2 py-0.5 text-white" style={{ backgroundColor: statusColors[o.status] ?? '#9ca3af' }}>
                     {o.status}
                   </span>
                 </div>
@@ -94,7 +102,7 @@ export default async function AdminDashboard() {
         {/* Right column */}
         <div className="space-y-5">
           {/* Low stock */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-none border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100">
               <h2 className="font-semibold text-gray-800">Low Stock</h2>
             </div>
@@ -111,7 +119,7 @@ export default async function AdminDashboard() {
           </div>
 
           {/* Quick actions */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+          <div className="bg-white rounded-none border border-gray-100 shadow-sm p-5">
             <h2 className="font-semibold text-gray-800 mb-4">Quick Actions</h2>
             <div className="space-y-1">
               {[
@@ -121,7 +129,7 @@ export default async function AdminDashboard() {
                 { label: 'Upload Media', href: '/admin/media' },
                 { label: 'Test Notifications', href: '/admin/test-env' },
               ].map((a) => (
-                <Link key={a.href} href={a.href} className="block text-sm text-[var(--ink-soft)] hover:text-[var(--ink)] py-1.5 rounded-lg hover:bg-[var(--surface)] px-2 -mx-2 transition-colors">
+                <Link key={a.href} href={a.href} className="block text-sm text-[var(--ink-soft)] hover:text-[var(--ink)] py-1.5 rounded-none hover:bg-[var(--surface)] px-2 -mx-2 transition-colors">
                   {a.label}
                 </Link>
               ))}
@@ -137,7 +145,7 @@ export default async function AdminDashboard() {
           { label: 'Active Products', value: productCount },
           { label: 'Total Customers', value: customerCount },
         ].map((s) => (
-          <div key={s.label} className="bg-white rounded-xl p-4 border border-gray-100 text-center shadow-sm">
+          <div key={s.label} className="bg-white rounded-none p-4 border border-gray-100 text-center shadow-sm">
             <p className="text-2xl font-bold text-gray-900">{s.value}</p>
             <p className="text-xs text-gray-500 mt-1">{s.label}</p>
           </div>

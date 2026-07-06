@@ -22,12 +22,12 @@ export default async function AdminPagesPage() {
               <h1 className="text-2xl font-bold text-gray-900">CMS Pages</h1>
               <p className="text-sm text-gray-500 mt-1">Manage static pages like About, Privacy Policy, etc.</p>
             </div>
-            <button className="px-4 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
+            <button className="px-4 py-2 text-white rounded-none text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
               + New Page
             </button>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
             <table className="w-full text-sm">
               <thead style={{ backgroundColor: '#F6F6F6' }}>
                 <tr>
@@ -47,7 +47,7 @@ export default async function AdminPagesPage() {
                       </Link>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700 font-medium">
+                      <span className="text-xs px-2 py-1  bg-green-100 text-green-700 font-medium">
                         {(p as any).status ?? 'PUBLISHED'}
                       </span>
                     </td>
@@ -63,7 +63,7 @@ export default async function AdminPagesPage() {
             </table>
           </div>
 
-          <div className="mt-6 bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
+          <div className="mt-6 bg-blue-50 border border-blue-100 rounded-none p-4 text-sm text-blue-700">
             <strong>Tip:</strong> Run <code className="bg-blue-100 px-1 rounded">npm run db:seed</code> to auto-create all standard pages (Privacy Policy, Terms, Return Policy, Shipping Policy).
           </div>
         </div>

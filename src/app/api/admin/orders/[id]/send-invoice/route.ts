@@ -6,7 +6,7 @@ import { sendWhatsAppMessage } from '@/lib/whatsapp'
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await auth()
-    if (!session?.user || (session.user as any).role !== 'ADMIN') {
+    if (!session?.user || !['ADMIN', 'MASTER_ADMIN'].includes((session.user as any).role)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     const { id } = await params

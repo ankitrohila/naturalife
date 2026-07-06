@@ -38,32 +38,32 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-        <Link href="/admin/products/new" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--saffron)' }}>
+        <Link href="/admin/products/new" className="px-4 py-2 text-sm text-white rounded-none font-medium" style={{ backgroundColor: 'var(--saffron)' }}>
           + New Product
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border border-gray-100 p-4 mb-5 shadow-sm">
+      <div className="bg-white rounded-none border border-gray-100 p-4 mb-5 shadow-sm">
         <form className="flex flex-wrap gap-3">
-          <input name="search" defaultValue={sp.search} placeholder="Search name or SKU..." className="border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1 min-w-40" />
-          <select name="category" defaultValue={sp.category ?? ''} className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <input name="search" defaultValue={sp.search} placeholder="Search name or SKU..." className="border border-gray-300 rounded-none px-3 py-2 text-sm flex-1 min-w-40" />
+          <select name="category" defaultValue={sp.category ?? ''} className="border border-gray-300 rounded-none px-3 py-2 text-sm">
             <option value="">All Categories</option>
             {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <select name="status" defaultValue={sp.status ?? ''} className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <select name="status" defaultValue={sp.status ?? ''} className="border border-gray-300 rounded-none px-3 py-2 text-sm">
             <option value="">All Statuses</option>
             <option value="ACTIVE">Active</option>
             <option value="DRAFT">Draft</option>
             <option value="ARCHIVED">Archived</option>
           </select>
-          <button type="submit" className="px-4 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: 'var(--saffron)' }}>Filter</button>
-          <Link href="/admin/products" className="px-4 py-2 text-sm border border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50">Clear</Link>
+          <button type="submit" className="px-4 py-2 text-sm text-white rounded-none font-medium" style={{ backgroundColor: 'var(--saffron)' }}>Filter</button>
+          <Link href="/admin/products" className="px-4 py-2 text-sm border border-gray-300 rounded-none font-medium text-gray-600 hover:bg-gray-50">Clear</Link>
         </form>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-none border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-100 text-sm text-gray-500">{total} products</div>
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
@@ -82,7 +82,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
               return (
                 <tr key={p.id} className="hover:bg-gray-50">
                   <td className="pl-4 py-3 w-12">
-                    <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100">
+                    <div className="w-10 h-10 rounded-none overflow-hidden bg-gray-100">
                       {image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={image} alt="" className="w-full h-full object-cover" />
@@ -106,7 +106,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusBg[p.status]}`}>{p.status}</span>
+                    <span className={`text-xs px-2 py-0.5  font-medium ${statusBg[p.status]}`}>{p.status}</span>
                   </td>
                   <td className="px-4 py-3 text-xs space-x-1">
                     {p.isFeatured && <span className="bg-[var(--green-light)] text-[var(--green-dark)] px-1.5 py-0.5 rounded font-medium">Featured</span>}

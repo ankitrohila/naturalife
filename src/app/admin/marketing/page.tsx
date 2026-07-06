@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 interface Offer { id: string; text: string; isActive: boolean; sortOrder: number }
 interface Testimonial { id: string; name: string; location: string | null; rating: number; text: string; isVisible: boolean }
 
-const field = 'w-full border border-[var(--line)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
+const field = 'w-full border border-[var(--line)] rounded-none px-3 py-2 text-sm focus:outline-none focus:border-[var(--green)]'
 
 export default function AdminMarketingPage() {
   const [offers, setOffers] = useState<Offer[]>([])
@@ -49,7 +49,7 @@ export default function AdminMarketingPage() {
 
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[['Offers', offers.length], ['Testimonials', testimonials.length], ['Subscribers', subs]].map(([l, v]) => (
-          <div key={l as string} className="bg-white rounded-xl p-4 border border-[var(--line)] text-center">
+          <div key={l as string} className="bg-white rounded-none p-4 border border-[var(--line)] text-center">
             <p className="text-3xl font-semibold" style={{ color: 'var(--green)' }}>{v as number}</p>
             <p className="text-xs text-[var(--ink-soft)] mt-1">{l as string}</p>
           </div>
@@ -57,16 +57,16 @@ export default function AdminMarketingPage() {
       </div>
 
       {/* Offers */}
-      <div className="bg-white rounded-xl border border-[var(--line)] p-6 mb-6">
+      <div className="bg-white rounded-none border border-[var(--line)] p-6 mb-6">
         <h2 className="font-semibold text-[var(--ink)] mb-4">Promotional Offers</h2>
         <form onSubmit={addOffer} className="flex gap-2 mb-4">
           <input value={offerText} onChange={(e) => setOfferText(e.target.value)} placeholder="e.g. FLAT 15% OFF on rugs this week" className={field} />
-          <button className="px-4 py-2 rounded-lg text-white text-sm font-semibold shrink-0" style={{ backgroundColor: 'var(--green)' }}>Add</button>
+          <button className="px-4 py-2 rounded-none text-white text-sm font-semibold shrink-0" style={{ backgroundColor: 'var(--green)' }}>Add</button>
         </form>
         {offers.length === 0 ? <p className="text-sm text-[var(--ink-soft)] text-center py-3">No offers yet.</p> : (
           <div className="space-y-2">
             {offers.map((o) => (
-              <div key={o.id} className="flex items-center justify-between p-3 rounded-lg border border-[var(--line)] gap-3">
+              <div key={o.id} className="flex items-center justify-between p-3 rounded-none border border-[var(--line)] gap-3">
                 {editOffer?.id === o.id ? (
                   <input value={editOffer.text} onChange={(e) => setEditOffer({ id: o.id, text: e.target.value })} className={`${field} flex-1`} autoFocus />
                 ) : (
@@ -81,7 +81,7 @@ export default function AdminMarketingPage() {
                   ) : (
                     <button onClick={() => setEditOffer({ id: o.id, text: o.text })} className="text-xs text-[var(--ink-soft)] hover:underline">Edit</button>
                   )}
-                  <button onClick={() => toggleOffer(o)} className={`text-xs px-2 py-0.5 rounded-full ${o.isActive ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-gray-100 text-gray-500'}`}>{o.isActive ? 'Active' : 'Inactive'}</button>
+                  <button onClick={() => toggleOffer(o)} className={`text-xs px-2 py-0.5  ${o.isActive ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-gray-100 text-gray-500'}`}>{o.isActive ? 'Active' : 'Inactive'}</button>
                   <button onClick={() => delOffer(o.id)} className="text-xs text-red-500 hover:underline">Delete</button>
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default function AdminMarketingPage() {
       </div>
 
       {/* Testimonials */}
-      <div className="bg-white rounded-xl border border-[var(--line)] p-6">
+      <div className="bg-white rounded-none border border-[var(--line)] p-6">
         <h2 className="font-semibold text-[var(--ink)] mb-4">Customer Testimonials</h2>
         <form onSubmit={addTestimonial} className="grid md:grid-cols-2 gap-2 mb-4">
           <input value={tName} onChange={(e) => setTName(e.target.value)} placeholder="Customer name" className={field} />
@@ -100,12 +100,12 @@ export default function AdminMarketingPage() {
             {[5, 4, 3, 2, 1].map(r => <option key={r} value={r}>{r} stars</option>)}
           </select>
           <textarea value={tText} onChange={(e) => setTText(e.target.value)} placeholder="Review text" className={`${field} md:col-span-2 resize-none`} rows={2} />
-          <button className="px-4 py-2 rounded-lg text-white text-sm font-semibold w-fit" style={{ backgroundColor: 'var(--green)' }}>Add Testimonial</button>
+          <button className="px-4 py-2 rounded-none text-white text-sm font-semibold w-fit" style={{ backgroundColor: 'var(--green)' }}>Add Testimonial</button>
         </form>
         {testimonials.length === 0 ? <p className="text-sm text-[var(--ink-soft)] text-center py-3">No testimonials yet.</p> : (
           <div className="space-y-3">
             {testimonials.map((t) => (
-              <div key={t.id} className="flex items-start justify-between p-4 rounded-lg border border-[var(--line)]">
+              <div key={t.id} className="flex items-start justify-between p-4 rounded-none border border-[var(--line)]">
                 <div className="flex-1 min-w-0 pr-4">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-sm text-gray-800">{t.name}</span>
@@ -127,7 +127,7 @@ export default function AdminMarketingPage() {
                   ) : (
                     <button onClick={() => setEditT({ id: t.id, text: t.text })} className="text-xs text-[var(--ink-soft)] hover:underline">Edit</button>
                   )}
-                  <button onClick={() => toggleT(t)} className={`text-xs px-2 py-1 rounded-full ${t.isVisible ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-yellow-50 text-yellow-700'}`}>{t.isVisible ? 'Visible' : 'Hidden'}</button>
+                  <button onClick={() => toggleT(t)} className={`text-xs px-2 py-1  ${t.isVisible ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-yellow-50 text-yellow-700'}`}>{t.isVisible ? 'Visible' : 'Hidden'}</button>
                   <button onClick={() => delT(t.id)} className="text-xs text-red-500 hover:underline">Delete</button>
                 </div>
               </div>

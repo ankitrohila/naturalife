@@ -32,7 +32,7 @@ export default function AdminReviewsPage() {
       </div>
 
       {tab === 'reviews' ? (
-        <div className="bg-white rounded-xl border border-[var(--line)] overflow-hidden">
+        <div className="bg-white rounded-none border border-[var(--line)] overflow-hidden">
           {reviews.length === 0 ? <p className="p-8 text-center text-sm text-[var(--ink-soft)]">No reviews yet.</p> : (
             <div className="divide-y divide-[var(--line)]">
               {reviews.map((r) => (
@@ -42,14 +42,14 @@ export default function AdminReviewsPage() {
                       <span className="font-semibold text-sm text-[var(--ink)]">{r.name}</span>
                       <span className="text-[var(--green)] text-xs">{'★'.repeat(r.rating)}</span>
                       <span className="text-xs text-gray-400">on {r.product?.name ?? 'product'}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${r.isApproved ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-yellow-50 text-yellow-700'}`}>{r.isApproved ? 'Published' : 'Pending'}</span>
+                      <span className={`text-xs px-2 py-0.5  ${r.isApproved ? 'bg-[var(--green-light)] text-[var(--green-dark)]' : 'bg-yellow-50 text-yellow-700'}`}>{r.isApproved ? 'Published' : 'Pending'}</span>
                     </div>
                     <p className="text-sm text-gray-600 italic">&ldquo;{r.text}&rdquo;</p>
                     <p className="text-xs text-gray-400 mt-1">{new Date(r.createdAt).toLocaleDateString('en-IN')}</p>
                   </div>
                   <div className="flex flex-col gap-2 shrink-0">
-                    <button onClick={() => approve(r)} className="text-xs px-3 py-1 rounded-lg text-white font-medium" style={{ backgroundColor: r.isApproved ? '#9ca3af' : 'var(--green)' }}>{r.isApproved ? 'Unpublish' : 'Approve'}</button>
-                    <button onClick={() => del(r.id)} className="text-xs px-3 py-1 rounded-lg border border-red-200 text-red-600">Delete</button>
+                    <button onClick={() => approve(r)} className="text-xs px-3 py-1 rounded-none text-white font-medium" style={{ backgroundColor: r.isApproved ? '#9ca3af' : 'var(--green)' }}>{r.isApproved ? 'Unpublish' : 'Approve'}</button>
+                    <button onClick={() => del(r.id)} className="text-xs px-3 py-1 rounded-none border border-red-200 text-red-600">Delete</button>
                   </div>
                 </div>
               ))}
@@ -57,7 +57,7 @@ export default function AdminReviewsPage() {
           )}
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-[var(--line)] overflow-hidden">
+        <div className="bg-white rounded-none border border-[var(--line)] overflow-hidden">
           {enquiries.length === 0 ? <p className="p-8 text-center text-sm text-[var(--ink-soft)]">No messages yet.</p> : (
             <div className="divide-y divide-[var(--line)]">
               {enquiries.map((e) => (
@@ -65,7 +65,7 @@ export default function AdminReviewsPage() {
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="font-semibold text-sm text-[var(--ink)]">{e.name}</span>
                     <span className="text-xs text-gray-400">{e.email}{e.phone ? ` · ${e.phone}` : ''}</span>
-                    {e.subject && <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--surface-2)] text-gray-600">{e.subject}</span>}
+                    {e.subject && <span className="text-xs px-2 py-0.5  bg-[var(--surface-2)] text-gray-600">{e.subject}</span>}
                   </div>
                   <p className="text-sm text-gray-600">{e.message}</p>
                   <p className="text-xs text-gray-400 mt-1">{new Date(e.createdAt).toLocaleString('en-IN')}</p>

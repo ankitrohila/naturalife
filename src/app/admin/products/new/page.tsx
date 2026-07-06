@@ -93,50 +93,50 @@ export default function AdminProductNewPage() {
             <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
             <p className="text-sm text-gray-500 mt-1">Fill in the details below to create a new product</p>
           </div>
-          <Link href="/admin/products" className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">← Back</Link>
+          <Link href="/admin/products" className="px-4 py-2 border border-gray-300 rounded-none text-sm text-gray-600 hover:bg-gray-50">← Back</Link>
         </div>
 
-        {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">{error}</div>}
+        {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-none text-sm text-red-600">{error}</div>}
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main form */}
           <div className="lg:col-span-2 space-y-5">
             {/* Basic Info */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-6">
               <h2 className="font-semibold text-gray-800 mb-4">Basic Information</h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Product Name *</label>
                   <input type="text" value={form.name} onChange={(e) => setForm(f => ({ ...f, name: e.target.value, slug: autoSlug(e.target.value) }))}
-                    placeholder="e.g. NATURALIFE DOORMAT BB-11" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" />
+                    placeholder="e.g. NATURALIFE DOORMAT BB-11" className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm focus:outline-none" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">URL Slug</label>
                   <input type="text" value={form.slug} onChange={(e) => setForm(f => ({ ...f, slug: e.target.value }))}
-                    placeholder="auto-generated from name" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none font-mono text-xs" />
+                    placeholder="auto-generated from name" className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm focus:outline-none font-mono text-xs" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Short Description</label>
                   <input type="text" value={form.shortDesc} onChange={(e) => setForm(f => ({ ...f, shortDesc: e.target.value }))}
-                    placeholder="Super Soft Feel. Water Absorbent. Anti Skid." className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" />
+                    placeholder="Super Soft Feel. Water Absorbent. Anti Skid." className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm focus:outline-none" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Full Description</label>
                   <textarea rows={4} value={form.description} onChange={(e) => setForm(f => ({ ...f, description: e.target.value }))}
-                    placeholder="Detailed product description..." className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none resize-none" />
+                    placeholder="Detailed product description..." className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm focus:outline-none resize-none" />
                 </div>
               </div>
             </div>
 
             {/* Variants */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-800">Variants & Pricing</h2>
                 <button onClick={addVariant} className="text-xs px-3 py-1 rounded text-white" style={{ backgroundColor: 'var(--green)' }}>+ Add Variant</button>
               </div>
               <div className="space-y-4">
                 {variants.map((v, i) => (
-                  <div key={i} className="p-4 border border-gray-100 rounded-lg bg-gray-50">
+                  <div key={i} className="p-4 border border-gray-100 rounded-none bg-gray-50">
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-xs font-semibold text-gray-600">Variant #{i + 1}</span>
                       {variants.length > 1 && (
@@ -168,13 +168,13 @@ export default function AdminProductNewPage() {
           {/* Right sidebar */}
           <div className="space-y-5">
             {/* Category & Status */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5">
               <h2 className="font-semibold text-gray-800 mb-4">Settings</h2>
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Category *</label>
                   <select value={form.categoryId} onChange={(e) => setForm(f => ({ ...f, categoryId: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm">
                     <option value="">Select category</option>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -182,7 +182,7 @@ export default function AdminProductNewPage() {
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Status</label>
                   <select value={form.status} onChange={(e) => setForm(f => ({ ...f, status: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm">
                     <option value="ACTIVE">Active</option>
                     <option value="DRAFT">Draft</option>
                     <option value="ARCHIVED">Archived</option>
@@ -191,7 +191,7 @@ export default function AdminProductNewPage() {
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">GST Rate (%)</label>
                   <select value={form.gstRate} onChange={(e) => setForm(f => ({ ...f, gstRate: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    className="w-full border border-gray-300 rounded-none px-3 py-2 text-sm">
                     <option value="5">5%</option>
                     <option value="12">12%</option>
                     <option value="18">18%</option>
@@ -211,9 +211,9 @@ export default function AdminProductNewPage() {
             </div>
 
             {/* Image */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5">
               <h2 className="font-semibold text-gray-800 mb-3">Product Image</h2>
-              <div className="mb-3 rounded-lg overflow-hidden bg-gray-50 aspect-square">
+              <div className="mb-3 rounded-none overflow-hidden bg-gray-50 aspect-square">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={customImgUrl || selectedImg} alt="Preview" className="w-full h-full object-cover" />
               </div>
@@ -234,7 +234,7 @@ export default function AdminProductNewPage() {
             </div>
 
             {/* Save */}
-            <button onClick={handleSave} disabled={saving} className="w-full py-3 text-white rounded-xl font-semibold text-sm disabled:opacity-60 transition-opacity"
+            <button onClick={handleSave} disabled={saving} className="w-full py-3 text-white rounded-none font-semibold text-sm disabled:opacity-60 transition-opacity"
               style={{ backgroundColor: 'var(--green)' }}>
               {saving ? 'Creating...' : 'Create Product'}
             </button>

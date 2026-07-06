@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import twilio from 'twilio'
 import { prisma } from './prisma'
 
 const transporter = nodemailer.createTransport({
@@ -10,6 +11,41 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 })
+
+// Twilio WhatsApp is only usable with a real Account SID (format "ACxxxxxxxx...").
+// With missing/placeholder credentials we run in "simulated" mode: the message
+// is logged to NotificationLog instead of actually being sent.
+const TWILIO_SID = process.env.TWILIO_ACCOUNT_SID ?? ''
+const twilioConfigured = /^AC[a-f0-9]{32}$/i.test(TWILIO_SID) && !!process.env.TWILIO_AUTH_TOKEN && !!process.env.TWILIO_WHATSAPP_FROM
+const twilioClient = twilioConfigured ? twilio(TWILIO_SID, process.env.TWILIO_AUTH_TOKEN!) : null
+
+export async function sendWhatsAppMessage(to: string, body: string): Promise<{ sent: boolean; simulated: boolean; error?: string }> {
+  const toFormatted = to.startsWith('whatsapp:') ? to : `whatsapp:${to.startsWith('+') ? to : `+${to}`}`
+
+  if (!twilioClient) {
+    await prisma.notificationLog.create({
+      data: { event: 'WHATSAPP_MESSAGE', channel: 'WHATSAPP', recipient: to, status: 'SIMULATED', preview: body.slice(0, 500) },
+    })
+    return { sent: false, simulated: true }
+  }
+
+  try {
+    await twilioClient.messages.create({
+      from: process.env.TWILIO_WHATSAPP_FROM!.startsWith('whatsapp:') ? process.env.TWILIO_WHATSAPP_FROM! : `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
+      to: toFormatted,
+      body,
+    })
+    await prisma.notificationLog.create({
+      data: { event: 'WHATSAPP_MESSAGE', channel: 'WHATSAPP', recipient: to, status: 'SENT', preview: body.slice(0, 500) },
+    })
+    return { sent: true, simulated: false }
+  } catch (err: any) {
+    await prisma.notificationLog.create({
+      data: { event: 'WHATSAPP_MESSAGE', channel: 'WHATSAPP', recipient: to, status: 'FAILED', preview: err?.message?.slice(0, 500) ?? 'Unknown error' },
+    })
+    return { sent: false, simulated: false, error: err?.message }
+  }
+}
 
 interface NotificationPayload {
   event: 'ORDER_PLACED' | 'ORDER_DISPATCHED' | 'ORDER_DELIVERED' | 'RETURN_REQUESTED' | 'REFUND_DONE'
@@ -160,6 +196,12 @@ export async function sendNotification(payload: NotificationPayload): Promise<vo
         preview: `Order ${order.orderNumber} email sent`,
       },
     })
+
+    // Send WhatsApp invoice notification
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3005'
+    const invoiceUrl = `${baseUrl}/api/invoices/${order.id}`
+    const waMessage = `${formatWhatsAppMessage('ORDER_PLACED', order)}\n\nDownload your invoice: ${invoiceUrl}`
+    await sendWhatsAppMessage(finalPhone, waMessage)
   }
 
   // Add similar handlers for other events...

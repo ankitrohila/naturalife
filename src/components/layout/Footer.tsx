@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useLanguage } from '@/components/providers/LanguageProvider'
+import { translateCatalogTerm } from '@/lib/i18n/translations'
 
 const ICON = 'w-4 h-4 shrink-0'
 
@@ -18,6 +20,7 @@ function Clock() {
 }
 
 export function Footer() {
+  const { t, lang } = useLanguage()
   return (
     <footer className="bg-[var(--surface)] text-[var(--ink-soft)] border-t border-[var(--line)]">
       <div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg, transparent, var(--green-light), var(--green), var(--green-light), transparent)' }} />
@@ -29,12 +32,12 @@ export function Footer() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/logo/naturalife-logo.png" alt="Naturalife Homecare" className="h-11 w-auto object-contain mb-4" />
             <p className="text-sm leading-relaxed mb-5">
-              Making homes a living one since 2012. Quality microfiber doormats, rugs, and home textiles crafted for modern Indian homes.
+              {t('footer_tagline')}
             </p>
             <div className="flex gap-2.5">
               {['Facebook', 'Instagram', 'YouTube', 'WhatsApp'].map((social) => (
                 <Link key={social} href="#" aria-label={social}
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--green-dark)] text-xs font-semibold bg-[var(--green-light)] hover:bg-[var(--green)] hover:text-white transition-colors">
+                  className="w-9 h-9 flex items-center justify-center text-[var(--green-dark)] text-xs font-semibold bg-[var(--green-light)] hover:bg-[var(--green)] hover:text-white transition-colors">
                   {social[0]}
                 </Link>
               ))}
@@ -43,16 +46,16 @@ export function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">Shop</h4>
+            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">{t('footer_shop_heading')}</h4>
             <ul className="space-y-2.5">
               {[
-                ['Doormats', '/shop?category=doormats'],
-                ['Rugs & Dhurries', '/shop?category=rugs'],
-                ['Bath Mats', '/shop?category=mats'],
-                ['Cushion Covers', '/shop?category=cushion-covers'],
-                ['Table Mats', '/shop?category=table-mats'],
-                ['Stools', '/shop?category=stools'],
-                ['On Sale', '/shop?onSale=true'],
+                [translateCatalogTerm('Doormats', lang), '/shop?category=doormats'],
+                [translateCatalogTerm('Rugs & Dhurries', lang), '/shop?category=rugs'],
+                [translateCatalogTerm('Bath Mats', lang), '/shop?category=mats'],
+                [translateCatalogTerm('Cushion Covers', lang), '/shop?category=cushion-covers'],
+                [translateCatalogTerm('Table Mats', lang), '/shop?category=table-mats'],
+                [translateCatalogTerm('Stools', lang), '/shop?category=stools'],
+                [t('shop_on_sale'), '/shop?onSale=true'],
               ].map(([label, href]) => (
                 <li key={label}>
                   <Link href={href} className="text-sm hover:text-[var(--green)] transition-colors">{label}</Link>
@@ -63,16 +66,17 @@ export function Footer() {
 
           {/* Info */}
           <div>
-            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">Information</h4>
+            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">{t('footer_information')}</h4>
             <ul className="space-y-2.5">
               {[
-                ['About Us', '/about'],
-                ['Contact Us', '/contact'],
-                ['Wholesale Enquiry', '/contact'],
-                ['Privacy Policy', '/pages/privacy-policy'],
-                ['Terms & Conditions', '/pages/terms-and-conditions'],
-                ['Return & Refund', '/pages/return-refund-policy'],
-                ['Shipping Policy', '/pages/shipping-policy'],
+                [t('footer_about_us'), '/about'],
+                [t('footer_contact_us'), '/contact'],
+                [t('footer_custom_design'), '/custom-design'],
+                [t('footer_wholesale'), '/contact'],
+                [t('footer_privacy'), '/pages/privacy-policy'],
+                [t('footer_terms'), '/pages/terms-and-conditions'],
+                [t('footer_returns'), '/pages/return-refund-policy'],
+                [t('footer_shipping'), '/pages/shipping-policy'],
               ].map(([label, href]) => (
                 <li key={label}>
                   <Link href={href} className="text-sm hover:text-[var(--green)] transition-colors">{label}</Link>
@@ -83,7 +87,7 @@ export function Footer() {
 
           {/* Contact — the one place icons live */}
           <div>
-            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">Contact Us</h4>
+            <h4 className="font-semibold text-[var(--ink)] mb-4 text-sm tracking-wide uppercase">{t('footer_contact_heading')}</h4>
             <ul className="space-y-4 text-sm">
               <li className="flex gap-3 items-start"><span className="text-[var(--green)] mt-0.5"><Pin /></span><span>Naturalife Homecare, India</span></li>
               <li className="flex gap-3 items-center"><span className="text-[var(--green)]"><Phone /></span><a href="tel:+919876543210" className="hover:text-[var(--green)] transition-colors">+91 98765 43210</a></li>
@@ -91,7 +95,7 @@ export function Footer() {
               <li className="flex gap-3 items-center"><span className="text-[var(--green)]"><Clock /></span><span>Mon–Sat: 9am – 6pm</span></li>
             </ul>
             <div className="mt-6">
-              <p className="text-xs text-[var(--ink-soft)] mb-2">Accepted Payments</p>
+              <p className="text-xs text-[var(--ink-soft)] mb-2">{t('footer_accepted_payments')}</p>
               <div className="flex gap-2 flex-wrap text-xs">
                 {['UPI', 'GPay', 'Visa', 'MC', 'COD'].map((p) => (
                   <span key={p} className="px-2 py-0.5 rounded border border-[var(--line)] text-[var(--ink-soft)]">{p}</span>
@@ -104,8 +108,8 @@ export function Footer() {
 
       <div className="border-t border-[var(--line)] py-4 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-[var(--ink-soft)]">
-          <p>© 2025 Naturalife Homecare. All rights reserved.</p>
-          <p>Designed in India &nbsp;|&nbsp; GST registered business</p>
+          <p>© 2025 Naturalife Homecare. {t('footer_rights')}</p>
+          <p>{t('footer_designed_in_india')} &nbsp;|&nbsp; {t('footer_gst')}</p>
         </div>
       </div>
     </footer>

@@ -16,7 +16,7 @@ export default auth((req) => {
   }
 
   const isAdmin = adminPaths.some((p) => pathname.startsWith(p))
-  if (isAdmin && session?.user && (session.user as any).role !== 'ADMIN') {
+  if (isAdmin && session?.user && !['ADMIN', 'MASTER_ADMIN'].includes((session.user as any).role)) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 

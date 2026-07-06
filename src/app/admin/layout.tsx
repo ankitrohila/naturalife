@@ -4,7 +4,7 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
-  if (!session?.user || (session.user as any).role !== 'ADMIN') redirect('/login')
+  if (!session?.user || !['ADMIN', 'MASTER_ADMIN'].includes((session.user as any).role)) redirect('/login')
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: 'var(--surface)' }}>

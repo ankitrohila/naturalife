@@ -72,7 +72,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -119,6 +119,9 @@
 
 /* Naturalife — Apple-clean palette: white base, green accents, black/white text */
 :root {
+  /* This site only ships a light theme — pin color-scheme so browsers/OS-level
+     "force dark mode" features don't auto-invert or re-tint our colors. */
+  color-scheme: light;
   --green: #2E7D32;
   --green-dark: #1B5E20;
   --green-light: #E8F3E9;
@@ -139,8 +142,8 @@
   --charcoal: var(--ink);
   --cream: var(--surface);
   --light-green: var(--green-light);
-  --font-display: var(--font-inter), system-ui, sans-serif;
-  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-outfit), system-ui, sans-serif;
+  --font-body: var(--font-outfit), system-ui, sans-serif;
 }
 
 @layer base {
@@ -148,7 +151,7 @@
     @apply border-border outline-ring/50;
   }
   html, body {
-    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
   }
   body {
     @apply bg-background text-foreground;
@@ -158,7 +161,7 @@
     letter-spacing: -0.01em;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-inter), system-ui, sans-serif;
+    font-family: var(--font-outfit), system-ui, sans-serif;
     color: var(--ink);
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -210,6 +213,34 @@
 .animate-kenBurns {
   animation: kenBurns 8s ease-in-out infinite alternate;
 }
+
+/* ── Premium hero slider (revolution-style) ── */
+@keyframes heroZoom {
+  0%   { transform: scale(1.03) translate3d(0,0,0); }
+  100% { transform: scale(1.16) translate3d(-1.5%, -1.2%, 0); }
+}
+.hero-zoom { animation: heroZoom 7.5s ease-out both; }
+
+/* masked line reveal for headline */
+@keyframes heroLineUp {
+  0%   { transform: translateY(115%); }
+  100% { transform: translateY(0); }
+}
+.hero-line { animation: heroLineUp 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* rise + fade for kicker / button */
+@keyframes heroRise {
+  0%   { opacity: 0; transform: translateY(26px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.hero-rise { animation: heroRise 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* progress bar fill */
+@keyframes heroProgress {
+  0%   { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+.hero-progress { transform-origin: left; animation: heroProgress linear both; }
 
 /* Product card hover lift */
 .product-card {

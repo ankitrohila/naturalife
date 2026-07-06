@@ -111,7 +111,7 @@ function LoginForm() {
           </h1>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+        <div className="bg-white rounded-none shadow-xl p-8 border border-gray-100">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)', fontFamily: 'var(--font-display)' }}>
               Welcome Back
@@ -120,7 +120,7 @@ function LoginForm() {
           </div>
 
           {/* Admin/Customer Toggle */}
-          <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-lg">
+          <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-none">
             <button
               type="button"
               onClick={() => {
@@ -128,7 +128,7 @@ function LoginForm() {
                 setEmail('admin@naturalife.in')
                 setError('')
               }}
-              className={`flex-1 py-2 px-4 rounded-md font-medium text-sm transition-all ${
+              className={`flex-1 py-2 px-4 rounded-none font-medium text-sm transition-all ${
                 isAdmin ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'
               }`}
             >
@@ -141,7 +141,7 @@ function LoginForm() {
                 setEmail('')
                 setError('')
               }}
-              className={`flex-1 py-2 px-4 rounded-md font-medium text-sm transition-all ${
+              className={`flex-1 py-2 px-4 rounded-none font-medium text-sm transition-all ${
                 !isAdmin ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'
               }`}
             >
@@ -150,7 +150,7 @@ function LoginForm() {
           </div>
 
           {isAdmin && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6 text-xs">
+            <div className="bg-blue-50 border border-blue-200 rounded-none p-3 mb-6 text-xs">
               <p className="text-blue-900">
                 <strong>Demo Admin Account:</strong><br />
                 Email: admin@naturalife.in<br />
@@ -167,7 +167,7 @@ function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full border-2 border-gray-200 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition-colors"
                 placeholder="your@email.com"
                 style={{ fontFamily: 'var(--font-body)' }}
               />
@@ -180,14 +180,14 @@ function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full border-2 border-gray-200 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition-colors"
                 placeholder="Enter your password"
                 style={{ fontFamily: 'var(--font-body)' }}
               />
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+              <div className="bg-red-50 border border-red-200 rounded-none p-3">
                 <p className="text-sm text-red-800" style={{ color: '#9B1D20' }}>
                   {error}
                 </p>
@@ -197,7 +197,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl text-white font-bold text-base disabled:opacity-60 transition-all hover:shadow-lg transform hover:scale-105"
+              className="w-full py-3 rounded-none text-white font-bold text-base disabled:opacity-60 transition-all hover:shadow-lg transform hover:scale-105"
               style={{ backgroundColor: 'var(--green)' }}
             >
               {loading ? (

@@ -37,14 +37,14 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               </div>
               <h1 className="text-2xl font-bold text-gray-900 mt-1">Order Detail</h1>
             </div>
-            <span className="px-3 py-1.5 text-white text-sm font-semibold rounded-full" style={{ backgroundColor: statusColors[order.status] ?? '#888' }}>
+            <span className="px-3 py-1.5 text-white text-sm font-semibold" style={{ backgroundColor: statusColors[order.status] ?? '#888' }}>
               {order.status}
             </span>
           </div>
 
           {/* Progress */}
           {!['CANCELLED', 'RETURNED'].includes(order.status) && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-5">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5 mb-5">
               <div className="flex items-center justify-between relative">
                 <div className="absolute left-0 right-0 top-4 h-0.5 bg-gray-200 z-0" />
                 <div className="absolute left-0 top-4 h-0.5 bg-green-500 z-0 transition-all"
@@ -64,7 +64,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           <div className="grid lg:grid-cols-3 gap-5">
             <div className="lg:col-span-2 space-y-5">
               {/* Items */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-100">
                   <h2 className="font-semibold text-gray-800">Order Items ({order.items.length})</h2>
                 </div>
@@ -97,16 +97,16 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               </div>
 
               {/* Update Status */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5">
                 <h2 className="font-semibold text-gray-800 mb-4">Update Order Status</h2>
                 <form action={`/api/admin/orders/${id}/status`} method="post" className="flex gap-3">
-                  <select name="status" defaultValue={order.status} className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                  <select name="status" defaultValue={order.status} className="flex-1 border border-gray-300 rounded-none px-3 py-2 text-sm">
                     {['PLACED', 'CONFIRMED', 'PACKED', 'DISPATCHED', 'DELIVERED', 'CANCELLED', 'RETURNED'].map(s => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>
-                  <input type="text" name="note" placeholder="Note (e.g. AWB number)" className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm" />
-                  <button type="submit" className="px-4 py-2 text-white rounded-lg text-sm font-medium shrink-0" style={{ backgroundColor: 'var(--green)' }}>
+                  <input type="text" name="note" placeholder="Note (e.g. AWB number)" className="flex-1 border border-gray-300 rounded-none px-3 py-2 text-sm" />
+                  <button type="submit" className="px-4 py-2 text-white rounded-none text-sm font-medium shrink-0" style={{ backgroundColor: 'var(--green)' }}>
                     Update
                   </button>
                 </form>
@@ -114,7 +114,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
               {/* Status History */}
               {order.history.length > 0 && (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5">
                   <h2 className="font-semibold text-gray-800 mb-4">Status History</h2>
                   <div className="space-y-3">
                     {order.history.map((h) => (
@@ -134,7 +134,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
             {/* Right */}
             <div className="space-y-5">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5">
                 <h2 className="font-semibold text-gray-800 mb-3">Customer</h2>
                 <div className="space-y-1 text-sm">
                   <p className="font-medium text-gray-800">{order.user?.name ?? 'Guest'}</p>
@@ -149,7 +149,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="bg-white rounded-none shadow-sm border border-gray-100 p-5">
                 <h2 className="font-semibold text-gray-800 mb-3">Pricing</h2>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-gray-600"><span>Subtotal</span><span>₹{Number(order.subtotal).toLocaleString('en-IN')}</span></div>

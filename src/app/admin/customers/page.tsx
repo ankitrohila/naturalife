@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import { AdjustCoinsButton } from '@/components/admin/AdjustCoinsButton'
+import { CustomerRowActions } from '@/components/admin/CustomerRowActions'
 
 export default async function AdminCustomersPage({ searchParams }: { searchParams: Promise<{ search?: string; page?: string }> }) {
   const sp = await searchParams
@@ -42,12 +44,12 @@ export default async function AdminCustomersPage({ searchParams }: { searchParam
           </div>
 
           <form method="get" className="mb-6 flex gap-3">
-            <input type="text" name="search" defaultValue={sp.search} placeholder="Search by name, email or phone..." className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none max-w-sm" />
-            <button type="submit" className="px-4 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>Search</button>
-            {sp.search && <Link href="/admin/customers" className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">Clear</Link>}
+            <input type="text" name="search" defaultValue={sp.search} placeholder="Search by name, email or phone..." className="flex-1 border border-gray-300 rounded-none px-4 py-2 text-sm focus:outline-none max-w-sm" />
+            <button type="submit" className="px-4 py-2 text-white rounded-none text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>Search</button>
+            {sp.search && <Link href="/admin/customers" className="px-4 py-2 border border-gray-300 rounded-none text-sm text-gray-600 hover:bg-gray-50">Clear</Link>}
           </form>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
             <table className="w-full text-sm">
               <thead style={{ backgroundColor: '#F6F6F6' }}>
                 <tr>
@@ -86,9 +88,13 @@ export default async function AdminCustomersPage({ searchParams }: { searchParam
                       <td className="px-4 py-3 text-[var(--ink-soft)] font-medium">{coins} coins</td>
                       <td className="px-4 py-3 text-gray-400">{new Date(c.createdAt).toLocaleDateString('en-IN')}</td>
                       <td className="px-4 py-3">
-                        <Link href={`/admin/orders?userId=${c.id}`} className="text-xs px-2 py-1 rounded text-white" style={{ backgroundColor: 'var(--green)' }}>
-                          View Orders
-                        </Link>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Link href={`/admin/orders?userId=${c.id}`} className="text-xs px-2 py-1 rounded text-white" style={{ backgroundColor: 'var(--green)' }}>
+                            View Orders
+                          </Link>
+                          <AdjustCoinsButton userId={c.id} userName={c.name ?? c.primaryEmail} />
+                          <CustomerRowActions customer={{ id: c.id, name: c.name, primaryEmail: c.primaryEmail, primaryPhone: c.primaryPhone }} />
+                        </div>
                       </td>
                     </tr>
                   )
@@ -101,7 +107,7 @@ export default async function AdminCustomersPage({ searchParams }: { searchParam
             <div className="flex gap-2 justify-center mt-6">
               {[...Array(totalPages)].map((_, i) => (
                 <Link key={i} href={`/admin/customers?page=${i + 1}${sp.search ? `&search=${sp.search}` : ''}`}
-                  className="px-3 py-1.5 rounded-lg text-sm border transition-colors"
+                  className="px-3 py-1.5 rounded-none text-sm border transition-colors"
                   style={page === i + 1 ? { backgroundColor: 'var(--green)', color: 'white', borderColor: 'var(--green)' } : { borderColor: '#d1d5db' }}>
                   {i + 1}
                 </Link>

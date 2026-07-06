@@ -54,6 +54,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.role = (user as any).role
         token.preferredLanguage = (user as any).preferredLanguage
       }
+      // Re-check emailVerified and role on every session read so changes (e.g. verification, role promotion) take effect immediately
+      if (token.id) {
+        const dbUser = await prisma.user.findUnique({ where: { id: token.id as string }, select: { emailVerified: true, role: true } })
+        token.emailVerified = dbUser?.emailVerified ?? null
+        if (dbUser?.role) token.role = dbUser.role
+      }
       return token
     },
     async session({ session, token }) {
@@ -61,6 +67,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string
         ;(session.user as any).role = token.role
         ;(session.user as any).preferredLanguage = token.preferredLanguage
+        ;(session.user as any).emailVerified = token.emailVerified
       }
       return session
     },

@@ -19,32 +19,32 @@ export default async function AdminDistributorsPage() {
               <h1 className="text-2xl font-bold text-gray-900">Distributors</h1>
               <p className="text-sm text-gray-500 mt-1">{distributors.length} active distributors across India</p>
             </div>
-            <Link href="/admin/distributors/new" className="px-4 py-2 text-white rounded-lg text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
+            <Link href="/admin/distributors/new" className="px-4 py-2 text-white rounded-none text-sm font-medium" style={{ backgroundColor: 'var(--green)' }}>
               + Add Distributor
             </Link>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-none p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-500">Total</p>
               <p className="text-2xl font-bold mt-1" style={{ color: 'var(--green)' }}>{distributors.length}</p>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-none p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-500">Active</p>
               <p className="text-2xl font-bold mt-1" style={{ color: 'var(--green)' }}>{distributors.filter(d => d.isActive).length}</p>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-none p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-500">States Covered</p>
               <p className="text-2xl font-bold mt-1" style={{ color: 'var(--green)' }}>{new Set(distributors.flatMap(d => d.statePincodes.map(p => p.stateCode))).size}</p>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-none p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-500">Total Orders</p>
               <p className="text-2xl font-bold mt-1" style={{ color: 'var(--green)' }}>{distributors.reduce((s, d) => s + d._count.orders, 0)}</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
             <table className="w-full text-sm">
               <thead style={{ backgroundColor: '#F6F6F6' }}>
                 <tr>
@@ -72,14 +72,14 @@ export default async function AdminDistributorsPage() {
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-1">
                           {states.map(s => (
-                            <span key={s} className="text-xs px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: 'var(--green)' }}>{s}</span>
+                            <span key={s} className="text-xs px-2 py-0.5  text-white" style={{ backgroundColor: 'var(--green)' }}>{s}</span>
                           ))}
                           {d.statePincodes.length > 3 && <span className="text-xs text-gray-400">+{d.statePincodes.length - 3}</span>}
                         </div>
                       </td>
                       <td className="px-4 py-3 font-semibold" style={{ color: 'var(--green)' }}>{d._count.orders}</td>
                       <td className="px-4 py-3">
-                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${d.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                        <span className={`text-xs px-2 py-1  font-medium ${d.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
                           {d.isActive ? 'Active' : 'Inactive'}
                         </span>
                       </td>
