@@ -23,6 +23,7 @@ interface InvoiceData {
   companyGST: string
   companyAddress: string
   companyPhone: string
+  logoUrl: string
 }
 
 export async function generateInvoiceHTML(order: any): Promise<string> {
@@ -51,6 +52,7 @@ export async function generateInvoiceHTML(order: any): Promise<string> {
     companyGST: '29AABCU9603R1Z0',
     companyAddress: '123 Craft Lane, Jaipur, Rajasthan 302001',
     companyPhone: '+91 98765 43210',
+    logoUrl: `${process.env.NEXTAUTH_URL || 'http://localhost:3005'}/images/logo/naturalife-logo.png`,
   }
 
   return generateInvoiceTemplate(invoiceData)
@@ -204,7 +206,7 @@ function generateInvoiceTemplate(data: InvoiceData): string {
     <!-- Header -->
     <div class="header">
       <div class="company-info">
-        <h1 style="color: #2E7D32;">NATURALIFE</h1>
+        <img src="${data.logoUrl}" alt="Naturalife" style="height: 48px; width: auto; margin-bottom: 8px;" />
         <p><strong>GST No:</strong> ${data.companyGST}</p>
         <p><strong>Address:</strong> ${data.companyAddress}</p>
         <p><strong>Phone:</strong> ${data.companyPhone}</p>
