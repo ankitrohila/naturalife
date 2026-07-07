@@ -9,9 +9,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  // Don't let lint/type strictness block a production deploy — the code
-  // type-checks locally; this guards against Vercel-specific CI failures.
-  eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   images: {
     remotePatterns: [
