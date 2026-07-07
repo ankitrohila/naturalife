@@ -1,6 +1,6 @@
-import { auth } from '@/auth'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
 const protectedPaths = ['/account', '/admin', '/distributor', '/checkout']
 const adminPaths = ['/admin']
@@ -44,33 +44,33 @@ function rateLimit(req: NextRequest): NextResponse | null {
   return null
 }
 
-export default auth((req) => {
-  const rateLimited = rateLimit(req as unknown as NextRequest)
+export default async function middleware(req: NextRequest) {
+  const rateLimited = rateLimit(req)
   if (rateLimited) return rateLimited
 
   const { pathname } = req.nextUrl
-  const session = req.auth
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET })
 
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
-  if (isProtected && !session) {
+  if (isProtected && !token) {
     return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, req.url))
   }
 
   const isAdmin = adminPaths.some((p) => pathname.startsWith(p))
-  if (isAdmin && session?.user && !['ADMIN', 'MASTER_ADMIN'].includes((session.user as any).role)) {
+  if (isAdmin && token && !['ADMIN', 'MASTER_ADMIN'].includes(token.role as string)) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
   const isDistributor = distributorPaths.some((p) => pathname.startsWith(p))
-  if (isDistributor && session?.user) {
-    const role = (session.user as any).role
+  if (isDistributor && token) {
+    const role = token.role as string
     if (role !== 'DISTRIBUTOR' && role !== 'ADMIN') {
       return NextResponse.redirect(new URL('/', req.url))
     }
   }
 
   return NextResponse.next()
-})
+}
 
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|images|icons).*)'],
