@@ -161,118 +161,94 @@ async function main() {
 
   console.log('✓ Attributes and values created')
 
-  // Sample Products
-  const sampleProducts = [
-    {
-      name: 'Coir Rope Doormat',
-      slug: 'coir-rope-doormat',
-      sku: 'DM-001',
-      shortDesc: 'Eco-friendly handwoven coir rope doormat with natural finish',
-      description: 'Made from 100% natural coir fiber, this handwoven doormat is perfect for your entrance. Durable, eco-friendly, and naturally anti-bacterial. Ideal for trapping dirt and moisture from footwear.',
-      categoryId: categories['doormats'],
-      isFeatured: true,
-      isOnSale: false,
-      status: ProductStatus.ACTIVE,
-      material: Material.JUTE,
-      taxRate: 12,
-      hsnCode: '5705',
-      seoTitle: 'Coir Rope Doormat - Natural Handwoven | Naturalife',
-      seoDesc: 'Buy premium quality handwoven coir rope doormat. Eco-friendly, durable, and stylish. Free shipping above ₹1000.',
-    },
-    {
-      name: 'Jaipur Block Print Dhurrie',
-      slug: 'jaipur-block-print-dhurrie',
-      sku: 'RG-001',
-      shortDesc: 'Traditional Jaipur hand block printed cotton dhurrie',
-      description: 'Handcrafted by skilled artisans in Jaipur, this flat-weave dhurrie features authentic block print patterns. Made from 100% cotton, it is lightweight, washable, and adds a touch of traditional Indian art to any room.',
-      categoryId: categories['dhurries'],
-      isFeatured: true,
-      isOnSale: true,
-      status: ProductStatus.ACTIVE,
-      material: Material.COTTON,
-      taxRate: 12,
-      hsnCode: '5702',
-      seoTitle: 'Jaipur Block Print Dhurrie - Handcrafted Cotton Rug | Naturalife',
-      seoDesc: 'Shop authentic Jaipur hand block printed cotton dhurrie rugs. Traditional craftsmanship, modern designs.',
-    },
-    {
-      name: 'Handwoven Wool Carpet',
-      slug: 'handwoven-wool-carpet',
-      sku: 'CP-001',
-      shortDesc: 'Luxurious handwoven pure wool carpet with geometric patterns',
-      description: 'This exquisite carpet is hand-woven by master craftsmen using pure wool. Featuring timeless geometric patterns inspired by traditional Indian art, it brings warmth and luxury to any living space.',
-      categoryId: categories['carpets'],
-      isFeatured: true,
-      isOnSale: false,
-      status: ProductStatus.ACTIVE,
-      material: Material.WOOL,
-      taxRate: 12,
-      hsnCode: '5701',
-      seoTitle: 'Handwoven Wool Carpet - Pure Wool Geometric Design | Naturalife',
-      seoDesc: 'Buy premium handwoven pure wool carpets with traditional geometric patterns. Free delivery across India.',
-    },
-    {
-      name: 'Anti-Fatigue Kitchen Chef Mat',
-      slug: 'anti-fatigue-kitchen-chef-mat',
-      sku: 'CM-001',
-      shortDesc: 'Ergonomic anti-fatigue mat for kitchen, office and standing desks',
-      description: 'Designed for long hours of standing, this premium anti-fatigue mat reduces stress on your feet, legs and back. Non-slip bottom, easy to clean, and comes in multiple sizes to fit your kitchen.',
-      categoryId: categories['chef-mats'],
-      isFeatured: false,
-      isOnSale: true,
-      status: ProductStatus.ACTIVE,
-      material: Material.RUBBER,
-      taxRate: 18,
-      hsnCode: '4016',
-      seoTitle: 'Anti-Fatigue Kitchen Chef Mat - Non-Slip | Naturalife',
-      seoDesc: 'Premium anti-fatigue kitchen mats. Ergonomic design reduces fatigue. Non-slip, easy to clean.',
-    },
-    {
-      name: 'Bohemian Cotton Cushion Cover',
-      slug: 'bohemian-cotton-cushion-cover',
-      sku: 'CC-001',
-      shortDesc: 'Handcrafted bohemian style cotton cushion cover with embroidery',
-      description: 'Add a touch of bohemian charm to your living space with these hand-embroidered cotton cushion covers. Each piece is unique, showcasing the skill of Indian artisans.',
-      categoryId: categories['cushion-covers'],
-      isFeatured: true,
-      isOnSale: false,
-      status: ProductStatus.ACTIVE,
-      material: Material.COTTON,
-      taxRate: 5,
-      hsnCode: '6304',
-      seoTitle: 'Bohemian Cotton Cushion Cover - Hand Embroidered | Naturalife',
-      seoDesc: 'Handcrafted bohemian style cushion covers with Indian embroidery. Pack of 2 and 5 available.',
-    },
-    {
-      name: 'Handloom Cotton Table Runner',
-      slug: 'handloom-cotton-table-runner',
-      sku: 'TM-001',
-      shortDesc: 'Hand-woven cotton table runner with traditional border design',
-      description: 'Elevate your dining table with this handloom woven cotton table runner. Features a classic Indian border pattern in vibrant colors. Machine washable and fade-resistant.',
-      categoryId: categories['table-mats'],
-      isFeatured: false,
-      isOnSale: false,
-      status: ProductStatus.ACTIVE,
-      material: Material.COTTON,
-      taxRate: 5,
-      hsnCode: '6304',
-      seoTitle: 'Handloom Cotton Table Runner - Traditional Border Design | Naturalife',
-      seoDesc: 'Beautiful handloom cotton table runners. Traditional Indian border patterns. Set of 6 placemats available.',
-    },
+  // Product images from public/images/products
+  const productImages = [
+    'p-sq-1.jpg','p-sq-2.jpg','p-sq-3.jpg','p-sq-4.jpg','p-sq-5.jpg',
+    'p-sq-8.jpg','p-sq-10.jpg','p-sq-12.jpg','p-sq-13.jpg','p-sq-14.jpg',
+    'p-sq-15.jpg','p-sq-17.jpg','p-sq-18.jpg','p-sq-19.jpg','p-sq-21.jpg',
+    'p-sq-22.jpg','p-sq-23.jpg','p-sq-24.jpg','p-sq-25.jpg','p-sq-26.jpg',
+    'p-sq-72.jpg','p-sq-73.jpg','p-sq-77.jpg','p-blkgre.jpg','p-brown.jpg',
   ]
 
-  for (const productData of sampleProducts) {
+  // Sample Products — 25 products across all categories
+  const sampleProducts = [
+    // Doormats (3)
+    { name: 'Coir Rope Doormat', slug: 'coir-rope-doormat', sku: 'DM-001', shortDesc: 'Eco-friendly handwoven coir rope doormat with natural finish', description: 'Made from 100% natural coir fiber, this handwoven doormat is perfect for your entrance. Durable, eco-friendly, and naturally anti-bacterial.', categoryId: categories['doormats'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.JUTE, taxRate: 12, hsnCode: '5705', seoTitle: 'Coir Rope Doormat | Naturalife', seoDesc: 'Premium handwoven coir rope doormat.' },
+    { name: 'Printed Welcome Doormat', slug: 'printed-welcome-doormat', sku: 'DM-002', shortDesc: 'Colourful printed coir doormat with welcome message', description: 'Brighten your entryway with this vibrant printed coir doormat. Features a cheerful "Welcome" design and sturdy PVC backing for durability.', categoryId: categories['doormats'], isFeatured: false, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.JUTE, taxRate: 12, hsnCode: '5705', seoTitle: 'Printed Welcome Doormat | Naturalife', seoDesc: 'Colourful printed coir doormat with PVC backing.' },
+    { name: 'Rubber Backed Outdoor Mat', slug: 'rubber-backed-outdoor-mat', sku: 'DM-003', shortDesc: 'Heavy-duty rubber-backed outdoor doormat', description: 'Weather-resistant outdoor doormat with heavy-duty rubber backing. Excellent at trapping mud and dirt. Easy to clean with a garden hose.', categoryId: categories['doormats'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.RUBBER, taxRate: 18, hsnCode: '4016', seoTitle: 'Rubber Backed Outdoor Mat | Naturalife', seoDesc: 'Heavy-duty weather-resistant outdoor doormat.' },
+
+    // Rugs (3)
+    { name: 'Handknotted Persian Rug', slug: 'handknotted-persian-rug', sku: 'RG-002', shortDesc: 'Intricately handknotted wool rug with Persian motifs', description: 'A timeless masterpiece handknotted by skilled artisans. Features classic Persian motifs in rich jewel tones. Each rug takes months to complete.', categoryId: categories['rugs'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.WOOL, taxRate: 12, hsnCode: '5701', seoTitle: 'Handknotted Persian Rug | Naturalife', seoDesc: 'Premium handknotted Persian wool rug.' },
+    { name: 'Modern Geometric Area Rug', slug: 'modern-geometric-area-rug', sku: 'RG-003', shortDesc: 'Contemporary geometric pattern area rug', description: 'Add a modern touch to your space with this contemporary area rug. Features bold geometric patterns in neutral tones that complement any decor.', categoryId: categories['rugs'], isFeatured: true, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.POLYESTER, taxRate: 12, hsnCode: '5703', seoTitle: 'Modern Geometric Area Rug | Naturalife', seoDesc: 'Contemporary geometric pattern area rug.' },
+    { name: 'Vintage Overdyed Rug', slug: 'vintage-overdyed-rug', sku: 'RG-004', shortDesc: 'Vintage-style overdyed rug with faded charm', description: 'This overdyed rug combines vintage charm with modern sensibility. The faded, distressed look adds character and warmth to living rooms and bedrooms.', categoryId: categories['rugs'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 12, hsnCode: '5702', seoTitle: 'Vintage Overdyed Rug | Naturalife', seoDesc: 'Vintage-style overdyed rug.' },
+
+    // Dhurries (3)
+    { name: 'Jaipur Block Print Dhurrie', slug: 'jaipur-block-print-dhurrie', sku: 'RG-001', shortDesc: 'Traditional Jaipur hand block printed cotton dhurrie', description: 'Handcrafted by skilled artisans in Jaipur with authentic block print patterns. Lightweight, washable, and full of traditional Indian art.', categoryId: categories['dhurries'], isFeatured: true, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 12, hsnCode: '5702', seoTitle: 'Jaipur Block Print Dhurrie | Naturalife', seoDesc: 'Authentic Jaipur hand block printed cotton dhurrie.' },
+    { name: 'Striped Cotton Dhurrie', slug: 'striped-cotton-dhurrie', sku: 'DH-002', shortDesc: 'Handwoven striped cotton dhurrie in earthy tones', description: 'A classic striped dhurrie handwoven from pure cotton. Earthy tones of terracotta, indigo and cream bring warmth to any room. Reversible design.', categoryId: categories['dhurries'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 12, hsnCode: '5702', seoTitle: 'Striped Cotton Dhurrie | Naturalife', seoDesc: 'Handwoven striped cotton dhurrie.' },
+    { name: 'Rajasthani Mirror Work Dhurrie', slug: 'rajasthani-mirror-dhurrie', sku: 'DH-003', shortDesc: 'Vibrant Rajasthani dhurrie with traditional mirror work', description: 'This stunning dhurrie showcases the famous mirror work (shisha) embroidery of Rajasthan. Vibrant colours and sparkling mirrors create a show-stopping floor piece.', categoryId: categories['dhurries'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 12, hsnCode: '5702', seoTitle: 'Rajasthani Mirror Work Dhurrie | Naturalife', seoDesc: 'Vibrant Rajasthani mirror work dhurrie.' },
+
+    // Carpets (3)
+    { name: 'Handwoven Wool Carpet', slug: 'handwoven-wool-carpet', sku: 'CP-001', shortDesc: 'Luxurious handwoven pure wool carpet with geometric patterns', description: 'Hand-woven by master craftsmen using pure wool. Timeless geometric patterns inspired by traditional Indian art.', categoryId: categories['carpets'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.WOOL, taxRate: 12, hsnCode: '5701', seoTitle: 'Handwoven Wool Carpet | Naturalife', seoDesc: 'Premium handwoven pure wool carpet.' },
+    { name: 'Silk Touch Luxury Carpet', slug: 'silk-touch-luxury-carpet', sku: 'CP-002', shortDesc: 'Ultra-soft silk-blend luxury carpet for living rooms', description: 'Experience the ultimate in luxury with this silk-blend carpet. Incredibly soft underfoot with a subtle sheen that adds elegance to any room.', categoryId: categories['carpets'], isFeatured: true, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.WOOL, taxRate: 12, hsnCode: '5701', seoTitle: 'Silk Touch Luxury Carpet | Naturalife', seoDesc: 'Ultra-soft silk-blend luxury carpet.' },
+    { name: 'Shag Pile Bedroom Carpet', slug: 'shag-pile-bedroom-carpet', sku: 'CP-003', shortDesc: 'Deep shag pile carpet for cozy bedrooms', description: 'Sink your feet into this deep shag pile carpet. Perfect for bedrooms and reading nooks. Anti-static treated and stain-resistant.', categoryId: categories['carpets'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.POLYESTER, taxRate: 12, hsnCode: '5703', seoTitle: 'Shag Pile Bedroom Carpet | Naturalife', seoDesc: 'Deep shag pile carpet for cozy bedrooms.' },
+
+    // Mats (2)
+    { name: 'Yoga Jute Mat', slug: 'yoga-jute-mat', sku: 'MT-001', shortDesc: 'Natural jute yoga mat with non-slip grip', description: 'Eco-friendly yoga mat made from natural jute fiber. Excellent grip for all yoga styles. Biodegradable and sustainably sourced.', categoryId: categories['mats'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.JUTE, taxRate: 12, hsnCode: '5705', seoTitle: 'Yoga Jute Mat | Naturalife', seoDesc: 'Eco-friendly natural jute yoga mat.' },
+    { name: 'Kids Play Mat', slug: 'kids-play-mat', sku: 'MT-002', shortDesc: 'Soft padded play mat for children with fun prints', description: 'Safe and soft play mat for toddlers and young children. Non-toxic materials, easy to clean, and features fun educational prints.', categoryId: categories['mats'], isFeatured: false, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 5, hsnCode: '6304', seoTitle: 'Kids Play Mat | Naturalife', seoDesc: 'Safe soft play mat for children.' },
+
+    // Cushion Covers (2)
+    { name: 'Bohemian Cotton Cushion Cover', slug: 'bohemian-cotton-cushion-cover', sku: 'CC-001', shortDesc: 'Handcrafted bohemian style cotton cushion cover with embroidery', description: 'Add bohemian charm with these hand-embroidered cotton cushion covers. Each piece is unique, showcasing the skill of Indian artisans.', categoryId: categories['cushion-covers'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 5, hsnCode: '6304', seoTitle: 'Bohemian Cotton Cushion Cover | Naturalife', seoDesc: 'Hand-embroidered bohemian cushion covers.' },
+    { name: 'Velvet Embossed Cushion Cover', slug: 'velvet-embossed-cushion-cover', sku: 'CC-002', shortDesc: 'Luxurious velvet cushion cover with embossed pattern', description: 'Rich velvet cushion cover with elegant embossed patterns. Hidden zipper closure for a clean finish. Available in 8 premium colours.', categoryId: categories['cushion-covers'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.POLYESTER, taxRate: 5, hsnCode: '6304', seoTitle: 'Velvet Embossed Cushion Cover | Naturalife', seoDesc: 'Luxurious velvet cushion cover.' },
+
+    // Table Mats (2)
+    { name: 'Handloom Cotton Table Runner', slug: 'handloom-cotton-table-runner', sku: 'TM-001', shortDesc: 'Hand-woven cotton table runner with traditional border design', description: 'Elevate your dining table with this handloom woven cotton table runner. Classic Indian border pattern in vibrant colors.', categoryId: categories['table-mats'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 5, hsnCode: '6304', seoTitle: 'Handloom Cotton Table Runner | Naturalife', seoDesc: 'Handloom cotton table runner.' },
+    { name: 'Jute Braided Placemat Set', slug: 'jute-braided-placemat-set', sku: 'TM-002', shortDesc: 'Set of 6 hand-braided jute placemats', description: 'Natural jute placemats hand-braided in a beautiful spiral pattern. Set of 6 with matching coasters. Perfect for farmhouse and bohemian dining.', categoryId: categories['table-mats'], isFeatured: true, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.JUTE, taxRate: 5, hsnCode: '6304', seoTitle: 'Jute Braided Placemat Set | Naturalife', seoDesc: 'Hand-braided jute placemats set of 6.' },
+
+    // Stools (1)
+    { name: 'Handwoven Pouf Ottoman', slug: 'handwoven-pouf-ottoman', sku: 'ST-001', shortDesc: 'Handwoven cotton pouf ottoman stool', description: 'Versatile handwoven pouf that works as extra seating, a footrest, or a side table. Made from 100% cotton with a sturdy inner frame.', categoryId: categories['stools'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 12, hsnCode: '9401', seoTitle: 'Handwoven Pouf Ottoman | Naturalife', seoDesc: 'Handwoven cotton pouf ottoman.' },
+
+    // Chef Mats (2)
+    { name: 'Anti-Fatigue Kitchen Chef Mat', slug: 'anti-fatigue-kitchen-chef-mat', sku: 'CM-001', shortDesc: 'Ergonomic anti-fatigue mat for kitchen and standing desks', description: 'Premium anti-fatigue mat reduces stress on feet, legs and back. Non-slip bottom, easy to clean.', categoryId: categories['chef-mats'], isFeatured: false, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.RUBBER, taxRate: 18, hsnCode: '4016', seoTitle: 'Anti-Fatigue Kitchen Chef Mat | Naturalife', seoDesc: 'Premium anti-fatigue kitchen mat.' },
+    { name: 'Printed Kitchen Floor Mat', slug: 'printed-kitchen-floor-mat', sku: 'CM-002', shortDesc: 'Decorative printed kitchen floor mat with cushioned base', description: 'Stylish printed kitchen mat that combines comfort with aesthetics. Waterproof surface, cushioned base, and anti-slip backing.', categoryId: categories['chef-mats'], isFeatured: true, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.RUBBER, taxRate: 18, hsnCode: '4016', seoTitle: 'Printed Kitchen Floor Mat | Naturalife', seoDesc: 'Decorative printed kitchen floor mat.' },
+
+    // Placemats (2)
+    { name: 'Woven Cotton Placemat Set', slug: 'woven-cotton-placemat-set', sku: 'PM-001', shortDesc: 'Set of 4 handwoven cotton placemats', description: 'Elegant handwoven cotton placemats in a set of 4. Traditional weaving patterns with modern colour palettes. Machine washable.', categoryId: categories['placemats'], isFeatured: false, isOnSale: false, status: ProductStatus.ACTIVE, material: Material.COTTON, taxRate: 5, hsnCode: '6304', seoTitle: 'Woven Cotton Placemat Set | Naturalife', seoDesc: 'Handwoven cotton placemat set of 4.' },
+    { name: 'Banana Fiber Placemat', slug: 'banana-fiber-placemat', sku: 'PM-002', shortDesc: 'Eco-friendly banana fiber placemat', description: 'Unique placemat made from sustainably harvested banana fiber. Natural golden colour with a distinctive texture. Heat resistant and durable.', categoryId: categories['placemats'], isFeatured: true, isOnSale: true, status: ProductStatus.ACTIVE, material: Material.JUTE, taxRate: 5, hsnCode: '6304', seoTitle: 'Banana Fiber Placemat | Naturalife', seoDesc: 'Eco-friendly banana fiber placemat.' },
+  ]
+
+  for (let pi = 0; pi < sampleProducts.length; pi++) {
+    const productData = sampleProducts[pi]
     const product = await prisma.product.upsert({
       where: { slug: productData.slug },
       update: {},
       create: productData,
     })
 
+    // Add product images (assign 2-3 images per product from the pool)
+    const imgStart = (pi * 3) % productImages.length
+    const imgCount = pi % 3 === 0 ? 3 : 2
+    for (let imgI = 0; imgI < imgCount; imgI++) {
+      const imgFile = productImages[(imgStart + imgI) % productImages.length]
+      await prisma.productImage.upsert({
+        where: { id: `img-${productData.slug}-${imgI}` },
+        update: {},
+        create: {
+          id: `img-${productData.slug}-${imgI}`,
+          productId: product.id,
+          url: `/images/products/${imgFile}`,
+          altText: productData.name,
+          isPrimary: imgI === 0,
+          sortOrder: imgI,
+        },
+      })
+    }
+
     // Create variants for each product
+    const basePrice = 449 + (pi * 100) % 1500
     const variantConfigs = [
-      { sizeSuffix: '16x24', price: 449, wholesalePrice: 299, minWholesaleQty: 20, stock: 100 },
-      { sizeSuffix: '18x30', price: 599, wholesalePrice: 399, minWholesaleQty: 15, stock: 80 },
-      { sizeSuffix: '24x36', price: 849, wholesalePrice: 549, minWholesaleQty: 10, stock: 60 },
+      { sizeSuffix: '16x24', price: basePrice, wholesalePrice: Math.round(basePrice * 0.65), minWholesaleQty: 20, stock: 100 },
+      { sizeSuffix: '18x30', price: basePrice + 150, wholesalePrice: Math.round((basePrice + 150) * 0.65), minWholesaleQty: 15, stock: 80 },
+      { sizeSuffix: '24x36', price: basePrice + 400, wholesalePrice: Math.round((basePrice + 400) * 0.65), minWholesaleQty: 10, stock: 60 },
     ]
 
     for (let i = 0; i < variantConfigs.length; i++) {
@@ -311,7 +287,29 @@ async function main() {
       })
     }
   }
-  console.log('✓ Sample products with variants created')
+  console.log('✓ Sample products with variants and images created')
+
+  // Custom Design Form Definition
+  await prisma.formDefinition.upsert({
+    where: { key: 'custom-design' },
+    update: {},
+    create: {
+      key: 'custom-design',
+      name: 'Custom Design Request',
+      fields: [
+        { name: 'name', label: 'Full Name', type: 'text', required: true },
+        { name: 'email', label: 'Email Address', type: 'email', required: true },
+        { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
+        { name: 'product_type', label: 'Product Type', type: 'select', required: true, options: ['Rug', 'Carpet', 'Dhurrie', 'Doormat', 'Cushion Cover', 'Table Mat', 'Other'] },
+        { name: 'size', label: 'Desired Size', type: 'select', required: false, options: ['2×3 ft', '3×5 ft', '4×6 ft', '5×7 ft', '6×9 ft', '8×10 ft', 'Custom Size'] },
+        { name: 'material', label: 'Preferred Material', type: 'select', required: false, options: ['Cotton', 'Wool', 'Jute', 'Silk Blend', 'Polyester', 'No Preference'] },
+        { name: 'budget', label: 'Budget Range', type: 'select', required: false, options: ['Under ₹1,000', '₹1,000 - ₹3,000', '₹3,000 - ₹5,000', '₹5,000 - ₹10,000', 'Above ₹10,000'] },
+        { name: 'description', label: 'Design Description', type: 'textarea', required: true },
+      ],
+      isActive: true,
+    },
+  })
+  console.log('✓ Custom design form created')
 
   // Marquee Offers
   await prisma.marqueeOffer.createMany({
