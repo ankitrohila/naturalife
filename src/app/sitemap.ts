@@ -3,10 +3,12 @@ import { prisma } from '@/lib/prisma'
 
 const BASE_URL = process.env.NEXTAUTH_URL ?? 'http://localhost:3005'
 
+// Sitemap is generated at build time; the database may not be reachable then
+// (e.g. on Vercel). Fall back to static routes only rather than failing the build.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, categories, pages] = await Promise.all([
-    prisma.product.findMany({ where: { status: 'ACTIVE' }, select: { slug: true, updatedAt: true } }),
-    prisma.category.findMany({ select: { slug: true } }),
+    prisma.product.findMany({ where: { status: 'ACTIVE' }, select: { slug: true, updatedAt: true } }).catch(() => []),
+    prisma.category.findMany({ select: { slug: true } }).catch(() => []),
     prisma.page.findMany({ select: { slug: true, updatedAt: true } }).catch(() => []),
   ])
 

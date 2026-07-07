@@ -33,3 +33,6 @@ export async function GET() {
     topQueries,
   })
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'

@@ -35,3 +35,6 @@ export async function POST(req: Request) {
   const form = await prisma.formDefinition.create({ data: { key, name, fields } })
   return NextResponse.json({ form })
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'

@@ -25,3 +25,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'

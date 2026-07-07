@@ -53,3 +53,6 @@ export async function GET() {
   }).catch(() => [])
   return NextResponse.json({ products })
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'

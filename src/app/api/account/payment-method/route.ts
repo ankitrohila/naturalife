@@ -23,3 +23,6 @@ export async function PATCH(req: Request) {
   })
   return NextResponse.json({ ok: true })
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'

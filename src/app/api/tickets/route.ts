@@ -57,3 +57,6 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ ticket })
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'

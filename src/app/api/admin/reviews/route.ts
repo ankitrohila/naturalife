@@ -11,3 +11,6 @@ export async function GET() {
   ])
   return NextResponse.json({ reviews, enquiries })
 }
+
+// Live data endpoint — never prerender at build time.
+export const dynamic = 'force-dynamic'
