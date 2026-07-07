@@ -19,7 +19,7 @@ function getClientIp(req: NextRequest): string {
   return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown'
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
   const rule = LIMITS.find((r) => r.pattern.test(pathname))
   if (!rule) return NextResponse.next()
