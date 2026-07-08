@@ -21,22 +21,26 @@ export function ExitIntentPopup({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl bg-white rounded-none overflow-hidden shadow-2xl grid md:grid-cols-2"
+        className="relative w-full max-w-4xl bg-white rounded-none shadow-2xl flex flex-col"
+        style={{ maxHeight: '90vh' }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close */}
+        {/* Close — always visible above scrollable content */}
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-[var(--ink)] shadow"
+          className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center text-[var(--ink)] shadow border border-gray-200"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
           </svg>
         </button>
 
+        {/* Scrollable body */}
+        <div className="overflow-y-auto grid md:grid-cols-2">
+
         {/* Left — offer */}
-        <div className="relative p-8 md:p-10 flex flex-col justify-center text-white min-h-[360px]">
+        <div className="relative p-8 md:p-10 flex flex-col justify-center text-white min-h-[240px] md:min-h-[360px]">
           <div
             className="absolute inset-0"
             style={{
@@ -112,6 +116,7 @@ export function ExitIntentPopup({
             View all products
           </Link>
         </div>
+        </div>{/* end scrollable body */}
       </div>
     </div>
   )
