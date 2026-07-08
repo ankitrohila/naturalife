@@ -42,12 +42,34 @@ export async function POST(req: Request) {
     .filter((x): x is { id: string; label: string; distance: number } => x !== null)
     .sort((a, b) => a.distance - b.distance)
 
-  const closestValueIds = ranked.slice(0, 3).map((r) => r.id)
+  const closestValueIds = ranked.slice(0, 5).map((r) => r.id)
 
+  // If no color data, fall back to featured/active products
   if (closestValueIds.length === 0) {
-    return NextResponse.json({ products: [], dominantColor: `rgb(${dominantRgb.join(',')})` })
+    const fallback = await prisma.product.findMany({
+      where: { status: 'ACTIVE' },
+      include: {
+        category: { select: { name: true } },
+        images: { where: { isPrimary: true }, take: 1 },
+        variants: { orderBy: { price: 'asc' }, take: 1 },
+      },
+      orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
+      take: 20,
+    })
+    const results = fallback.map((p) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      image: p.images[0]?.url ?? null,
+      categoryName: p.category.name,
+      price: p.variants[0] ? Number(p.variants[0].price) : null,
+      isOnSale: p.isOnSale,
+      isFeatured: p.isFeatured,
+    }))
+    return NextResponse.json({ products: results, dominantColor: `rgb(${dominantRgb.join(',')})`, matchedColors: [] })
   }
 
+  // Color-matched products first; if fewer than 6 results, supplement with other active products
   const products = await prisma.product.findMany({
     where: {
       status: 'ACTIVE',
@@ -61,7 +83,25 @@ export async function POST(req: Request) {
     take: 20,
   })
 
-  const results = products.map((p) => ({
+  let finalProducts = products
+
+  // If color match returned few results, supplement with other active products
+  if (products.length < 6) {
+    const matchedIds = products.map((p) => p.id)
+    const supplemental = await prisma.product.findMany({
+      where: { status: 'ACTIVE', id: { notIn: matchedIds } },
+      include: {
+        category: { select: { name: true } },
+        images: { where: { isPrimary: true }, take: 1 },
+        variants: { orderBy: { price: 'asc' }, take: 1 },
+      },
+      orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
+      take: 20 - products.length,
+    })
+    finalProducts = [...products, ...supplemental]
+  }
+
+  const results = finalProducts.map((p) => ({
     id: p.id,
     name: p.name,
     slug: p.slug,
@@ -75,6 +115,6 @@ export async function POST(req: Request) {
   return NextResponse.json({
     products: results,
     dominantColor: `rgb(${dominantRgb.join(',')})`,
-    matchedColors: ranked.slice(0, 3).map((r) => r.label),
+    matchedColors: ranked.slice(0, 5).map((r) => r.label),
   })
 }

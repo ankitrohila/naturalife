@@ -1,12 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PanelLeft, ChevronLeft } from 'lucide-react'
 import { useLanguage } from '@/components/providers/LanguageProvider'
 
 export function ShopSidebarToggle({ children }: { children: React.ReactNode }) {
   const { t } = useLanguage()
-  const [open, setOpen] = useState(true)
+  // Open by default on desktop, closed on mobile
+  const [open, setOpen] = useState(false)
+  useEffect(() => {
+    setOpen(window.innerWidth >= 1024)
+  }, [])
 
   return (
     <>

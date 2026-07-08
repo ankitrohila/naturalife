@@ -170,6 +170,10 @@ export default function CheckoutPage() {
       })
 
       const data = await res.json()
+      if (res.status === 401) {
+        window.location.href = '/login?callbackUrl=/checkout'
+        return
+      }
       if (!res.ok) throw new Error(data.error ?? 'Order creation failed')
 
       // COD → straight to success

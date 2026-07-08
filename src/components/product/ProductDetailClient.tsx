@@ -418,27 +418,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
             <p className="text-sm text-gray-600 leading-relaxed mb-5">{product.shortDesc}</p>
           )}
 
-          {/* Retail / Wholesale Toggle */}
-          <div className="mb-6">
-            <p className="text-xs font-semibold tracking-wide uppercase text-gray-500 mb-2">Order Type</p>
-            <div className="flex rounded-none overflow-hidden border border-[var(--line)] w-fit">
-              {(['RETAIL', 'WHOLESALE'] as const).map((type) => (
-                <button
-                  key={type}
-                  onClick={() => { setOrderType(type); if (type === 'WHOLESALE') setQty(Math.max(qty, matchingVariant?.minWholesaleQty ?? 10)) }}
-                  className={`px-5 py-2.5 text-sm font-medium transition-all ${orderType === type ? 'text-white shadow-sm' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
-                  style={orderType === type ? { backgroundColor: 'var(--green)' } : {}}
-                >
-                  {type === 'RETAIL' ? '🛍 Retail' : '📦 Wholesale'}
-                </button>
-              ))}
-            </div>
-            {orderType === 'WHOLESALE' && (
-              <p className="text-xs text-[var(--green)] mt-1.5 font-medium">
-                Wholesale pricing active — min {matchingVariant?.minWholesaleQty ?? 10} units
-              </p>
-            )}
-          </div>
+          {/* Order type is set globally from cart — no inline toggle needed */}
 
           {/* Color Selector — Jaipur Rugs style (image thumbnails) */}
           {attrGroups.filter(g => g.attr.name === 'COLOR').map(({ attr, values }) => (

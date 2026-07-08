@@ -84,7 +84,7 @@ async function main() {
   for (let i = 0; i < colorValues.length; i++) {
     await prisma.attributeValue.upsert({
       where: { id: `color-${colorValues[i].value}` },
-      update: {},
+      update: { hexColor: colorValues[i].hexColor, label: colorValues[i].label },
       create: { id: `color-${colorValues[i].value}`, attributeId: attrs['COLOR'], ...colorValues[i], sortOrder: i },
     })
   }
@@ -222,6 +222,15 @@ async function main() {
       where: { slug: productData.slug },
       update: {},
       create: productData,
+    })
+
+    // Assign a color to the product in ProductAttributeValue (used by image search)
+    const colors = ['multi','beige','brown','grey','red','blue','green','ivory','yellow','black']
+    const colorId = `color-${colors[pi % colors.length]}`
+    await prisma.productAttributeValue.upsert({
+      where: { productId_attributeId_valueId: { productId: product.id, attributeId: 'COLOR', valueId: colorId } },
+      update: {},
+      create: { productId: product.id, attributeId: 'COLOR', valueId: colorId },
     })
 
     // Add product images (assign 2-3 images per product from the pool)

@@ -81,9 +81,9 @@ export function LifestyleCarousel({ slides }: { slides: Slide[] }) {
 
   return (
     <div>
-      <div className="grid md:grid-cols-[2fr_1fr] gap-0 border border-[var(--line)] bg-white shadow-sm">
+      <div className="grid md:grid-cols-[2fr_1fr] gap-0 border border-[var(--line)] bg-white shadow-sm" style={{ minHeight: 420 }}>
         {/* Room image */}
-        <div className="relative aspect-[4/3] md:aspect-auto overflow-hidden">
+        <div className="relative overflow-hidden" style={{ minHeight: 300 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={slide.image} alt="Room styled with Naturalife products" className="w-full h-full object-cover" />
           <button onClick={() => go(current - 1)} aria-label="Previous" className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-white transition-colors">

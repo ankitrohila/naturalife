@@ -49,7 +49,10 @@ export default async function middleware(req: NextRequest) {
   if (rateLimited) return rateLimited
 
   const { pathname } = req.nextUrl
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET })
+  // NextAuth v5 uses 'authjs.session-token' (not the v4 'next-auth.session-token')
+  const secureCookie = req.nextUrl.protocol === 'https:'
+  const cookieName = secureCookie ? '__Secure-authjs.session-token' : 'authjs.session-token'
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET, cookieName })
 
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
   if (isProtected && !token) {
