@@ -1,17 +1,16 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 import { useCartStore } from '@/store/cart'
 
 export function CartSyncProvider({ children }: { children: React.ReactNode }) {
-  const { data: session } = useSession()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (!session?.user) return
-
-    const sync = () => {
+    const sync = async () => {
+      const session = await getSession()
+      if (!session?.user) return
       const state = useCartStore.getState()
       const items = state.items
       const totalValue = state.getSubtotal()
@@ -32,7 +31,7 @@ export function CartSyncProvider({ children }: { children: React.ReactNode }) {
       unsubscribe()
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [session])
+  }, [])
 
   return <>{children}</>
 }

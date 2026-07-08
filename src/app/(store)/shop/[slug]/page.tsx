@@ -35,32 +35,45 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   if (!product || product.status === 'ARCHIVED') notFound()
 
-  // Derive attribute options from variant JSON that aren't in ProductAttributeValue
-  // (e.g. SIZE is stored only in variant JSON, not in the product-level join table)
-  const existingValueIds = new Set(product.attributeValues.map((av) => av.value.id))
-  const variantValueIds = [
-    ...new Set(
-      product.variants.flatMap((v) => {
-        const avs = v.attributeValues as Array<{ attributeId: string; valueId: string }>
-        return avs.map((av) => av.valueId)
-      })
-    ),
-  ].filter((id) => !existingValueIds.has(id))
-
-  if (variantValueIds.length > 0) {
-    const extraAVs = await prisma.attributeValue.findMany({
-      where: { id: { in: variantValueIds } },
-      include: { attribute: true },
+  // Build the set of (attributeId:valueId) pairs actually present in this product's variants.
+  // This is the authoritative list — only show selectors for values that have a real variant.
+  const variantAttrPairs = new Set(
+    product.variants.flatMap((v) => {
+      const avs = (v.attributeValues as Array<{ attributeId: string; valueId: string }> | null) ?? []
+      return avs.map((av) => `${av.attributeId}:${av.valueId}`)
     })
-    const derived = extraAVs.map((av) => ({
+  )
+
+  // Collect all unique valueIds from variant JSON (these need AttributeValue records)
+  const variantValueIds = [...new Set(
+    product.variants.flatMap((v) => {
+      const avs = (v.attributeValues as Array<{ attributeId: string; valueId: string }> | null) ?? []
+      return avs.map((av) => av.valueId)
+    })
+  )]
+
+  // Fetch full AttributeValue records for all variant options
+  const allVariantAVs = variantValueIds.length > 0
+    ? await prisma.attributeValue.findMany({ where: { id: { in: variantValueIds } }, include: { attribute: true } })
+    : []
+
+  // Build the merged attributeValues list:
+  // Start from ProductAttributeValue records that are actually backed by a variant,
+  // then add variant-derived ones not already in the list.
+  const existingValueIds = new Set(product.attributeValues.map((av) => av.value.id))
+  const validExisting = product.attributeValues.filter(
+    (av) => variantAttrPairs.has(`${av.attributeId}:${av.valueId}`)
+  )
+  const derived = allVariantAVs
+    .filter((av) => !existingValueIds.has(av.id) && variantAttrPairs.has(`${av.attributeId}:${av.id}`))
+    .map((av) => ({
       productId: product.id,
       attributeId: av.attributeId,
       valueId: av.id,
       attribute: av.attribute,
       value: { id: av.id, value: av.value, label: av.label, hexColor: av.hexColor, imageUrl: (av as any).imageUrl ?? null },
     }))
-    ;(product as any).attributeValues = [...product.attributeValues, ...derived]
-  }
+  ;(product as any).attributeValues = [...validExisting, ...derived]
 
   const relatedProducts = await prisma.product.findMany({
     where: { categoryId: product.categoryId, status: 'ACTIVE', id: { not: product.id } },

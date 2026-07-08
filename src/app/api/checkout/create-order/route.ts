@@ -4,13 +4,29 @@ import { auth } from '@/auth'
 import { sendNotification } from '@/lib/notifications'
 import Razorpay from 'razorpay'
 
-// Razorpay is only usable with real keys. With missing/dummy keys we run in
-// "test mode": the order is created and the customer is sent straight to success.
-const RZP_KEY = process.env.RAZORPAY_KEY_ID ?? ''
-const rzpConfigured = RZP_KEY.startsWith('rzp_') && !RZP_KEY.includes('dummy') && !!process.env.RAZORPAY_KEY_SECRET
-const razorpay = rzpConfigured
-  ? new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID!, key_secret: process.env.RAZORPAY_KEY_SECRET! })
-  : null
+// Razorpay client is built lazily from DB config (admin settings) with env-var fallback.
+async function getRazorpayClient(): Promise<{ client: Razorpay | null; keyId: string; isTestMode: boolean }> {
+  try {
+    const gw = await prisma.gatewayConfig.findFirst({ where: { provider: 'RAZORPAY', isEnabled: true } })
+    if (gw) {
+      const isTestMode = gw.isTestMode
+      const keyId = isTestMode ? gw.testKeyId : gw.liveKeyId
+      const keySecret = isTestMode ? gw.testSecret : gw.liveSecret
+      if (keyId.startsWith('rzp_') && keySecret.length > 0) {
+        return { client: new Razorpay({ key_id: keyId, key_secret: keySecret }), keyId, isTestMode }
+      }
+    }
+  } catch { /* fall through to env fallback */ }
+
+  // Env-var fallback
+  const keyId = process.env.RAZORPAY_KEY_ID ?? ''
+  const keySecret = process.env.RAZORPAY_KEY_SECRET ?? ''
+  const isTestMode = keyId.startsWith('rzp_test_')
+  if (keyId.startsWith('rzp_') && keySecret.length > 0) {
+    return { client: new Razorpay({ key_id: keyId, key_secret: keySecret }), keyId, isTestMode }
+  }
+  return { client: null, keyId: '', isTestMode: true }
+}
 
 function generateOrderNumber(): string {
   const ts = Date.now().toString(36).toUpperCase()
@@ -119,8 +135,11 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Create Razorpay order (only when real keys are configured)
+  // Create Razorpay order (only when real keys are configured — from DB or env)
   let razorpayOrderId: string | undefined
+  const { client: razorpay, isTestMode: rzpTestMode } = paymentMethod !== 'COD'
+    ? await getRazorpayClient()
+    : { client: null, isTestMode: true }
   const testMode = paymentMethod !== 'COD' && !razorpay
   if (paymentMethod !== 'COD' && razorpay) {
     const rzpOrder = await razorpay.orders.create({
@@ -130,6 +149,7 @@ export async function POST(req: NextRequest) {
     })
     razorpayOrderId = rzpOrder.id
   }
+  void rzpTestMode // used via testMode above
 
   // Get state code from address for order
   let stateCode = 'NA'
@@ -184,10 +204,15 @@ export async function POST(req: NextRequest) {
 
   // UPI pay-by-QR string (used when online payment runs without a live gateway)
   let upiString: string | undefined
-  const upiVpa = process.env.UPI_VPA
-  if (testMode && upiVpa) {
-    const pn = encodeURIComponent(process.env.UPI_PAYEE_NAME || 'Naturalife')
-    upiString = `upi://pay?pa=${encodeURIComponent(upiVpa)}&pn=${pn}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(orderNumber)}`
+  if (testMode) {
+    const upiSetting = await prisma.siteSettings.findUnique({ where: { key: 'upi' } })
+    const upiCfg = upiSetting?.value as any
+    const upiVpa = upiCfg?.vpa || process.env.UPI_VPA || ''
+    const upiPayeeName = upiCfg?.payeeName || process.env.UPI_PAYEE_NAME || 'Naturalife'
+    if (upiVpa) {
+      const pn = encodeURIComponent(upiPayeeName)
+      upiString = `upi://pay?pa=${encodeURIComponent(upiVpa)}&pn=${pn}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(orderNumber)}`
+    }
   }
 
   return NextResponse.json({ orderId: order.id, orderNumber, razorpayOrderId, total, testMode, upiString })

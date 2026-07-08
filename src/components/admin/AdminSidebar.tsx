@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 
-const NAV = [
+interface NavItem { label: string; href: string; divider?: boolean }
+const NAV: NavItem[] = [
   { label: 'Dashboard', href: '/admin' },
   { label: 'Orders', href: '/admin/orders' },
   { label: 'WhatsApp Orders', href: '/admin/whatsapp-orders' },
@@ -26,7 +27,12 @@ const NAV = [
   { label: 'Notifications', href: '/admin/notifications' },
   { label: 'CMS Pages', href: '/admin/pages' },
   { label: 'Menu Manager', href: '/admin/menus' },
+  { label: '— Config —', href: '', divider: true },
   { label: 'Settings', href: '/admin/settings' },
+  { label: 'Payment Gateways', href: '/admin/settings?tab=payment' },
+  { label: 'UPI / QR Config', href: '/admin/settings?tab=upi' },
+  { label: 'Email & WhatsApp', href: '/admin/settings?tab=comms' },
+  { label: 'Shipping Partners', href: '/admin/settings?tab=shipping' },
   { label: 'Test Env', href: '/admin/test-env' },
 ]
 
@@ -47,18 +53,27 @@ export function AdminSidebar() {
       {/* Nav */}
       <nav className="flex-1 p-3 overflow-y-auto">
         {NAV.map((item) => {
-          const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
+          if (item.divider) {
+            return <p key={item.label} className="px-3 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-gray-400">{item.label.replace(/—/g, '').trim()}</p>
+          }
+          // ?tab= links are just shortcuts — never highlight as active (avoids SSR mismatch)
+          const isActive = !item.href.includes('?') && (
+            (item.href === '/admin' && pathname === '/admin') ||
+            (item.href !== '/admin' && pathname.startsWith(item.href))
+          )
           return (
             <Link
-              key={item.href}
+              key={item.href + item.label}
               href={item.href}
               className={`block px-3 py-2 rounded-none text-sm font-medium mb-0.5 transition-colors ${
                 isActive
                   ? 'bg-[var(--green)] text-white'
-                  : 'text-[var(--ink-soft)] hover:bg-[var(--green-light)] hover:text-[var(--ink)]'
+                  : item.href.includes('?tab=')
+                    ? 'text-[var(--ink-soft)] hover:bg-[var(--green-light)] hover:text-[var(--ink)] pl-6 text-xs'
+                    : 'text-[var(--ink-soft)] hover:bg-[var(--green-light)] hover:text-[var(--ink)]'
               }`}
             >
-              {item.label}
+              {item.href.includes('?tab=') ? `↳ ${item.label}` : item.label}
             </Link>
           )
         })}

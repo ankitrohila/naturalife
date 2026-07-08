@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { OrderInvoiceActions } from '@/components/admin/OrderInvoiceActions'
+import { OrderPaymentShipping } from '@/components/admin/OrderPaymentShipping'
 
 const STATUS_STEPS = ['PLACED', 'CONFIRMED', 'PACKED', 'DISPATCHED', 'DELIVERED']
 
@@ -177,6 +178,27 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
               <OrderInvoiceActions orderId={order.id} />
             </div>
+          </div>
+
+          {/* Payment & Shipping Management */}
+          <div className="mt-5">
+            <OrderPaymentShipping
+              orderId={order.id}
+              paymentStatus={order.paymentStatus}
+              paymentMethod={order.paymentMethod ?? ''}
+              gatewayName={(order as any).gatewayName ?? ''}
+              gatewayTransactionId={(order as any).gatewayTransactionId ?? ''}
+              paidAt={(order as any).paidAt?.toISOString() ?? ''}
+              refundAmount={(order as any).refundAmount ? String((order as any).refundAmount) : ''}
+              refundAt={(order as any).refundAt?.toISOString() ?? ''}
+              refundId={(order as any).refundId ?? ''}
+              trackingNumber={order.trackingNumber ?? ''}
+              trackingUrl={order.trackingUrl ?? ''}
+              shippingPartnerName={(order as any).shippingPartnerName ?? ''}
+              shippingCourier={(order as any).shippingCourier ?? ''}
+              estimatedDelivery={(order as any).estimatedDelivery?.toISOString() ?? ''}
+              orderTotal={Number(order.total)}
+            />
           </div>
     </div>
   )
