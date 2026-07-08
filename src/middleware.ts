@@ -52,7 +52,9 @@ export default async function middleware(req: NextRequest) {
   // NextAuth v5 uses 'authjs.session-token' (not the v4 'next-auth.session-token')
   const secureCookie = req.nextUrl.protocol === 'https:'
   const cookieName = secureCookie ? '__Secure-authjs.session-token' : 'authjs.session-token'
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET, cookieName })
+  const token = process.env.AUTH_SECRET
+    ? await getToken({ req, secret: process.env.AUTH_SECRET, cookieName })
+    : null
 
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
   if (isProtected && !token) {
