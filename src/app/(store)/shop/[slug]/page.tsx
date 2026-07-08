@@ -35,6 +35,33 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   if (!product || product.status === 'ARCHIVED') notFound()
 
+  // Derive attribute options from variant JSON that aren't in ProductAttributeValue
+  // (e.g. SIZE is stored only in variant JSON, not in the product-level join table)
+  const existingValueIds = new Set(product.attributeValues.map((av) => av.value.id))
+  const variantValueIds = [
+    ...new Set(
+      product.variants.flatMap((v) => {
+        const avs = v.attributeValues as Array<{ attributeId: string; valueId: string }>
+        return avs.map((av) => av.valueId)
+      })
+    ),
+  ].filter((id) => !existingValueIds.has(id))
+
+  if (variantValueIds.length > 0) {
+    const extraAVs = await prisma.attributeValue.findMany({
+      where: { id: { in: variantValueIds } },
+      include: { attribute: true },
+    })
+    const derived = extraAVs.map((av) => ({
+      productId: product.id,
+      attributeId: av.attributeId,
+      valueId: av.id,
+      attribute: av.attribute,
+      value: { id: av.id, value: av.value, label: av.label, hexColor: av.hexColor, imageUrl: (av as any).imageUrl ?? null },
+    }))
+    ;(product as any).attributeValues = [...product.attributeValues, ...derived]
+  }
+
   const relatedProducts = await prisma.product.findMany({
     where: { categoryId: product.categoryId, status: 'ACTIVE', id: { not: product.id } },
     include: {

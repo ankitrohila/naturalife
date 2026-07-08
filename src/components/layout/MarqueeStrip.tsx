@@ -11,9 +11,9 @@ export function MarqueeStrip({ offers }: { offers: MarqueeOffer[] }) {
   // Duplicate for seamless loop
   const doubled = [...offers, ...offers]
 
-  // Strip emoji characters from marquee text
+  // Strip all pictographic emoji (Unicode property escape, most reliable approach)
   const stripEmoji = (text: string) =>
-    text.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{27FF}\u{FE00}-\u{FE0F}]/gu, '').trim()
+    text.replace(/\p{Extended_Pictographic}/gu, '').replace(/\s{2,}/g, ' ').trim()
 
   return (
     <div className="bg-indigo-brand text-white text-sm py-2 overflow-hidden">

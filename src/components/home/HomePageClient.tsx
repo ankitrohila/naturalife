@@ -34,7 +34,7 @@ export function HomePageClient({
       <SiteIntro trending={trending} offers={activeOffers} />
       {activeOffers.length > 0 && (
         <div className="text-white text-xs sm:text-sm py-2 px-4 text-center font-medium" style={{ background: 'linear-gradient(90deg, var(--green-dark), var(--green))' }}>
-          {activeOffers.slice(0, 3).join('　•　')}
+          {activeOffers.slice(0, 3).map(o => o.replace(/\p{Extended_Pictographic}/gu, '').replace(/\s{2,}/g, ' ').trim()).join('　•　')}
         </div>
       )}
       {/* ── Hero Slider ── */}

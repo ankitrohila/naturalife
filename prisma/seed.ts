@@ -224,14 +224,29 @@ async function main() {
       create: productData,
     })
 
-    // Assign a color to the product in ProductAttributeValue (used by image search)
-    const colors = ['multi','beige','brown','grey','red','blue','green','ivory','yellow','black']
-    const colorId = `color-${colors[pi % colors.length]}`
-    await prisma.productAttributeValue.upsert({
-      where: { productId_attributeId_valueId: { productId: product.id, attributeId: 'COLOR', valueId: colorId } },
-      update: {},
-      create: { productId: product.id, attributeId: 'COLOR', valueId: colorId },
-    })
+    // Assign 3 colors + 3 sizes to each product in ProductAttributeValue
+    // (these are the options shown on the product page — derived from the pool)
+    const colorPool = ['multi','beige','brown','grey','red','blue','green','ivory','yellow','black']
+    const productColors = [
+      colorPool[pi % colorPool.length],
+      colorPool[(pi + 3) % colorPool.length],
+      colorPool[(pi + 6) % colorPool.length],
+    ]
+    for (const c of productColors) {
+      await prisma.productAttributeValue.upsert({
+        where: { productId_attributeId_valueId: { productId: product.id, attributeId: 'COLOR', valueId: `color-${c}` } },
+        update: {},
+        create: { productId: product.id, attributeId: 'COLOR', valueId: `color-${c}` },
+      })
+    }
+    const sizePool = ['16x24', '18x30', '24x36']
+    for (const s of sizePool) {
+      await prisma.productAttributeValue.upsert({
+        where: { productId_attributeId_valueId: { productId: product.id, attributeId: 'SIZE', valueId: `size-${s}` } },
+        update: {},
+        create: { productId: product.id, attributeId: 'SIZE', valueId: `size-${s}` },
+      })
+    }
 
     // Add product images (assign 2-3 images per product from the pool)
     const imgStart = (pi * 3) % productImages.length
