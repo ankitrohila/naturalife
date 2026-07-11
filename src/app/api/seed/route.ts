@@ -133,19 +133,18 @@ export async function POST(req: NextRequest) {
       }
       log.push(`✓ ${COLORS.length} colors, ${allSizes.length} sizes`)
 
-      const batchCount = Math.ceil(PRODUCTS.length / 5)
+      const batchCount = PRODUCTS.length
       return NextResponse.json({ success: true, log, next: 'products-0', totalBatches: batchCount })
     }
 
     if (step.startsWith('products-')) {
       const batchIdx = parseInt(step.split('-')[1])
-      const batchSize = 5
-      const start = batchIdx * batchSize
-      const batch = PRODUCTS.slice(start, start + batchSize)
-
-      if (batch.length === 0) {
+      // 1 product per call to fit Vercel's 10s limit
+      if (batchIdx >= PRODUCTS.length) {
         return NextResponse.json({ success: true, log: ['✅ All products seeded!'], done: true })
       }
+      const batch = [PRODUCTS[batchIdx]]
+      const start = batchIdx
 
       const colorAttr = await prisma.attribute.findUnique({ where: { id: 'COLOR' } })
       const sizeAttr = await prisma.attribute.findUnique({ where: { id: 'SIZE' } })
@@ -153,7 +152,7 @@ export async function POST(req: NextRequest) {
 
       for (let i = 0; i < batch.length; i++) {
         const productData = batch[i]
-        const pIdx = start + i
+        const pIdx = start
         const catRecord = await prisma.category.findUnique({ where: { slug: productData.category } })
         if (!catRecord) throw new Error(`Category not found: ${productData.category}`)
 
@@ -223,11 +222,10 @@ export async function POST(req: NextRequest) {
       }
 
       const nextBatch = batchIdx + 1
-      const remaining = PRODUCTS.slice(nextBatch * batchSize)
       return NextResponse.json({
         success: true, log,
-        next: remaining.length > 0 ? `products-${nextBatch}` : null,
-        done: remaining.length === 0,
+        next: nextBatch < PRODUCTS.length ? `products-${nextBatch}` : null,
+        done: nextBatch >= PRODUCTS.length,
       })
     }
 
